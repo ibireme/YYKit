@@ -1,0 +1,11 @@
+
+
+//need framework:
+//add for test~~
+
+#import <objc/runtime.h>
+#import <UIKit/UIKit.h>
+#import <CoreImage/CoreImage.h>
+#import <QuartzCore/QuartzCore.h>
+#import <CommonCrypto/CommonCrypto.h>
+#include <zlib.h>  //(libz.dylib)

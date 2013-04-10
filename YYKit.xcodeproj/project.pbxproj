@@ -1,0 +1,732 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D91512AC1715E42B004FFB1D /* NSDate+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D91512AA1715E42B004FFB1D /* NSDate+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D91512AD1715E42B004FFB1D /* NSDate+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D91512AB1715E42B004FFB1D /* NSDate+YYAdd.m */; };
+		D91512AE1715E438004FFB1D /* NSDate+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D91512AB1715E42B004FFB1D /* NSDate+YYAdd.m */; };
+		D978DC5C1714871C0014B723 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D978DC5A1714871C0014B723 /* InfoPlist.strings */; };
+		D978DC661714871C0014B723 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DC651714871C0014B723 /* SenTestingKit.framework */; };
+		D978DC681714871C0014B723 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DC671714871C0014B723 /* UIKit.framework */; };
+		D978DC6A1714871C0014B723 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DC691714871C0014B723 /* Foundation.framework */; };
+		D978DC6D1714871C0014B723 /* YYKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = D978DC551714871C0014B723 /* YYKit.framework */; };
+		D978DC731714871C0014B723 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D978DC711714871C0014B723 /* InfoPlist.strings */; };
+		D978DC761714871C0014B723 /* YYKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC751714871C0014B723 /* YYKitTests.m */; };
+		D978DCA5171487E20014B723 /* CALayer+YYDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC80171487E20014B723 /* CALayer+YYDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCA6171487E20014B723 /* CALayer+YYDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC81171487E20014B723 /* CALayer+YYDebug.m */; };
+		D978DCA7171487E20014B723 /* CALayer+YYDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC81171487E20014B723 /* CALayer+YYDebug.m */; };
+		D978DCA8171487E20014B723 /* NOTE in Resources */ = {isa = PBXBuildFile; fileRef = D978DC82171487E20014B723 /* NOTE */; };
+		D978DCA9171487E20014B723 /* NOTE in Resources */ = {isa = PBXBuildFile; fileRef = D978DC82171487E20014B723 /* NOTE */; };
+		D978DCAA171487E20014B723 /* NSArray+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC83171487E20014B723 /* NSArray+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCAB171487E20014B723 /* NSArray+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC84171487E20014B723 /* NSArray+YYAdd.m */; };
+		D978DCAC171487E20014B723 /* NSArray+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC84171487E20014B723 /* NSArray+YYAdd.m */; };
+		D978DCAD171487E20014B723 /* NSData+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC85171487E20014B723 /* NSData+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCAE171487E20014B723 /* NSData+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC86171487E20014B723 /* NSData+YYAdd.m */; };
+		D978DCAF171487E20014B723 /* NSData+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC86171487E20014B723 /* NSData+YYAdd.m */; };
+		D978DCB0171487E20014B723 /* NSDictionary+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC87171487E20014B723 /* NSDictionary+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCB1171487E20014B723 /* NSDictionary+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC88171487E20014B723 /* NSDictionary+YYAdd.m */; };
+		D978DCB2171487E20014B723 /* NSDictionary+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC88171487E20014B723 /* NSDictionary+YYAdd.m */; };
+		D978DCB3171487E20014B723 /* NSObject+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC89171487E20014B723 /* NSObject+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCB4171487E20014B723 /* NSObject+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC8A171487E20014B723 /* NSObject+YYAdd.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D978DCB5171487E20014B723 /* NSObject+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC8A171487E20014B723 /* NSObject+YYAdd.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D978DCB6171487E20014B723 /* NSString+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC8B171487E20014B723 /* NSString+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCB7171487E20014B723 /* NSString+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC8C171487E20014B723 /* NSString+YYAdd.m */; };
+		D978DCB8171487E20014B723 /* NSString+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC8C171487E20014B723 /* NSString+YYAdd.m */; };
+		D978DCB9171487E20014B723 /* UIApplication+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC8D171487E20014B723 /* UIApplication+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCBA171487E20014B723 /* UIApplication+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC8E171487E20014B723 /* UIApplication+YYAdd.m */; };
+		D978DCBB171487E20014B723 /* UIApplication+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC8E171487E20014B723 /* UIApplication+YYAdd.m */; };
+		D978DCBC171487E20014B723 /* UIColor+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC8F171487E20014B723 /* UIColor+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCBD171487E20014B723 /* UIColor+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC90171487E20014B723 /* UIColor+YYAdd.m */; };
+		D978DCBE171487E20014B723 /* UIColor+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC90171487E20014B723 /* UIColor+YYAdd.m */; };
+		D978DCBF171487E20014B723 /* UIControl+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC91171487E20014B723 /* UIControl+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCC0171487E20014B723 /* UIControl+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC92171487E20014B723 /* UIControl+YYAdd.m */; };
+		D978DCC1171487E20014B723 /* UIControl+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC92171487E20014B723 /* UIControl+YYAdd.m */; };
+		D978DCC2171487E20014B723 /* UIDevice+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC93171487E20014B723 /* UIDevice+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCC3171487E20014B723 /* UIDevice+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC94171487E20014B723 /* UIDevice+YYAdd.m */; };
+		D978DCC4171487E20014B723 /* UIDevice+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC94171487E20014B723 /* UIDevice+YYAdd.m */; };
+		D978DCC5171487E20014B723 /* UIImage+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC95171487E20014B723 /* UIImage+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCC6171487E20014B723 /* UIImage+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC96171487E20014B723 /* UIImage+YYAdd.m */; };
+		D978DCC7171487E20014B723 /* UIImage+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC96171487E20014B723 /* UIImage+YYAdd.m */; };
+		D978DCC8171487E20014B723 /* UIScreen+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC97171487E20014B723 /* UIScreen+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCC9171487E20014B723 /* UIScreen+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC98171487E20014B723 /* UIScreen+YYAdd.m */; };
+		D978DCCA171487E20014B723 /* UIScreen+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC98171487E20014B723 /* UIScreen+YYAdd.m */; };
+		D978DCCB171487E20014B723 /* UIScrollView+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC99171487E20014B723 /* UIScrollView+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCCC171487E20014B723 /* UIScrollView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC9A171487E20014B723 /* UIScrollView+YYAdd.m */; };
+		D978DCCD171487E20014B723 /* UIScrollView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC9A171487E20014B723 /* UIScrollView+YYAdd.m */; };
+		D978DCCE171487E20014B723 /* UIView+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC9B171487E20014B723 /* UIView+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCCF171487E20014B723 /* UIView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC9C171487E20014B723 /* UIView+YYAdd.m */; };
+		D978DCD0171487E20014B723 /* UIView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC9C171487E20014B723 /* UIView+YYAdd.m */; };
+		D978DCD1171487E20014B723 /* UIView+YYDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC9D171487E20014B723 /* UIView+YYDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCD2171487E20014B723 /* UIView+YYDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC9E171487E20014B723 /* UIView+YYDebug.m */; };
+		D978DCD3171487E20014B723 /* UIView+YYDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DC9E171487E20014B723 /* UIView+YYDebug.m */; };
+		D978DCD4171487E20014B723 /* YYAppleDocExample.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DC9F171487E20014B723 /* YYAppleDocExample.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCD5171487E20014B723 /* YYAppleDocExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DCA0171487E20014B723 /* YYAppleDocExample.m */; };
+		D978DCD6171487E20014B723 /* YYAppleDocExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DCA0171487E20014B723 /* YYAppleDocExample.m */; };
+		D978DCD7171487E20014B723 /* YYCore.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DCA1171487E20014B723 /* YYCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCD8171487E20014B723 /* YYCoreMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DCA2171487E20014B723 /* YYCoreMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCD9171487E20014B723 /* YYViewHierarchy3D.h in Headers */ = {isa = PBXBuildFile; fileRef = D978DCA3171487E20014B723 /* YYViewHierarchy3D.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D978DCDA171487E20014B723 /* YYViewHierarchy3D.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DCA4171487E20014B723 /* YYViewHierarchy3D.m */; };
+		D978DCDB171487E20014B723 /* YYViewHierarchy3D.m in Sources */ = {isa = PBXBuildFile; fileRef = D978DCA4171487E20014B723 /* YYViewHierarchy3D.m */; };
+		D978DCDE17148B600014B723 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DCDD17148B600014B723 /* libz.dylib */; };
+		D978DCE017148B670014B723 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DCDF17148B660014B723 /* CoreImage.framework */; };
+		D978DCE217148B6D0014B723 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DCE117148B6D0014B723 /* CoreGraphics.framework */; };
+		D978DCE417148B730014B723 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DCE317148B730014B723 /* QuartzCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D978DC6B1714871C0014B723 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D978DC491714871C0014B723 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D978DC541714871C0014B723;
+			remoteInfo = YYKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D91512AA1715E42B004FFB1D /* NSDate+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+YYAdd.h"; sourceTree = "<group>"; };
+		D91512AB1715E42B004FFB1D /* NSDate+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC551714871C0014B723 /* YYKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YYKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D978DC591714871C0014B723 /* YYKit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YYKit-Info.plist"; sourceTree = "<group>"; };
+		D978DC5B1714871C0014B723 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D978DC5D1714871C0014B723 /* YYKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YYKit-Prefix.pch"; sourceTree = "<group>"; };
+		D978DC631714871C0014B723 /* YYKitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YYKitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D978DC651714871C0014B723 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D978DC671714871C0014B723 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		D978DC691714871C0014B723 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		D978DC701714871C0014B723 /* YYKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YYKitTests-Info.plist"; sourceTree = "<group>"; };
+		D978DC721714871C0014B723 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D978DC741714871C0014B723 /* YYKitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYKitTests.h; sourceTree = "<group>"; };
+		D978DC751714871C0014B723 /* YYKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYKitTests.m; sourceTree = "<group>"; };
+		D978DC80171487E20014B723 /* CALayer+YYDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+YYDebug.h"; sourceTree = "<group>"; };
+		D978DC81171487E20014B723 /* CALayer+YYDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+YYDebug.m"; sourceTree = "<group>"; };
+		D978DC82171487E20014B723 /* NOTE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = NOTE; path = YYKit/NOTE; sourceTree = "<group>"; };
+		D978DC83171487E20014B723 /* NSArray+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC84171487E20014B723 /* NSArray+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC85171487E20014B723 /* NSData+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC86171487E20014B723 /* NSData+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC87171487E20014B723 /* NSDictionary+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC88171487E20014B723 /* NSDictionary+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC89171487E20014B723 /* NSObject+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC8A171487E20014B723 /* NSObject+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC8B171487E20014B723 /* NSString+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC8C171487E20014B723 /* NSString+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC8D171487E20014B723 /* UIApplication+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC8E171487E20014B723 /* UIApplication+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC8F171487E20014B723 /* UIColor+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC90171487E20014B723 /* UIColor+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC91171487E20014B723 /* UIControl+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC92171487E20014B723 /* UIControl+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC93171487E20014B723 /* UIDevice+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC94171487E20014B723 /* UIDevice+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC95171487E20014B723 /* UIImage+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC96171487E20014B723 /* UIImage+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC97171487E20014B723 /* UIScreen+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScreen+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC98171487E20014B723 /* UIScreen+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScreen+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC99171487E20014B723 /* UIScrollView+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC9A171487E20014B723 /* UIScrollView+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC9B171487E20014B723 /* UIView+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YYAdd.h"; sourceTree = "<group>"; };
+		D978DC9C171487E20014B723 /* UIView+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YYAdd.m"; sourceTree = "<group>"; };
+		D978DC9D171487E20014B723 /* UIView+YYDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YYDebug.h"; sourceTree = "<group>"; };
+		D978DC9E171487E20014B723 /* UIView+YYDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YYDebug.m"; sourceTree = "<group>"; };
+		D978DC9F171487E20014B723 /* YYAppleDocExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYAppleDocExample.h; sourceTree = "<group>"; };
+		D978DCA0171487E20014B723 /* YYAppleDocExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYAppleDocExample.m; sourceTree = "<group>"; };
+		D978DCA1171487E20014B723 /* YYCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCore.h; sourceTree = "<group>"; };
+		D978DCA2171487E20014B723 /* YYCoreMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCoreMacro.h; sourceTree = "<group>"; };
+		D978DCA3171487E20014B723 /* YYViewHierarchy3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYViewHierarchy3D.h; sourceTree = "<group>"; };
+		D978DCA4171487E20014B723 /* YYViewHierarchy3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYViewHierarchy3D.m; sourceTree = "<group>"; };
+		D978DCDD17148B600014B723 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		D978DCDF17148B660014B723 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		D978DCE117148B6D0014B723 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D978DCE317148B730014B723 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D978DC4F1714871C0014B723 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D978DC5F1714871C0014B723 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D978DCE417148B730014B723 /* QuartzCore.framework in Frameworks */,
+				D978DCE217148B6D0014B723 /* CoreGraphics.framework in Frameworks */,
+				D978DCE017148B670014B723 /* CoreImage.framework in Frameworks */,
+				D978DCDE17148B600014B723 /* libz.dylib in Frameworks */,
+				D978DC661714871C0014B723 /* SenTestingKit.framework in Frameworks */,
+				D978DC681714871C0014B723 /* UIKit.framework in Frameworks */,
+				D978DC6A1714871C0014B723 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D978DC481714871C0014B723 = {
+			isa = PBXGroup;
+			children = (
+				D978DC82171487E20014B723 /* NOTE */,
+				D978DC571714871C0014B723 /* YYKit */,
+				D978DC6E1714871C0014B723 /* YYKitTests */,
+				D978DC641714871C0014B723 /* Frameworks */,
+				D978DC561714871C0014B723 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D978DC561714871C0014B723 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D978DC551714871C0014B723 /* YYKit.framework */,
+				D978DC631714871C0014B723 /* YYKitTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D978DC571714871C0014B723 /* YYKit */ = {
+			isa = PBXGroup;
+			children = (
+				D978DC7F171487BD0014B723 /* YYCore */,
+				D978DC581714871C0014B723 /* Supporting Files */,
+			);
+			path = YYKit;
+			sourceTree = "<group>";
+		};
+		D978DC581714871C0014B723 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D978DC591714871C0014B723 /* YYKit-Info.plist */,
+				D978DC5A1714871C0014B723 /* InfoPlist.strings */,
+				D978DC5D1714871C0014B723 /* YYKit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D978DC641714871C0014B723 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D978DCE317148B730014B723 /* QuartzCore.framework */,
+				D978DCE117148B6D0014B723 /* CoreGraphics.framework */,
+				D978DCDF17148B660014B723 /* CoreImage.framework */,
+				D978DCDD17148B600014B723 /* libz.dylib */,
+				D978DC651714871C0014B723 /* SenTestingKit.framework */,
+				D978DC671714871C0014B723 /* UIKit.framework */,
+				D978DC691714871C0014B723 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D978DC6E1714871C0014B723 /* YYKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				D978DC741714871C0014B723 /* YYKitTests.h */,
+				D978DC751714871C0014B723 /* YYKitTests.m */,
+				D978DC6F1714871C0014B723 /* Supporting Files */,
+			);
+			path = YYKitTests;
+			sourceTree = "<group>";
+		};
+		D978DC6F1714871C0014B723 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D978DC701714871C0014B723 /* YYKitTests-Info.plist */,
+				D978DC711714871C0014B723 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D978DC7F171487BD0014B723 /* YYCore */ = {
+			isa = PBXGroup;
+			children = (
+				D978DCA1171487E20014B723 /* YYCore.h */,
+				D978DCA2171487E20014B723 /* YYCoreMacro.h */,
+				D978DCDC171487F10014B723 /* Categorys */,
+				D978DC9F171487E20014B723 /* YYAppleDocExample.h */,
+				D978DCA0171487E20014B723 /* YYAppleDocExample.m */,
+				D978DCA3171487E20014B723 /* YYViewHierarchy3D.h */,
+				D978DCA4171487E20014B723 /* YYViewHierarchy3D.m */,
+			);
+			name = YYCore;
+			sourceTree = "<group>";
+		};
+		D978DCDC171487F10014B723 /* Categorys */ = {
+			isa = PBXGroup;
+			children = (
+				D978DC89171487E20014B723 /* NSObject+YYAdd.h */,
+				D978DC8A171487E20014B723 /* NSObject+YYAdd.m */,
+				D978DC85171487E20014B723 /* NSData+YYAdd.h */,
+				D978DC86171487E20014B723 /* NSData+YYAdd.m */,
+				D978DC8B171487E20014B723 /* NSString+YYAdd.h */,
+				D978DC8C171487E20014B723 /* NSString+YYAdd.m */,
+				D978DC83171487E20014B723 /* NSArray+YYAdd.h */,
+				D978DC84171487E20014B723 /* NSArray+YYAdd.m */,
+				D978DC87171487E20014B723 /* NSDictionary+YYAdd.h */,
+				D978DC88171487E20014B723 /* NSDictionary+YYAdd.m */,
+				D91512AA1715E42B004FFB1D /* NSDate+YYAdd.h */,
+				D91512AB1715E42B004FFB1D /* NSDate+YYAdd.m */,
+				D978DC91171487E20014B723 /* UIControl+YYAdd.h */,
+				D978DC92171487E20014B723 /* UIControl+YYAdd.m */,
+				D978DC9B171487E20014B723 /* UIView+YYAdd.h */,
+				D978DC9C171487E20014B723 /* UIView+YYAdd.m */,
+				D978DC8F171487E20014B723 /* UIColor+YYAdd.h */,
+				D978DC90171487E20014B723 /* UIColor+YYAdd.m */,
+				D978DC93171487E20014B723 /* UIDevice+YYAdd.h */,
+				D978DC94171487E20014B723 /* UIDevice+YYAdd.m */,
+				D978DC95171487E20014B723 /* UIImage+YYAdd.h */,
+				D978DC96171487E20014B723 /* UIImage+YYAdd.m */,
+				D978DC97171487E20014B723 /* UIScreen+YYAdd.h */,
+				D978DC98171487E20014B723 /* UIScreen+YYAdd.m */,
+				D978DC99171487E20014B723 /* UIScrollView+YYAdd.h */,
+				D978DC9A171487E20014B723 /* UIScrollView+YYAdd.m */,
+				D978DC8D171487E20014B723 /* UIApplication+YYAdd.h */,
+				D978DC8E171487E20014B723 /* UIApplication+YYAdd.m */,
+				D978DC9D171487E20014B723 /* UIView+YYDebug.h */,
+				D978DC9E171487E20014B723 /* UIView+YYDebug.m */,
+				D978DC80171487E20014B723 /* CALayer+YYDebug.h */,
+				D978DC81171487E20014B723 /* CALayer+YYDebug.m */,
+			);
+			name = Categorys;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D978DC501714871C0014B723 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D978DCA5171487E20014B723 /* CALayer+YYDebug.h in Headers */,
+				D978DCAA171487E20014B723 /* NSArray+YYAdd.h in Headers */,
+				D978DCAD171487E20014B723 /* NSData+YYAdd.h in Headers */,
+				D978DCB0171487E20014B723 /* NSDictionary+YYAdd.h in Headers */,
+				D978DCB3171487E20014B723 /* NSObject+YYAdd.h in Headers */,
+				D978DCB6171487E20014B723 /* NSString+YYAdd.h in Headers */,
+				D978DCB9171487E20014B723 /* UIApplication+YYAdd.h in Headers */,
+				D978DCBC171487E20014B723 /* UIColor+YYAdd.h in Headers */,
+				D978DCBF171487E20014B723 /* UIControl+YYAdd.h in Headers */,
+				D978DCC2171487E20014B723 /* UIDevice+YYAdd.h in Headers */,
+				D978DCC5171487E20014B723 /* UIImage+YYAdd.h in Headers */,
+				D978DCC8171487E20014B723 /* UIScreen+YYAdd.h in Headers */,
+				D978DCCB171487E20014B723 /* UIScrollView+YYAdd.h in Headers */,
+				D978DCCE171487E20014B723 /* UIView+YYAdd.h in Headers */,
+				D978DCD1171487E20014B723 /* UIView+YYDebug.h in Headers */,
+				D978DCD4171487E20014B723 /* YYAppleDocExample.h in Headers */,
+				D978DCD7171487E20014B723 /* YYCore.h in Headers */,
+				D978DCD8171487E20014B723 /* YYCoreMacro.h in Headers */,
+				D91512AC1715E42B004FFB1D /* NSDate+YYAdd.h in Headers */,
+				D978DCD9171487E20014B723 /* YYViewHierarchy3D.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D978DC541714871C0014B723 /* YYKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D978DC791714871C0014B723 /* Build configuration list for PBXNativeTarget "YYKit" */;
+			buildPhases = (
+				D978DC4D1714871C0014B723 /* ShellScript */,
+				D978DC4E1714871C0014B723 /* Sources */,
+				D978DC4F1714871C0014B723 /* Frameworks */,
+				D978DC501714871C0014B723 /* Headers */,
+				D978DC511714871C0014B723 /* Resources */,
+				D978DC521714871C0014B723 /* ShellScript */,
+				D978DC531714871C0014B723 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YYKit;
+			productName = YYKit;
+			productReference = D978DC551714871C0014B723 /* YYKit.framework */;
+			productType = "com.apple.product-type.bundle";
+		};
+		D978DC621714871C0014B723 /* YYKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D978DC7C1714871C0014B723 /* Build configuration list for PBXNativeTarget "YYKitTests" */;
+			buildPhases = (
+				D978DC5E1714871C0014B723 /* Sources */,
+				D978DC5F1714871C0014B723 /* Frameworks */,
+				D978DC601714871C0014B723 /* Resources */,
+				D978DC611714871C0014B723 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D978DC6C1714871C0014B723 /* PBXTargetDependency */,
+			);
+			name = YYKitTests;
+			productName = YYKitTests;
+			productReference = D978DC631714871C0014B723 /* YYKitTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D978DC491714871C0014B723 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = ibireme;
+			};
+			buildConfigurationList = D978DC4C1714871C0014B723 /* Build configuration list for PBXProject "YYKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D978DC481714871C0014B723;
+			productRefGroup = D978DC561714871C0014B723 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D978DC541714871C0014B723 /* YYKit */,
+				D978DC621714871C0014B723 /* YYKitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D978DC511714871C0014B723 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D978DC5C1714871C0014B723 /* InfoPlist.strings in Resources */,
+				D978DCA8171487E20014B723 /* NOTE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D978DC601714871C0014B723 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D978DC6D1714871C0014B723 /* YYKit.framework in Resources */,
+				D978DC731714871C0014B723 /* InfoPlist.strings in Resources */,
+				D978DCA9171487E20014B723 /* NOTE in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D978DC4D1714871C0014B723 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nset +u\nif [[ $UFW_MASTER_SCRIPT_RUNNING ]]\nthen\n    # Nothing for the slave script to do\n    exit 0\nfi\nset -u\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\n    UFW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find platform name from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\n\tUFW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find sdk version  from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$UFW_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\n    UFW_OTHER_PLATFORM=iphonesimulator\nelse\n    UFW_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$UFW_SDK_PLATFORM$ ]]\nthen\n    UFW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${UFW_OTHER_PLATFORM}\"\nelse\n    echo \"Could not find $UFW_SDK_PLATFORM in $BUILT_PRODUCTS_DIR\"\n    exit 1\nfi\n\n\n# Short-circuit if all binaries are up to date\n\nif [[ -f \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]] && \\\n   [[ -f \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]] && \\\n   [[ ! \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -nt \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]]\n   [[ -f \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]] && \\\n   [[ -f \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]] && \\\n   [[ ! \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -nt \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]]\nthen\n    exit 0\nfi\n\n\n# Clean other platform if needed\n\nif [[ ! -f \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]]\nthen\n\techo \"Platform \\\"$UFW_SDK_PLATFORM\\\" was cleaned recently. Cleaning \\\"$UFW_OTHER_PLATFORM\\\" as well\"\n\techo xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" clean\n\txcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" clean\nfi\n\n\n# Make sure we are building from fresh binaries\n\nrm -rf \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\nrm -rf \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\nrm -rf \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\n";
+		};
+		D978DC521714871C0014B723 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "HEADERS_ROOT=$SRCROOT/$PRODUCT_NAME\nFRAMEWORK_HEADERS_DIR=\"$BUILT_PRODUCTS_DIR/$WRAPPER_NAME/Versions/$FRAMEWORK_VERSION/Headers\"\n\n## only header files expected at this point\nPUBLIC_HEADERS=$(find $FRAMEWORK_HEADERS_DIR/. -not -type d 2> /dev/null | sed -e \"s@.*/@@g\")\n\nFIND_OPTS=\"\"\nfor PUBLIC_HEADER in $PUBLIC_HEADERS; do\n  if [ -n \"$FIND_OPTS\" ]; then\n    FIND_OPTS=\"$FIND_OPTS -o\"\n  fi\n  FIND_OPTS=\"$FIND_OPTS -name '$PUBLIC_HEADER'\"\ndone\n\nif [ -n \"$FIND_OPTS\" ]; then\n  for ORIG_HEADER in $(eval \"find $HEADERS_ROOT/. $FIND_OPTS\" 2> /dev/null | sed -e \"s@^$HEADERS_ROOT/./@@g\"); do\n    PUBLIC_HEADER=$(basename $ORIG_HEADER)\n    RELATIVE_PATH=$(dirname $ORIG_HEADER)\n    if [ -e $FRAMEWORK_HEADERS_DIR/$PUBLIC_HEADER ]; then\n      mkdir -p \"$FRAMEWORK_HEADERS_DIR/$RELATIVE_PATH\"\n      mv \"$FRAMEWORK_HEADERS_DIR/$PUBLIC_HEADER\" \"$FRAMEWORK_HEADERS_DIR/$RELATIVE_PATH/$PUBLIC_HEADER\"\n    fi\n  done\nfi\n";
+		};
+		D978DC531714871C0014B723 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nset +u\nif [[ $UFW_MASTER_SCRIPT_RUNNING ]]\nthen\n    # Nothing for the slave script to do\n    exit 0\nfi\nset -u\nexport UFW_MASTER_SCRIPT_RUNNING=1\n\n\n# Functions\n\n## List files in the specified directory, storing to the specified array.\n#\n# @param $1 The path to list\n# @param $2 The name of the array to fill\n#\n##\nlist_files ()\n{\n    filelist=$(ls \"$1\")\n    while read line\n    do\n        eval \"$2[\\${#$2[*]}]=\\\"\\$line\\\"\"\n    done <<< \"$filelist\"\n}\n\n\n# Sanity check\n\nif [[ ! -f \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]]\nthen\n    echo \"Framework target \\\"${TARGET_NAME}\\\" had no source files to build from. Make sure your source files have the correct target membership\"\n    exit 1\nfi\n\n\n# Gather information\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\n    UFW_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find platform name from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\n    UFW_SDK_VERSION=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$UFW_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\n    UFW_OTHER_PLATFORM=iphonesimulator\nelse\n    UFW_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$UFW_SDK_PLATFORM$ ]]\nthen\n    UFW_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${UFW_OTHER_PLATFORM}\"\nelse\n    echo \"Could not find $UFW_SDK_PLATFORM in $BUILT_PRODUCTS_DIR\"\n    exit 1\nfi\n\n\n# Short-circuit if all binaries are up to date.\n# We already checked the other platform in the prerun script.\n\nif [[ -f \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" ]] && [[ -f \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]] && [[ ! \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -nt \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/${EXECUTABLE_PATH}\" ]]\nthen\n    exit 0\nfi\n\n\n# Make sure the other platform gets built\n\necho \"Build other platform\"\n\necho xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" $ACTION\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${UFW_OTHER_PLATFORM}${UFW_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" CONFIGURATION_TEMP_DIR=\"${PROJECT_TEMP_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\" $ACTION\n\n\n# Build the fat static library binary\n\necho \"Create universal static library\"\n\necho \"$PLATFORM_DEVELOPER_BIN_DIR/libtool\" -static \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -o \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\"\n\"$PLATFORM_DEVELOPER_BIN_DIR/libtool\" -static \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" \"${UFW_OTHER_BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\" -o \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\"\n\necho mv \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\" \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\nmv \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}.temp\" \"${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}\"\n\n\n# Build framework structure\n\necho \"Build symlinks\"\n\necho ln -sfh $FRAMEWORK_VERSION \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Versions/Current\"\nln -sfh $FRAMEWORK_VERSION \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Versions/Current\"\necho ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Headers\"\nln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Headers\"\necho ln -sfh Versions/Current/Resources \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Resources\"\nln -sfh Versions/Current/Resources \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Resources\"\necho ln -sfh \"Versions/Current/${EXECUTABLE_NAME}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${EXECUTABLE_NAME}\"\nln -sfh \"Versions/Current/${EXECUTABLE_NAME}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${EXECUTABLE_NAME}\"\n\n\n# Link to binary for unit tests\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/.fake_fw_testing.framework\"\nln -sfh \"../${WRAPPER_NAME}/${EXECUTABLE_NAME}\" \"${BUILT_PRODUCTS_DIR}/.fake_fw_testing.framework/.fake_fw_testing\"\n\n\n# Build embedded framework structure\n\necho \"Build Embedded Framework\"\n\necho rm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\nrm -rf \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework\"\necho mkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources\"\necho cp -a \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/\"\ncp -a \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/\"\n\ndeclare -a UFW_FILE_LIST\nlist_files \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\" UFW_FILE_LIST\nfor filename in \"${UFW_FILE_LIST[@]}\"\ndo\n    if [[ \"${filename}\" != \"Info.plist\" ]] && [[ ! \"${filename}\" =~ .*\\.lproj$ ]]\n    then\n        echo ln -sfh \"../${WRAPPER_NAME}/Resources/${filename}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources/${filename}\"\n        ln -sfh \"../${WRAPPER_NAME}/Resources/${filename}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.embeddedframework/Resources/${filename}\"\n    fi\ndone\n\n\n# Replace other platform's framework with a copy of this one (so that both have the same universal binary)\n\necho \"Copy from $UFW_SDK_PLATFORM to $UFW_OTHER_PLATFORM\"\n\necho rm -rf \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\nrm -rf \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\necho cp -a \"${BUILD_DIR}/${CONFIGURATION}-${UFW_SDK_PLATFORM}\" \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\ncp -a \"${BUILD_DIR}/${CONFIGURATION}-${UFW_SDK_PLATFORM}\" \"${BUILD_DIR}/${CONFIGURATION}-${UFW_OTHER_PLATFORM}\"\n";
+		};
+		D978DC611714871C0014B723 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D978DC4E1714871C0014B723 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D978DCA6171487E20014B723 /* CALayer+YYDebug.m in Sources */,
+				D978DCAB171487E20014B723 /* NSArray+YYAdd.m in Sources */,
+				D978DCAE171487E20014B723 /* NSData+YYAdd.m in Sources */,
+				D978DCB1171487E20014B723 /* NSDictionary+YYAdd.m in Sources */,
+				D978DCB4171487E20014B723 /* NSObject+YYAdd.m in Sources */,
+				D978DCB7171487E20014B723 /* NSString+YYAdd.m in Sources */,
+				D978DCBA171487E20014B723 /* UIApplication+YYAdd.m in Sources */,
+				D978DCBD171487E20014B723 /* UIColor+YYAdd.m in Sources */,
+				D978DCC0171487E20014B723 /* UIControl+YYAdd.m in Sources */,
+				D978DCC3171487E20014B723 /* UIDevice+YYAdd.m in Sources */,
+				D978DCC6171487E20014B723 /* UIImage+YYAdd.m in Sources */,
+				D978DCC9171487E20014B723 /* UIScreen+YYAdd.m in Sources */,
+				D978DCCC171487E20014B723 /* UIScrollView+YYAdd.m in Sources */,
+				D978DCCF171487E20014B723 /* UIView+YYAdd.m in Sources */,
+				D978DCD2171487E20014B723 /* UIView+YYDebug.m in Sources */,
+				D978DCD5171487E20014B723 /* YYAppleDocExample.m in Sources */,
+				D978DCDA171487E20014B723 /* YYViewHierarchy3D.m in Sources */,
+				D91512AD1715E42B004FFB1D /* NSDate+YYAdd.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D978DC5E1714871C0014B723 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D91512AE1715E438004FFB1D /* NSDate+YYAdd.m in Sources */,
+				D978DC761714871C0014B723 /* YYKitTests.m in Sources */,
+				D978DCA7171487E20014B723 /* CALayer+YYDebug.m in Sources */,
+				D978DCAC171487E20014B723 /* NSArray+YYAdd.m in Sources */,
+				D978DCAF171487E20014B723 /* NSData+YYAdd.m in Sources */,
+				D978DCB2171487E20014B723 /* NSDictionary+YYAdd.m in Sources */,
+				D978DCB5171487E20014B723 /* NSObject+YYAdd.m in Sources */,
+				D978DCB8171487E20014B723 /* NSString+YYAdd.m in Sources */,
+				D978DCBB171487E20014B723 /* UIApplication+YYAdd.m in Sources */,
+				D978DCBE171487E20014B723 /* UIColor+YYAdd.m in Sources */,
+				D978DCC1171487E20014B723 /* UIControl+YYAdd.m in Sources */,
+				D978DCC4171487E20014B723 /* UIDevice+YYAdd.m in Sources */,
+				D978DCC7171487E20014B723 /* UIImage+YYAdd.m in Sources */,
+				D978DCCA171487E20014B723 /* UIScreen+YYAdd.m in Sources */,
+				D978DCCD171487E20014B723 /* UIScrollView+YYAdd.m in Sources */,
+				D978DCD0171487E20014B723 /* UIView+YYAdd.m in Sources */,
+				D978DCD3171487E20014B723 /* UIView+YYDebug.m in Sources */,
+				D978DCD6171487E20014B723 /* YYAppleDocExample.m in Sources */,
+				D978DCDB171487E20014B723 /* YYViewHierarchy3D.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D978DC6C1714871C0014B723 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D978DC541714871C0014B723 /* YYKit */;
+			targetProxy = D978DC6B1714871C0014B723 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D978DC5A1714871C0014B723 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D978DC5B1714871C0014B723 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D978DC711714871C0014B723 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D978DC721714871C0014B723 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D978DC771714871C0014B723 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		D978DC781714871C0014B723 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D978DC7A1714871C0014B723 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONTENTS_FOLDER_PATH = "$(WRAPPER_NAME)/Versions/$(FRAMEWORK_VERSION)";
+				DEAD_CODE_STRIPPING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YYKit/YYKit-Prefix.pch";
+				INFOPLIST_FILE = "YYKit/YYKit-Info.plist";
+				INFOPLIST_PATH = "$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/Info.plist";
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = mh_object;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				UNLOCALIZED_RESOURCES_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Resources";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		D978DC7B1714871C0014B723 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CONTENTS_FOLDER_PATH = "$(WRAPPER_NAME)/Versions/$(FRAMEWORK_VERSION)";
+				DEAD_CODE_STRIPPING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YYKit/YYKit-Prefix.pch";
+				INFOPLIST_FILE = "YYKit/YYKit-Info.plist";
+				INFOPLIST_PATH = "$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/Info.plist";
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = mh_object;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				UNLOCALIZED_RESOURCES_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Resources";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		D978DC7D1714871C0014B723 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YYKit/YYKit-Prefix.pch";
+				INFOPLIST_FILE = "YYKitTests/YYKitTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+					"-framework",
+					.fake_fw_testing,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D978DC7E1714871C0014B723 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "YYKit/YYKit-Prefix.pch";
+				INFOPLIST_FILE = "YYKitTests/YYKitTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+					"-framework",
+					.fake_fw_testing,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D978DC4C1714871C0014B723 /* Build configuration list for PBXProject "YYKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D978DC771714871C0014B723 /* Debug */,
+				D978DC781714871C0014B723 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D978DC791714871C0014B723 /* Build configuration list for PBXNativeTarget "YYKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D978DC7A1714871C0014B723 /* Debug */,
+				D978DC7B1714871C0014B723 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D978DC7C1714871C0014B723 /* Build configuration list for PBXNativeTarget "YYKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D978DC7D1714871C0014B723 /* Debug */,
+				D978DC7E1714871C0014B723 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D978DC491714871C0014B723 /* Project object */;
+}
