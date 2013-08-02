@@ -10,4 +10,5 @@
 
 @interface YYKitTests : SenTestCase
 
+
 @end
