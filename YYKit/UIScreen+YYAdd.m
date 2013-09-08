@@ -1,14 +1,14 @@
 //
 //  UIScreen+YYAdd.m
-//  YYCore
+//  YYKit
 //
 //  Created by ibireme on 13-4-5.
-//  2013 ibireme.
+//  Copyright 2013 ibireme.
 //
 
 #import "UIScreen+YYAdd.h"
+#import "YYKitMacro.h"
 
-#import "YYCoreMacro.h"
 DUMMY_CLASS(UIScreen_YYDebug)
 
 @implementation UIScreen (YYAdd)
@@ -32,7 +32,7 @@ DUMMY_CLASS(UIScreen_YYDebug)
 
 // should not predicate
 - (BOOL)isRetina {
-    return [self scale] == 2;
+    return self.scale == 2;
 }
 
 

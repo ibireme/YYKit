@@ -1,20 +1,21 @@
 //
 //  UIView+Add.m
-//  YYCore
+//  YYKit
 //
 //  Created by ibireme on 13-4-3.
-//  2013 ibireme.
+//  Copyright 2013 ibireme.
 //
 
 #import "UIView+YYAdd.h"
-#import "YYCoreMacro.h"
 #import <QuartzCore/QuartzCore.h>
+#import "YYKitMacro.h"
+
 
 DUMMY_CLASS(UIView_YYAdd)
 
 @implementation UIView (YYAdd)
 
-- (UIImage *)snapshot{
+- (UIImage *)snapshotImage{
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0.0);
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *snap = UIGraphicsGetImageFromCurrentImageContext();
@@ -22,17 +23,19 @@ DUMMY_CLASS(UIView_YYAdd)
     return snap;
 }
 
-- (UIImage *)snapshotAntialiasing {
-    return [self.class renderImageForAntialiasing:[self snapshot]
+- (UIImage *)snapshotImageAntialiasing {
+    return [self.class renderImageForAntialiasing:[self snapshotImage]
                                        withInsets:UIEdgeInsetsMake(1, 1, 1, 1)];
 }
 
-+ (UIImage *)renderImageForAntialiasing:(UIImage *)image withInsets:(UIEdgeInsets)insets {
-    CGSize imageSizeWithBorder = CGSizeMake([image size].width + insets.left + insets.right,
-                                            [image size].height + insets.top + insets.bottom);
++ (UIImage *)renderImageForAntialiasing:(UIImage *)image
+                             withInsets:(UIEdgeInsets)insets {
+    CGSize imageSizeWithBorder = CGSizeMake([image size].width + insets.left
+                                            + insets.right, [image size].height
+                                            + insets.top + insets.bottom);
 
     UIGraphicsBeginImageContextWithOptions(imageSizeWithBorder,
-                                           UIEdgeInsetsEqualToEdgeInsets(insets, UIEdgeInsetsZero), 0);
+                    UIEdgeInsetsEqualToEdgeInsets(insets, UIEdgeInsetsZero), 0);
 
     [image drawInRect:(CGRect) {{ insets.left, insets.top }, [image size] }];
     UIImage *renderedImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -42,8 +45,9 @@ DUMMY_CLASS(UIView_YYAdd)
 
 
 - (void)removeAllSubviews{
-    for (UIView *v in self.subviews) {
-        [v removeFromSuperview];
+    while (self.subviews.count) {
+        UIView* subView = self.subviews.lastObject;
+        [subView removeFromSuperview];
     }
 }
 
@@ -55,6 +59,57 @@ DUMMY_CLASS(UIView_YYAdd)
         }
     }
     return nil;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+- (CGFloat)width {
+    return self.frame.size.width;
+}
+
+- (void)setWidth:(CGFloat)width {
+    CGRect frame = self.frame;
+    frame.size.width = width;
+    self.frame = frame;
+}
+
+- (CGFloat)height {
+    return self.frame.size.height;
+}
+
+- (void)setHeight:(CGFloat)height {
+    CGRect frame = self.frame;
+    frame.size.height = height;
+    self.frame = frame;
+}
+
+- (CGPoint)origin {
+    return self.frame.origin;
+}
+
+- (void)setOrigin:(CGPoint)origin {
+    CGRect frame = self.frame;
+    frame.origin = origin;
+    self.frame = frame;
+}
+
+- (CGSize)size {
+    return self.frame.size;
+}
+
+- (void)setSize:(CGSize)size {
+    CGRect frame = self.frame;
+    frame.size = size;
+    self.frame = frame;
 }
 
 @end

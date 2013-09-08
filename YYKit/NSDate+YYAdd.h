@@ -7,6 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Provide some properties to access `NSDate`.
+ */
 @interface NSDate (YYAdd)
 
 @property (nonatomic, readonly) NSInteger year;
@@ -20,5 +23,7 @@
 @property (nonatomic, readonly) NSInteger weekdayOrdinal;
 @property (nonatomic, readonly) NSInteger weekOfMonth;
 @property (nonatomic, readonly) NSInteger weekOfYear;
+@property (nonatomic, readonly) NSInteger yearForWeekOfYear;
+@property (nonatomic, readonly) NSInteger quarter;
 
 @end

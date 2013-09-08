@@ -1,84 +1,167 @@
 //
 //  NSString+Add.m
-//  YYCore
+//  YYKit
 //
 //  Created by ibireme on 13-4-3.
-//  2013 ibireme.
+//  Copyright 2013 ibireme.
 //
 
 #import "NSString+YYAdd.h"
-#import "YYCoreMacro.h"
 #import "NSData+YYAdd.h"
+#import "NSNumber+YYAdd.h"
+#import "YYKitMacro.h"
 
 DUMMY_CLASS(NSString_YYAdd)
 
 @implementation NSString (YYAdd)
 
-- (NSString *)md5 {
-    return [[self dataUsingEncoding:NSUTF8StringEncoding] md5];
+- (NSString *)md2String {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] md2String];
 }
 
-- (NSString *)sha1{
-    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha1];
+- (NSString *)md4String {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] md4String];
 }
 
-- (NSString *)sha224{
-    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha224];
+- (NSString *)md5String {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] md5String];
 }
 
-- (NSString *)sha256{
-    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha256];
+- (NSString *)sha1String{
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha1String];
 }
 
-- (NSString *)sha384{
-    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha384];
+- (NSString *)sha224String{
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha224String];
 }
 
-- (NSString *)sha512{
-    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha512];
+- (NSString *)sha256String {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha256String];
 }
 
-/// hmac with (message digest algorithm) sha1 
-- (NSString *)hmacWithKey:(NSString *)key {
-    return [[self dataUsingEncoding:NSUTF8StringEncoding] hmacWithKey:key];
+- (NSString *)sha384String {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha384String];
 }
 
-- (NSString *)stringByBase64Encoding {
-    if ([self length] == 0) {
-        return nil;
-	}
-	return [[self dataUsingEncoding:NSUTF8StringEncoding] base64EncodedString];
+- (NSString *)sha512String {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha512String];
+}
+
+- (NSString *)crc32String {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] crc32String];
+}
+
+- (NSString *)hmacMD5StringWithKey:(NSString *)key {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding]
+            hmacMD5StringWithKey:key];
+}
+
+- (NSString *)hmacSHA1StringWithKey:(NSString *)key {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding]
+            hmacSHA1StringWithKey:key];
+}
+
+- (NSString *)hmacSHA224StringWithKey:(NSString *)key {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding]
+            hmacSHA224StringWithKey:key];
+}
+
+- (NSString *)hmacSHA256StringWithKey:(NSString *)key {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding]
+            hmacSHA256StringWithKey:key];
+}
+
+- (NSString *)hmacSHA384StringWithKey:(NSString *)key {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding]
+            hmacSHA384StringWithKey:key];
+}
+
+- (NSString *)hmacSHA512StringWithKey:(NSString *)key {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding]
+            hmacSHA512StringWithKey:key];
+}
+
+- (NSString *)base64Encoding {
+	return [[self dataUsingEncoding:NSUTF8StringEncoding] base64Encoding];
+}
+
++ (NSString *)stringWithBase64Encoding:(NSString *)base64Encoding {
+    NSData *data = [NSData dataWithBase64Encoding:base64Encoding];
+	return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 
-- (NSString *)hexString {
-    const char *chars = [self UTF8String];
-    return [[NSData dataWithBytes:chars length:strlen(chars)] hexString];
+
+- (NSString *)stringByURLEncode {
+    return [self stringByURLEncode:NSUTF8StringEncoding];
 }
 
-- (NSString *)AES128EncryptWithKey:(NSString *)key {
-    NSData *plainData = [self dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *encryptedData = [plainData AES128EncryptWithKey:key];
-    return [encryptedData base64EncodedString];
+
+- (NSString *)stringByURLDecode {
+    return [self stringByURLDecode:NSUTF8StringEncoding];
 }
 
-- (NSString *)AES128DecryptWithKey:(NSString *)key {
-    NSData *encryptedData = [NSData dataWithBase64String:self];
-    NSData *plainData = [encryptedData AES128DecryptWithKey:key];
-    return [[NSString alloc] initWithData:plainData encoding:NSUTF8StringEncoding];
+
+- (NSString *)stringByURLEncode:(NSStringEncoding)encoding {
+    NSString *encoded = (__bridge_transfer NSString *)
+    CFURLCreateStringByAddingPercentEscapes(
+        NULL,
+        (__bridge CFStringRef)self,
+        NULL,
+        CFSTR("!#$&'()*+,/:;=?@[]"),
+        encoding);
+    return encoded;
 }
 
-- (NSString *)AES256EncryptWithKey:(NSString *)key{
-    NSData *plainData = [self dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *encryptedData = [plainData AES256EncryptWithKey:key];
-    return [encryptedData base64EncodedString];
+
+
+- (NSString *)stringByURLDecode:(NSStringEncoding)encoding {
+    CFStringEncoding en = CFStringConvertNSStringEncodingToEncoding(encoding);
+    NSString *decoded = [self stringByReplacingOccurrencesOfString:@"+"
+                                                        withString:@" "];
+    decoded = (__bridge_transfer NSString *)
+        CFURLCreateStringByReplacingPercentEscapesUsingEncoding(
+            NULL,
+            (__bridge CFStringRef)decoded,
+            CFSTR(""),
+            en);
+    return decoded;
 }
 
-- (NSString *)AES256DecryptWithKey:(NSString *)key{
-    NSData *encryptedData = [NSData dataWithBase64String:self];
-    NSData *plainData = [encryptedData AES256DecryptWithKey:key];
-    return [[NSString alloc] initWithData:plainData encoding:NSUTF8StringEncoding];
+
+
+
+
+- (NSString *)stringByEscapingHTML{
+    NSUInteger len = self.length;
+    if (!len) return self;
+    
+    unichar *buf = malloc(sizeof(unichar) * len);
+    if (!buf) return nil;
+    [self getCharacters:buf range:NSMakeRange(0, len)];
+    
+    NSMutableString *result = [NSMutableString string];
+    for (int i=0; i<len; i++,buf++) {
+        unichar c = *buf;
+        NSString *esc = nil;
+        switch (c) {
+            case 34: esc = @"&quot;"; break;
+            case 38: esc = @"&amp;"; break;
+            case 39: esc = @"&apos;"; break;
+            case 60: esc = @"&lt;"; break;
+            case 62: esc = @"&gt;"; break;
+            default: break;
+        }
+        if (esc) {
+            [result appendString:esc];
+        } else {
+            CFStringAppendCharacters((CFMutableStringRef)result,&c,1);
+        }
+    }
+    free(buf);
+    return result;
 }
+
 
 + (NSString *)stringWithUUID {
 	CFUUIDRef uuid = CFUUIDCreate(NULL);
@@ -87,12 +170,11 @@ DUMMY_CLASS(NSString_YYAdd)
 	return (__bridge_transfer NSString *)string;
 }
 
-+ (NSString *)stringWithBase64String:(NSString *)base64String {
-	return [[NSString alloc] initWithData:[NSData dataWithBase64String:base64String]
-                                 encoding:NSUTF8StringEncoding];
+
+- (NSString *)stringByTrim {
+    NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return [self stringByTrimmingCharactersInSet:set];
 }
-
-
 
 
 - (BOOL)isNotBlank {
@@ -107,52 +189,20 @@ DUMMY_CLASS(NSString_YYAdd)
 }
 
 - (BOOL)containsString:(NSString *)string {
-    return !NSEqualRanges([self rangeOfString:string], NSMakeRange(NSNotFound, 0));
+    if(string == nil)
+        return NO;
+    NSRange range = NSMakeRange(NSNotFound, 0);
+    return !NSEqualRanges([self rangeOfString:string], range);
 }
 
 
-- (NSString *)stringByTrim{
-    return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-
-- (NSString *)stringByAdd2XPath {
-    NSString *fileName = [[self pathComponents] lastObject];
-    if (![fileName isNotBlank]) {
-        return self;
-    }
-    NSString *ext = [fileName pathExtension];
-    if (![ext isNotBlank]) {
-        return self;
-    }
-    NSString *fileNameWith2x = nil;
-    NSString *fileNameWithoutExt = [fileName substringToIndex:fileName.length - ext.length - 1];
-    if (fileNameWithoutExt) {
-        if ([fileNameWithoutExt hasSuffix:@"@2x"]) {
-            return self;
-        } else {
-            fileNameWith2x = [fileNameWithoutExt stringByAppendingFormat:@"@2x.%@", ext];
-        }
-    } else {
-        return self;
-    }
-    return [[self substringToIndex:self.length - fileName.length] stringByAppendingString:fileNameWith2x];
+- (NSNumber*)numberValue{
+    return [NSNumber numberWithString:self];
 }
 
 
-- (NSString *)stringByURLEncode {
-    NSString *encoded = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
-            NULL,
-            (__bridge CFStringRef)self,
-            CFSTR("-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~"),
-            CFSTR("!#$&'()*+,/:;=?@[]"),
-            kCFStringEncodingUTF8);
-    return encoded;
-}
-
-- (NSString *)stringByURLDecode {
-    NSString *decoded = [self stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-    decoded = (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)decoded, CFSTR(""), kCFStringEncodingUTF8);
-    return decoded;
+- (NSData *)dataValue{
+    return [self dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end

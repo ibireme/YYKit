@@ -7,8 +7,7 @@
 //
 
 #import "NSDate+YYAdd.h"
-
-#import "YYCoreMacro.h"
+#import "YYKitMacro.h"
 
 DUMMY_CLASS(NSDate_YYAdd)
 
@@ -57,6 +56,14 @@ DUMMY_CLASS(NSDate_YYAdd)
 
 - (NSInteger)weekOfYear {
     return [[[NSCalendar currentCalendar] components:NSWeekOfYearCalendarUnit fromDate:self] weekOfYear];
+}
+
+- (NSInteger)yearForWeekOfYear {
+    return [[[NSCalendar currentCalendar] components:NSYearForWeekOfYearCalendarUnit fromDate:self] yearForWeekOfYear];
+}
+
+- (NSInteger)quarter {
+    return [[[NSCalendar currentCalendar] components:NSQuarterCalendarUnit fromDate:self] quarter];
 }
 
 @end

@@ -1,14 +1,14 @@
 //
 //  UIScrollView+YYAdd.m
-//  YYCore
+//  YYKit
 //
 //  Created by ibireme on 13-4-5.
-//  2013 ibireme.
+//  Copyright 2013 ibireme.
 //
 
 #import "UIScrollView+YYAdd.h"
+#import "YYKitMacro.h"
 
-#import "YYCoreMacro.h"
 DUMMY_CLASS(UIScrollView_YYDebug)
 
 @implementation UIScrollView (YYAdd)
