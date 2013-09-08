@@ -74,13 +74,13 @@
 		D978DCE017148B670014B723 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DCDF17148B660014B723 /* CoreImage.framework */; };
 		D978DCE217148B6D0014B723 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DCE117148B6D0014B723 /* CoreGraphics.framework */; };
 		D978DCE417148B730014B723 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D978DCE317148B730014B723 /* QuartzCore.framework */; };
-		D9FA933117C8FEF100ECC874 /* NSNotificationCenter+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FA932F17C8FEEA00ECC874 /* NSNotificationCenter+YYAdd.h */; };
+		D9FA933117C8FEF100ECC874 /* NSNotificationCenter+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FA932F17C8FEEA00ECC874 /* NSNotificationCenter+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D9FA933217C8FEF100ECC874 /* NSNotificationCenter+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9FA933017C8FEEC00ECC874 /* NSNotificationCenter+YYAdd.m */; };
 		D9FA933317C8FEF100ECC874 /* NSNotificationCenter+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9FA933017C8FEEC00ECC874 /* NSNotificationCenter+YYAdd.m */; };
-		D9FA933717C905F300ECC874 /* NSNumber+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FA933517C905E900ECC874 /* NSNumber+YYAdd.h */; };
+		D9FA933717C905F300ECC874 /* NSNumber+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FA933517C905E900ECC874 /* NSNumber+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D9FA933817C905F300ECC874 /* NSNumber+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9FA933617C905ED00ECC874 /* NSNumber+YYAdd.m */; };
 		D9FA933917C905F300ECC874 /* NSNumber+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9FA933617C905ED00ECC874 /* NSNumber+YYAdd.m */; };
-		D9FA933D17C9478000ECC874 /* UIAlertView+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FA933B17C9477700ECC874 /* UIAlertView+YYAdd.h */; };
+		D9FA933D17C9478000ECC874 /* UIAlertView+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FA933B17C9477700ECC874 /* UIAlertView+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D9FA933E17C9478000ECC874 /* UIAlertView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9FA933C17C9477B00ECC874 /* UIAlertView+YYAdd.m */; };
 		D9FA933F17C9478000ECC874 /* UIAlertView+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9FA933C17C9477B00ECC874 /* UIAlertView+YYAdd.m */; };
 /* End PBXBuildFile section */
