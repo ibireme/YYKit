@@ -17,13 +17,13 @@ then add `-ObjC` to your project's `Other Compiler Flags`
 
 3. Add required frameworks:
 
-    * UIKit.framework
-    * CoreGraphics.framework
-    * CoreImage.framework
-    * QuartzCore.framework
-    * libz.dylib
+	 * UIKit.framework
+	 * 	 CoreGraphics.framework
+	 * CoreImage.framework
+	 * QuartzCore.framework
+	 * libz.dylib
 
-4. (Optional) Add `YYKit.framework` to your .pch file.
+(Optional) Add `YYKit.framework` to your .pch file.
 
 
 - - -
