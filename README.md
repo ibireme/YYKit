@@ -18,7 +18,7 @@ then add `-ObjC` to your project's `Other Compiler Flags`
 3. Add required frameworks:
 
 	 * UIKit.framework
-	 * 	 CoreGraphics.framework
+	 * CoreGraphics.framework
 	 * CoreImage.framework
 	 * QuartzCore.framework
 	 * libz.dylib
