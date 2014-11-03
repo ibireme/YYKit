@@ -3,14 +3,15 @@
 //  YYKit
 //
 //  Created by ibireme on 13-8-24.
-//  Copyright (c) 2013年 ibireme. All rights reserved.
+//  Copyright (c) 2013 ibireme. All rights reserved.
 //
 
 #import "NSNumber+YYAdd.h"
 #import "NSString+YYAdd.h"
 #import "YYKitMacro.h"
 
-DUMMY_CLASS(NSNumber_YYAdd)
+SYNTH_DUMMY_CLASS(NSNumber_YYAdd)
+
 
 @implementation NSNumber (YYAdd)
 
@@ -19,11 +20,11 @@ DUMMY_CLASS(NSNumber_YYAdd)
     if (!str || !str.length) {
         return nil;
     }
+    
+    // hex number
     int sign = 0;
-    if ([str hasPrefix:@"0x"])
-        sign = 1;
-    else if ([str hasPrefix:@"-0x"])
-        sign = -1;
+    if ([str hasPrefix:@"0x"]) sign = 1;
+    else if ([str hasPrefix:@"-0x"]) sign = -1;
     if (sign != 0) {
         NSScanner *scan = [NSScanner scannerWithString:str];
         unsigned num = -1;
@@ -34,6 +35,7 @@ DUMMY_CLASS(NSNumber_YYAdd)
             return nil;
     }
     
+    // normal number
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     return [formatter numberFromString:string];

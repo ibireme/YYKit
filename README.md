@@ -1,31 +1,42 @@
-YYKit
-==========
-YYKit contains some utilities that I use in my project.
+[YYKit](https://github.com/ibireme/YYKit)
+==============
+YYKit contains some utilities that I used in my project.
 
-## Documentation
 
-You can build and install docset use `Docset` scheme.
+Documentation
+==============
+
+You can build and install docset use `Docset` scheme in Xcode, `appledoc` need to be pre-installed. 
 Or your can read the [Documentation](http://github.ibireme.com/yykit/doc/) online.
 
 
-## How to use
+Installation
+==============
 
-1. Build this project and you will get `YYKit.framework`.
-
-2. Add `YYKit.framework` to your project,
-then add `-ObjC` to your project's `Other Compiler Flags`
-
-3. Add required frameworks:
-
-	 * UIKit.framework
-	 * CoreGraphics.framework
-	 * CoreImage.framework
-	 * QuartzCore.framework
-	 * libz.dylib
-
-(Optional) Add `YYKit.framework` to your .pch file.
+* Download YYKit source code.
+* Select `YYKit` scheme, and run `Archive` in Xcode, you will get `YYKit.framework`.
+* Drag the `YYKit.framwork` to your project and linked the required Frameworks below.
+* Add `-ObjC` to your project's `Other Linker Flags`.
+* Import `<YYKit/YYKit.h>` as you need.
 
 
-- - -
+Require Frameworks
+==============
+    * UIKit.framework
+    * QuartzCore.framework
+    * CoreGraphics.framework
+    * CoreImage.framework
+    * CoreText.framework
+    * ImageIO.framework
+    * Accelerate.framework
+    * Security.framework
+    * MobileCoreServices.framework
+    * libz.dylib
 
-I knew too many categories are not good for an app, but I'm lazy :-)
+About
+==============
+This library support iOS 6.0 and later.
+
+I want to use my API as if it was provided by system, so I don't add prefix in
+these categories. I know this is not good, so if you just need some pieces of code
+in this project, pick them out and don't import the whole library.

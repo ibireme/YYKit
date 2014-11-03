@@ -3,26 +3,21 @@
 //  YYKit
 //
 //  Created by ibireme on 13-4-4.
-//  Copyright 2013 ibireme.
+//  Copyright (c) 2013 ibireme. All rights reserved.
 //
 
 #import "NSArray+YYAdd.h"
 #import "YYKitMacro.h"
 
-DUMMY_CLASS(NSArray_YYAdd)
+SYNTH_DUMMY_CLASS(NSArray_YYAdd)
+
+
 @implementation NSArray (YYAdd)
 
-
-- (id)firstObject {
-    if (self.count)
-        return self[0];
-    return nil;
-}
-
 - (id)randomObject {
-	if (self.count) {
-	    return self[arc4random_uniform(self.count)];
-	}
+    if (self.count) {
+        return self[arc4random_uniform((u_int32_t)self.count)];
+    }
     return nil;
 }
 
@@ -30,20 +25,31 @@ DUMMY_CLASS(NSArray_YYAdd)
     return index < self.count ? self[index] : nil;
 }
 
+- (NSString *)jsonStringEncoded {
+    if ([NSJSONSerialization isValidJSONObject:self]) {
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:0 error:&error];
+        NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        return json;
+    }
+    return nil;
+}
+
+- (NSString *)jsonPrettyStringEncoded {
+    if ([NSJSONSerialization isValidJSONObject:self]) {
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
+        NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        return json;
+    }
+    return nil;
+}
+
 @end
 
 
-/**
- Provide some some common method for `NSMutableArray`.
- */
+
 @implementation NSMutableArray (YYAdd)
-
-- (void)addObjectOrNil:(id)anObject{
-    if (anObject) {
-        [self addObject:anObject];
-    }
-}
-
 
 - (void)removeFirstObject {
     if (self.count) {
@@ -51,10 +57,67 @@ DUMMY_CLASS(NSArray_YYAdd)
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+- (void)removeLastObject {
+    if (self.count) {
+        [self removeObjectAtIndex:self.count - 1];
+    }
+}
+
+#pragma clang diagnostic pop
+
+
+- (id)popFirstObject {
+    id obj = nil;
+    if (self.count) {
+        obj = self.firstObject;
+        [self removeFirstObject];
+    }
+    return obj;
+}
+
+- (id)popLastObject {
+    id obj = nil;
+    if (self.count) {
+        obj = self.lastObject;
+        [self removeLastObject];
+    }
+    return obj;
+}
+
+- (void)appendObject:(id)anObject {
+    [self addObject:anObject];
+}
+
+- (void)prependObject:(id)anObject {
+    [self insertObject:anObject atIndex:0];
+}
+
+- (void)appendObjects:(NSArray *)objects {
+    if (!objects) return;
+    [self addObjectsFromArray:objects];
+}
+
+- (void)prependObjects:(NSArray *)objects {
+    if (!objects) return;
+    NSUInteger i = 0;
+    for (id obj in objects) {
+        [self insertObject:obj atIndex:i++];
+    }
+}
+
+- (void)insertObjects:(NSArray *)objects atIndex:(NSUInteger)index {
+    NSUInteger i = index;
+    for (id obj in objects) {
+        [self insertObject:obj atIndex:i++];
+    }
+}
+
 - (void)reverse {
-    int count = self.count;
+    NSUInteger count = self.count;
     int mid = floor(count / 2.0);
-    for (int i = 0; i < mid; i++) {
+    for (NSUInteger i = 0; i < mid; i++) {
         [self exchangeObjectAtIndex:i withObjectAtIndex:(count - (i + 1))];
     }
 }
@@ -62,11 +125,8 @@ DUMMY_CLASS(NSArray_YYAdd)
 - (void)shuffle {
     for (NSUInteger i = self.count; i > 1; i--) {
         [self exchangeObjectAtIndex:(i - 1)
-                  withObjectAtIndex:arc4random_uniform(i)];
+                  withObjectAtIndex:arc4random_uniform((u_int32_t)i)];
     }
 }
-
-
-
 
 @end
