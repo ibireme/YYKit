@@ -7,16 +7,16 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "NO"
+            buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-               BuildableName = "libYYKitStatic.a"
-               BlueprintName = "YYKitStatic"
+               BlueprintIdentifier = "D90BD6F2191DEBD1004AA3D9"
+               BuildableName = "Docset"
+               BlueprintName = "Docset"
                ReferencedContainer = "container:YYKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,15 +29,6 @@
       buildConfiguration = "Debug">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-            BuildableName = "libYYKitStatic.a"
-            BlueprintName = "YYKitStatic"
-            ReferencedContainer = "container:YYKit.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -51,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-            BuildableName = "libYYKitStatic.a"
-            BlueprintName = "YYKitStatic"
+            BlueprintIdentifier = "D90BD6F2191DEBD1004AA3D9"
+            BuildableName = "Docset"
+            BlueprintName = "Docset"
             ReferencedContainer = "container:YYKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -66,15 +57,6 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-            BuildableName = "libYYKitStatic.a"
-            BlueprintName = "YYKitStatic"
-            ReferencedContainer = "container:YYKit.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

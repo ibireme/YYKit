@@ -7,17 +7,17 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "NO"
+            buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-               BuildableName = "libYYKitStatic.a"
-               BlueprintName = "YYKitStatic"
-               ReferencedContainer = "container:YYKit.xcodeproj">
+               BlueprintIdentifier = "D97484CF19CAAD2900F46DE1"
+               BuildableName = "YYKitExample.app"
+               BlueprintName = "YYKitExample"
+               ReferencedContainer = "container:YYKitExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-            BuildableName = "libYYKitStatic.a"
-            BlueprintName = "YYKitStatic"
-            ReferencedContainer = "container:YYKit.xcodeproj">
+            BlueprintIdentifier = "D97484CF19CAAD2900F46DE1"
+            BuildableName = "YYKitExample.app"
+            BlueprintName = "YYKitExample"
+            ReferencedContainer = "container:YYKitExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -48,16 +48,21 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-            BuildableName = "libYYKitStatic.a"
-            BlueprintName = "YYKitStatic"
-            ReferencedContainer = "container:YYKit.xcodeproj">
+            BlueprintIdentifier = "D97484CF19CAAD2900F46DE1"
+            BuildableName = "YYKitExample.app"
+            BlueprintName = "YYKitExample"
+            ReferencedContainer = "container:YYKitExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
+         <AdditionalOption
+            key = "NSZombieEnabled"
+            value = "YES"
+            isEnabled = "YES">
+         </AdditionalOption>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
@@ -66,15 +71,15 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D9A629B51A061EC100D8D3E5"
-            BuildableName = "libYYKitStatic.a"
-            BlueprintName = "YYKitStatic"
-            ReferencedContainer = "container:YYKit.xcodeproj">
+            BlueprintIdentifier = "D97484CF19CAAD2900F46DE1"
+            BuildableName = "YYKitExample.app"
+            BlueprintName = "YYKitExample"
+            ReferencedContainer = "container:YYKitExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
