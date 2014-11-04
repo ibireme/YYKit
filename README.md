@@ -2,6 +2,8 @@
 ==============
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://raw.githubusercontent.com/ibireme/YYKit/master/LICENSE)&nbsp;
+[![Cocoapods](http://img.shields.io/cocoapods/v/YYKit.svg)](http://cocoapods.org/?q=on%3Aios%20YYKit)&nbsp;
+[![Cocoapods](http://img.shields.io/cocoapods/p/YYKit.svg)](http://cocoapods.org/?q=on%3Aios%20YYKit)&nbsp;
 [![Build Status](https://api.travis-ci.org/ibireme/YYKit.svg)](https://api.travis-ci.org/ibireme/YYKit.svg)&nbsp;
 
 YYKit contains some utilities that I used in my project.
