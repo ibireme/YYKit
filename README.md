@@ -1,5 +1,9 @@
 [YYKit](https://github.com/ibireme/YYKit)
 ==============
+
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/leverdeterre/iAppInfos/blob/master/LICENCE)&nbsp;
+[![Build Status](https://api.travis-ci.org/ibireme/YYKit.svg)](https://api.travis-ci.org/ibireme/YYKit.svg)&nbsp;
+
 YYKit contains some utilities that I used in my project.
 
 
