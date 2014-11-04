@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
     'YYKit' => ['YYKit/*.png']
   }
   
-  non_arc_files = 'YYKit/NSObject+YYAddForARC.m'
+  non_arc_files = 'YYKit/NSObject+YYAddForARC.{h,m}'
   s.ios.exclude_files = non_arc_files
   s.subspec 'no-arc' do |sna|
     sna.requires_arc = false
