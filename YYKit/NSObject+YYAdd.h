@@ -79,7 +79,7 @@
      [view performSelectorWithArgs:@selector(removeFromSuperView) afterDelay:2.0];
      
      // variable arg is not object
-     [view performSelectorWithArgs:@selector(setCenter:), CGPointMake(0, 0) afterDelay:0];
+     [view performSelectorWithArgs:@selector(setCenter:), afterDelay:0, CGPointMake(0, 0)];
  */
 - (void)performSelectorWithArgs:(SEL)sel afterDelay:(NSTimeInterval)delay, ...;
 
