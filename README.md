@@ -25,19 +25,21 @@ Installation
 * Add `-ObjC` to your project's `Other Linker Flags`.
 * Import `<YYKit/YYKit.h>` as you need.
 
+* (You can also search and install `YYKit` with cocoapods)
+
 
 Require Frameworks
 ==============
-    * UIKit.framework
-    * QuartzCore.framework
-    * CoreGraphics.framework
-    * CoreImage.framework
-    * CoreText.framework
-    * ImageIO.framework
-    * Accelerate.framework
-    * Security.framework
-    * MobileCoreServices.framework
-    * libz.dylib
+    UIKit.framework
+    QuartzCore.framework
+    CoreGraphics.framework
+    CoreImage.framework
+    CoreText.framework
+    ImageIO.framework
+    Accelerate.framework
+    Security.framework
+    MobileCoreServices.framework
+    libz.dylib
 
 About
 ==============
