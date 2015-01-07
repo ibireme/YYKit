@@ -1,10 +1,10 @@
 [YYKit](https://github.com/ibireme/YYKit)
 ==============
 
-[![License MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://raw.githubusercontent.com/ibireme/YYKit/master/LICENSE)&nbsp;
-[![Cocoapods](http://img.shields.io/cocoapods/v/YYKit.svg)](http://cocoapods.org/?q=on%3Aios%20YYKit)&nbsp;
-[![Cocoapods](http://img.shields.io/cocoapods/p/YYKit.svg)](http://cocoapods.org/?q=on%3Aios%20YYKit)&nbsp;
-[![Build Status](https://api.travis-ci.org/ibireme/YYKit.svg)](https://api.travis-ci.org/ibireme/YYKit.svg)&nbsp;
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ibireme/YYKit/master/LICENSE)&nbsp;
+[![Cocoapods](http://img.shields.io/cocoapods/v/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
+[![Cocoapods](http://img.shields.io/cocoapods/p/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
+[![Build Status](https://api.travis-ci.org/ibireme/YYKit.svg)](https://travis-ci.org/ibireme/YYKit)&nbsp;
 
 YYKit contains some utilities that I used in my project.
 
