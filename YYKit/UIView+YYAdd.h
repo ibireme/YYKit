@@ -42,6 +42,14 @@
 - (void)removeAllSubviews;
 
 /**
+    If XIB name is the same as class this method load it with NSBundle loadNibNamed
+    @return class instance
+ */
++ (instancetype)loadFromNib;
+
+
+
+/**
  Returns the view's view controller (may be nil).
  */
 @property (nonatomic, readonly) UIViewController *viewController;

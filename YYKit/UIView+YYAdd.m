@@ -182,4 +182,9 @@ SYNTH_DUMMY_CLASS(UIView_YYAdd)
     return CGRectMake(origin.x, origin.y, self.width, self.height);
 }
 
++ (instancetype)loadFromNib
+{
+    NSString *className = NSStringFromClass(self);
+    return [[[NSBundle mainBundle] loadNibNamed:className owner:self options:nil] firstObject];
+}
 @end

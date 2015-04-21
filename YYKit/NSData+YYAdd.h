@@ -302,4 +302,13 @@
  */
 - (NSData *)dataNamed:(NSString *)name;
 
+
+/**
+ *  Decode NSKeyedArchiver to object
+ *
+ *  @return NSObject
+ */
+-(NSObject*)unrchiveKeyedArchive;
+
+
 @end

@@ -32,6 +32,7 @@
 #import <YYKit/NSKeyedUnarchiver+YYAdd.h>
 #import <YYKit/NSTimer+YYAdd.h>
 #import <YYKit/NSBundle+YYAdd.h>
+#import <YYKit/NSIndexPath+YYAdd.h>
 // UIKit
 #import <YYKit/UIColor+YYAdd.h>
 #import <YYKit/UIImage+YYAdd.h>
@@ -47,6 +48,8 @@
 #import <YYKit/UIApplication+YYAdd.h>
 #import <YYKit/UIFont+YYAdd.h>
 #import <YYKit/UIBezierPath+YYAdd.h>
+#import <YYKit/UIViewController+YYAdd.h>
+
 // Quartz
 #import <YYKit/CALayer+YYAdd.h>
 // Text

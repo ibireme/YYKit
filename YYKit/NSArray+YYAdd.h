@@ -40,6 +40,36 @@
  */
 - (NSString *)jsonPrettyStringEncoded;
 
+/**
+ *  Search objects in array by key=value
+ *
+ *  @param key   key-name
+ *  @param Value key-value
+ *
+ *  @return NSArray
+ */
+-(NSArray*)findItemsWithKey:(NSString*)key Value:(NSObject*)Value;
+
+/**
+ *  Search and return first item for search condition
+ *
+ *  @param key   key-name
+ *  @param Value key-value
+ *
+ *  @return NSObject
+ */
+-(NSObject*)findFirstItemWithKey:(NSString*)key  Value:(NSObject*)Value;
+
+/**
+ *  Check if NSArray contains value for key
+ *
+ *  @param key   key-name
+ *  @param Value key-value
+ *
+ *  @return NSObject
+ */
+-(BOOL)hasItemWithKey:(NSString*)key Value:(NSObject*)Value;
+
 @end
 
 
@@ -136,5 +166,4 @@
  Sort the object in this array randomly.
  */
 - (void)shuffle;
-
 @end

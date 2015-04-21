@@ -8,6 +8,7 @@
 
 #import "YEAppDelegate.h"
 #import "YERootViewController.h"
+#import <YYKit/NSNumber+YYAdd.h>
 
 @implementation YEAppDelegate
 
