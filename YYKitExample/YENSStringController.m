@@ -71,29 +71,29 @@
 }
 -(IBAction)buttonClick:(id)sender{
     UIButton*btn = (UIButton*)sender;
-    switch (btn.tag) {
-        case 10: //call
-            [_textField.text nativeCallPhone];
-            break;
-        case 20: //email
-            [_textField.text nativeEmail];
-            break;
-        case 30: //sms
-            [_textField.text nativeSMS];
-            break;
-        case 40: //facetime
-            [_textField.text nativeFacetime];
-            break;
-        case 50: //map
-            [_textField.text nativeMap];
-            break;
-        case 60: //youtube
-            //try this id @"Ujwod-vqyqA"
-            [_textField.text nativeYouTube];
-            break;
-        default:
-            break;
-    }
+//    switch (btn.tag) {
+//        case 10: //call
+//            [_textField.text nativeCallPhone];
+//            break;
+//        case 20: //email
+//            [_textField.text nativeEmail];
+//            break;
+//        case 30: //sms
+//            [_textField.text nativeSMS];
+//            break;
+//        case 40: //facetime
+//            [_textField.text nativeFacetime];
+//            break;
+//        case 50: //map
+//            [_textField.text nativeMap];
+//            break;
+//        case 60: //youtube
+//            //try this id @"Ujwod-vqyqA"
+//            [_textField.text nativeYouTube];
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 - (void)textChanged {
