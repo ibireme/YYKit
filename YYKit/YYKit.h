@@ -7,7 +7,7 @@
 //
 
 /**
- YYKit version 0.2.0
+ YYKit version 0.2.2
  https://github.com/ibireme/YYKit
  */
 
