@@ -178,4 +178,9 @@
  */
 - (void)clearSelectedRowsAnimated:(BOOL)animated;
 
+/**
+ Reload all rows in tableView in the main thread.
+ */
+-(void)reloadDataInMainThread;
+
 @end

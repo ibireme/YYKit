@@ -274,4 +274,11 @@
  */
 - (NSString *)className;
 
+/**
+ *  Encode NSObject to NSData with NSKeyedArchiver
+ *
+ *  @return NSData
+ */
+-(NSData*)archiveKeyedArchive;
+
 @end

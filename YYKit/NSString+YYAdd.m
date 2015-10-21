@@ -357,4 +357,159 @@ SYNTH_DUMMY_CLASS(NSString_YYAdd)
     return str;
 }
 
+
+-(NSDate*)toDateWithFormat:(NSString*)format
+{
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+    [dateFormatter setDateFormat:format];
+    return [dateFormatter dateFromString:self];
+}
+
+-(NSURL*)toURL
+{
+    
+    NSURL *     result;
+    NSString *  trimmedStr;
+    NSRange     schemeMarkerRange;
+    NSString *  scheme;
+    
+    assert(self != nil);
+    
+    result = nil;
+    
+    trimmedStr = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ( (trimmedStr != nil) && (trimmedStr.length != 0) ) {
+        schemeMarkerRange = [trimmedStr rangeOfString:@"://"];
+        
+        if (schemeMarkerRange.location == NSNotFound) {
+            result = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", trimmedStr]];
+        } else {
+            scheme = [trimmedStr substringWithRange:NSMakeRange(0, schemeMarkerRange.location)];
+            assert(scheme != nil);
+            
+            if ( ([scheme compare:@"http"  options:NSCaseInsensitiveSearch] == NSOrderedSame)
+                || ([scheme compare:@"https" options:NSCaseInsensitiveSearch] == NSOrderedSame) ) {
+                result = [NSURL URLWithString:trimmedStr];
+            } else {
+                // It looks like this is some unsupported URL scheme.
+            }
+        }
+    }
+    
+    return result;
+}
+
+
++(NSString*)withInteger:(NSInteger)integer{
+    return [NSString stringWithFormat:@"%ld",(long)integer ];
+}
+
+-(NSNumber*)calcExpression{
+    NSExpression *expression = [NSExpression expressionWithFormat:self];
+    return [expression expressionValueWithObject:nil context:nil];
+}
+
+-(NSNumber*)calcExpressionWithParams:(NSDictionary*)params{
+    NSExpression *expr = [NSExpression expressionWithFormat:self];
+    return [expr expressionValueWithObject:params context:nil];
+}
+
+-(BOOL)testExpression{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:self];
+    return [predicate evaluateWithObject:nil];
+}
+
+
+-(BOOL)isValidURLString
+{
+    NSString *urlRegEx =
+    @"(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+";
+    NSPredicate *urlPredic = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", urlRegEx];
+    return [urlPredic evaluateWithObject:self];
+}
+
+-(BOOL)isValidEmailString
+{
+    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:self];
+}
+//
+//-(void)callMobile{
+//    NSString *phoneUrlString = [NSString stringWithFormat:@"telprompt://%@",self];
+//    NSURL *phoneUrl = [NSURL URLWithString:phoneUrlString];
+//    [[UIApplication sharedApplication] openURL:phoneUrl];
+//}
+//
+//
+
+
+-(void)nativeCallPhone{
+    NSString *scheme = [NSString stringWithFormat:@"telprompt:%@", [self stringByURLEncode]];
+    NSURL *openURL = [NSURL URLWithString:scheme];
+    if ([[UIApplication sharedApplication] canOpenURL:openURL]) {
+        [[UIApplication sharedApplication] openURL:openURL];
+    }
+}
+
+-(void)nativeEmail{
+    NSString *scheme = [NSString stringWithFormat:@"mailto:%@", [self stringByURLEncode]];
+    NSURL *openURL = [NSURL URLWithString:scheme];
+    if ([[UIApplication sharedApplication] canOpenURL:openURL]) {
+        [[UIApplication sharedApplication] openURL:openURL];
+    }
+}
+-(void)nativeFacetime{
+    NSString *scheme = [NSString stringWithFormat:@"facetime:%@", [self stringByURLEncode]];
+    NSURL *openURL = [NSURL URLWithString:scheme];
+    if ([[UIApplication sharedApplication] canOpenURL:openURL]) {
+        [[UIApplication sharedApplication] openURL:openURL];
+    }
+}
+-(void)nativeSMS{
+    NSString *scheme = [NSString stringWithFormat:@"sms:%@", [self stringByURLEncode]];
+    NSURL *openURL = [NSURL URLWithString:scheme];
+    if ([[UIApplication sharedApplication] canOpenURL:openURL]) {
+        [[UIApplication sharedApplication] openURL:openURL];
+    }
+}
+-(void)nativeMap{
+    NSString *scheme = [NSString stringWithFormat:@"http://maps.apple.com/?%@", [self stringByURLEncode]];
+    NSURL *openURL = [NSURL URLWithString:scheme];
+    if ([[UIApplication sharedApplication] canOpenURL:openURL]) {
+        [[UIApplication sharedApplication] openURL:openURL];
+    }
+}
+//-(void)sysiTunes{}
+-(void)nativeYouTube{
+    NSString *scheme = [NSString stringWithFormat:@"http://www.youtube.com/watch?v=%@", [self stringByURLEncode]];
+    NSURL *openURL = [NSURL URLWithString:scheme];
+    if ([[UIApplication sharedApplication] canOpenURL:openURL]) {
+        [[UIApplication sharedApplication] openURL:openURL];
+    }
+}
+
+
+-(NSString*)extractFilename{
+    return [[self lastPathComponent] stringByDeletingPathExtension];
+}
+
+-(NSString*)pathAppCache
+{
+    //NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    return [cachePath stringByAppendingPathComponent:self];
+}
+
+-(NSString*)pathAppTemporary
+{
+    return [NSTemporaryDirectory() stringByAppendingPathComponent:self];
+}
+
+-(NSString*)pathAppDocuments
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? (NSString *)[paths objectAtIndex:0] : nil;
+    return [basePath stringByAppendingPathComponent:self];
+}
 @end

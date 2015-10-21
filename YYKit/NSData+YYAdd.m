@@ -635,5 +635,8 @@ static const short base64DecodingTable[256] = {
     NSData *data = [NSData dataWithContentsOfFile:path];
     return data;
 }
+-(NSObject*)unrchiveKeyedArchive{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:self];
+}
 
 @end

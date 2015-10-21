@@ -365,4 +365,7 @@ else if (size <= 4 * _size_ ) { \
     return [NSString stringWithUTF8String:class_getName([self class])];
 }
 
+-(NSData*)archiveKeyedArchive{
+    return [NSKeyedArchiver archivedDataWithRootObject:self];
+}
 @end

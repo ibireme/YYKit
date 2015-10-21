@@ -23,4 +23,40 @@
  */
 + (NSNumber *)numberWithString:(NSString *)string;
 
+/**
+    Convert [NSNumber doubleValue] to NSString
+ @param format  format for uputput.
+ @return NSString
+ */
+- (NSString*)toStringWithFormat:(NSString*)format;
+
+/**
+ Convert NSNumber to NSString with currency formatting
+ @return NSString
+ */
+-(NSString *)toStringCurrentCurrency;
+
+/**
+ Calculate factorual
+ 
+ @return NSNumber
+ */
+- (NSNumber *)factorial;
+
+/**
+ Multiplied by the percentage
+ 
+ @return NSNumber
+ */
+- (NSNumber *)multpercent:(NSNumber *)pValue;
+
+/**
+ Add percentage to value
+ 
+ @return NSNumber
+ */
+- (NSNumber *)addpercent:(NSNumber *)pValue;
+
+
+
 @end

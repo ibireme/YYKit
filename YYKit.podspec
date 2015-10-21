@@ -9,12 +9,13 @@
 
 Pod::Spec.new do |s|
   s.name             = "YYKit"
-  s.version          = "0.2.0"
+  s.version          = "0.2.2.1"
   s.summary          = "Utilities for iOS"
   s.homepage         = "https://github.com/ibireme/YYKit"
   s.license          = 'MIT'
   s.author           = { "ibireme" => "ibireme@gmail.com" }
-  s.source           = { :git => "https://github.com/ibireme/YYKit.git", :tag => s.version.to_s }
+  # s.source           = { :git => "https://github.com/ibireme/YYKit.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/andriitishchenko/YYKit.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '6.0'

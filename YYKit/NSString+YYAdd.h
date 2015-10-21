@@ -391,4 +391,170 @@
  */
 - (NSString *)stringNamed:(NSString *)name;
 
+/**
+ *  NSString to NSURL. http[s] autoadded
+ *
+ *  @return NSURL object
+ */
+-(NSURL*)toURL;
+
+/**
+ *  Create NSDate with format
+ *
+ *  @param formated string
+ *
+ *  @return NSDate object
+ */
+-(NSDate*)toDateWithFormat:(NSString*)format;
+
+-(NSNumber*)calcExpression;
+//    NSString *formula = @"FUNCTION(x , 'plusspercent:',a)+FUNCTION(x , 'plusspercent:',b)";
+//    NSExpression *expr = [NSExpression expressionWithFormat:formula];
+//    NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:
+//                            @(10), @"x",
+//                            @(5), @"a",
+//                            @(7), @"b",
+//                            nil];
+//
+//        NSLog(@"%@", [expr operand]);
+//    float result = [[expr expressionValueWithObject:object context:nil] floatValue];
+//    NSLog(@"%f", result);
+
+
+
+/**
+ *  Calculate math Expressions with variables.
+ * This set includes functions such as sqrt, log, ln, exp, ceiling, abs, trunc, floor, and several others.
+ *
+ *  @param params  (NSDictionary*)params
+ * example
+ * @code
+ NSNumber*exaple = [@"x+a+b" calcExpressionWithParams:
+ [NSDictionary dictionaryWithObjectsAndKeys:
+ @(10), @"x",
+ @(5.55), @"a",
+ @(7), @"b",
+ nil]];
+ 
+ *
+ *  @return NSNumber value
+ */
+-(NSNumber*)calcExpressionWithParams:(NSDictionary*)params;
+
+/**
+ *  Test Logical Expressions like
+ *   @"1 + 2 > 2 || 4 - 2 = 0"
+ *
+ *
+ *  @param string expression
+ *
+ *  @return BOOL value
+ */
+-(BOOL)testExpression;
+
+/**
+ *  NSString with int value
+ *
+ *  @param integer value
+ *
+ *  @return string value
+ */
++(NSString*)withInteger:(NSInteger)integer;
+
+
+#pragma mark - Validarots
+
+/**
+ *  Validate url string
+ *
+ *  @return BOOL
+ */
+-(BOOL)isValidURLString;
+
+/**
+ *  Validate email string
+ *
+ *  @return BOOL
+ */
+-(BOOL)isValidEmailString;
+
+#pragma mark - ios URL Scheme
+//https://developer.apple.com/library/ios/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007899-CH1-SW1
+/**
+ Try to call using ios Dieler
+ string format : @"14085551234"
+ */
+-(void)nativeCallPhone;
+
+/**
+ Try to write email
+ string must be valid email
+ */
+-(void)nativeEmail;
+
+/**
+ Try to call using Facetime
+ string must be valid email or phone number
+ */
+-(void)nativeFacetime;
+
+/**
+ Try to SMS
+ string must a phone number
+ */
+-(void)nativeSMS;
+
+/**
+ Try to open Maps
+ string must be with valid params
+
+ @code [@"q=San Francisco" sysMap];
+ 
+
+ note: https://developer.apple.com/library/ios/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html#//apple_ref/doc/uid/TP40007899-CH5-SW1
+ */
+-(void)nativeMap;
+
+///**
+// Try to iTunes
+// */
+//-(void)sysiTunes;
+
+/**
+ Try to open YouTube
+ string must be a VIDEO_IDENTIFIER
+ */
+-(void)nativeYouTube;
+
+#pragma mark - ios path Files
+
+
+/**
+ *  Appending string to NSCachesDirectory path
+ *
+ *  @return new string cache path
+ */
+-(NSString*)pathAppCache;
+
+/**
+ *  Appending string to NSTemporaryDirectory path
+ *
+ *  @return new string tmp path
+ */
+-(NSString*)pathAppTemporary;
+
+/**
+ *  Appending string to NSDocumentDirectory path
+ *
+ *  @return new string Documents path
+ */
+-(NSString*)pathAppDocuments;
+
+/**
+ *  extracting filename from path
+ *
+ *  @return filename string
+ */
+-(NSString*)extractFilename;
+
 @end

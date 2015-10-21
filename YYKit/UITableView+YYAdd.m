@@ -74,4 +74,14 @@ SYNTH_DUMMY_CLASS(UITableView_YYAdd)
     }];
 }
 
+-(void)reloadDataInMainThread{
+    if ([NSThread isMainThread]) {
+        [self reloadData];
+    }
+    else
+    {
+        [self performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    }
+}
+
 @end

@@ -39,18 +39,62 @@
     }];
     [self.view addSubview:_textField];
     
+    NSArray*buttons = @[@"call",@"email",@"sms",@"facetime",@"map",@"YouTube"];
+    
+    for (NSInteger i=0; i<[buttons count]; i++) {
+        UIButton*btn = [self createButtonWithTitle:buttons[i] andTag:i];
+        [self.view addSubview:btn];
+    }
+    
     _textView = [UITextView new];
-    _textView.size = CGSizeMake(self.view.width, self.view.height - _textField.bottom);
-    _textView.top = _textField.bottom;
+    _textView.size = CGSizeMake(self.view.width, self.view.height - _textField.bottom - 50);
+    _textView.top = _textField.bottom + 50;
     _textView.editable = NO;
     _textView.alwaysBounceVertical = YES;
     _textView.font = [UIFont fontWithName:@"Courier New" size:12];
     [self.view addSubview:_textView];
     
-    _textField.text = @"123456";
+    _textField.text = @"202-456-1111";
     [self textChanged];
+    
 }
 
+
+-(UIButton*)createButtonWithTitle:(NSString*)title andTag:(NSInteger)tag
+{
+    UIButton*btn =  [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    btn.tag = (tag+1)*10;
+    btn.frame = CGRectMake(50*tag, _textField.bottom+10, 50, 30);
+    [btn setTitle:title forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    return btn;
+}
+-(IBAction)buttonClick:(id)sender{
+    UIButton*btn = (UIButton*)sender;
+//    switch (btn.tag) {
+//        case 10: //call
+//            [_textField.text nativeCallPhone];
+//            break;
+//        case 20: //email
+//            [_textField.text nativeEmail];
+//            break;
+//        case 30: //sms
+//            [_textField.text nativeSMS];
+//            break;
+//        case 40: //facetime
+//            [_textField.text nativeFacetime];
+//            break;
+//        case 50: //map
+//            [_textField.text nativeMap];
+//            break;
+//        case 60: //youtube
+//            //try this id @"Ujwod-vqyqA"
+//            [_textField.text nativeYouTube];
+//            break;
+//        default:
+//            break;
+//    }
+}
 
 - (void)textChanged {
     NSString *str = self.textField.text;

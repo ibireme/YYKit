@@ -45,6 +45,27 @@ SYNTH_DUMMY_CLASS(NSArray_YYAdd)
     return nil;
 }
 
+-(NSArray*)findItemsWithKey:(NSString*)key  Value:(NSObject*)Value{
+    NSPredicate *p = [NSPredicate predicateWithFormat:@"%@=%@",key,Value];
+    NSArray *filtered = [self filteredArrayUsingPredicate:p];
+    return filtered;
+}
+-(NSObject*)findFirstItemWithKey:(NSString*)key  Value:(NSObject*)Value{
+    NSArray*filtered = [self findItemsWithKey:key Value:Value];
+    if (filtered) {
+        return filtered[0];
+    }
+    return 0;
+}
+-(BOOL)hasItemWithKey:(NSString*)key  Value:(NSObject*)Value
+{
+    NSArray*filtered = [self findItemsWithKey:key Value:Value];
+    if (filtered) {
+        return YES;
+    }
+    return NO;
+}
+
 @end
 
 

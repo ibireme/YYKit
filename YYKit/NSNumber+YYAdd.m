@@ -41,4 +41,31 @@ SYNTH_DUMMY_CLASS(NSNumber_YYAdd)
     return [formatter numberFromString:string];
 }
 
+
+- (NSNumber *)factorial {
+    return @(tgamma([self doubleValue] + 1));
+}
+
+- (NSNumber *)multpercent:(NSNumber *)pValue
+{
+    return @([self doubleValue]*[pValue doubleValue]/100.0);
+}
+
+- (NSNumber *)addpercent:(NSNumber *)pValue
+{
+    return @([self doubleValue]+[[self multpercent:pValue] doubleValue]);
+}
+
+- (NSString *)toStringWithFormat:(NSString*)format
+{
+    return [NSString stringWithFormat:format,[self doubleValue]];
+}
+
+-(NSString *)toStringCurrentCurrency
+{
+    NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+    [numberFormatter setNumberStyle: NSNumberFormatterCurrencyStyle];
+    return [numberFormatter stringFromNumber:self];
+}
+
 @end

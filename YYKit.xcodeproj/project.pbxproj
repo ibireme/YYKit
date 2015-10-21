@@ -21,6 +21,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4A31AB461AE64571006ADADD /* NSIndexPath+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A31AB441AE64571006ADADD /* NSIndexPath+YYAdd.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4A31AB471AE64571006ADADD /* NSIndexPath+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A31AB451AE64571006ADADD /* NSIndexPath+YYAdd.m */; };
+		4A31AB481AE6459A006ADADD /* NSIndexPath+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A31AB451AE64571006ADADD /* NSIndexPath+YYAdd.m */; };
+		4A31AB4B1AE65085006ADADD /* UIViewController+YYAdd.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A31AB491AE65085006ADADD /* UIViewController+YYAdd.h */; };
+		4A31AB4C1AE65085006ADADD /* UIViewController+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A31AB4A1AE65085006ADADD /* UIViewController+YYAdd.m */; };
+		4A31AB4D1AE65085006ADADD /* UIViewController+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A31AB4A1AE65085006ADADD /* UIViewController+YYAdd.m */; };
 		D90BD6FC191DEF50004AA3D9 /* YYKitMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = D90BD6FA191DEF50004AA3D9 /* YYKitMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D90BD723191DEF61004AA3D9 /* NSObject+YYAddForARC.h in Headers */ = {isa = PBXBuildFile; fileRef = D90BD6FF191DEF61004AA3D9 /* NSObject+YYAddForARC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D90BD724191DEF61004AA3D9 /* NSObject+YYAddForARC.m in Sources */ = {isa = PBXBuildFile; fileRef = D90BD700191DEF61004AA3D9 /* NSObject+YYAddForARC.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -166,6 +172,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4A31AB441AE64571006ADADD /* NSIndexPath+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+YYAdd.h"; sourceTree = "<group>"; };
+		4A31AB451AE64571006ADADD /* NSIndexPath+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+YYAdd.m"; sourceTree = "<group>"; };
+		4A31AB491AE65085006ADADD /* UIViewController+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+YYAdd.h"; sourceTree = "<group>"; };
+		4A31AB4A1AE65085006ADADD /* UIViewController+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+YYAdd.m"; sourceTree = "<group>"; };
 		D90BD6E1191DE9CB004AA3D9 /* YYKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YYKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D90BD6E5191DE9CB004AA3D9 /* YYKit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YYKit-Info.plist"; sourceTree = "<group>"; };
 		D90BD6FA191DEF50004AA3D9 /* YYKitMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYKitMacro.h; sourceTree = "<group>"; };
@@ -417,6 +427,8 @@
 				D9A95E14191FCE8E00B1DE28 /* NSTimer+YYAdd.m */,
 				D93E170119F4F160003C3FB4 /* NSBundle+YYAdd.h */,
 				D93E170219F4F160003C3FB4 /* NSBundle+YYAdd.m */,
+				4A31AB441AE64571006ADADD /* NSIndexPath+YYAdd.h */,
+				4A31AB451AE64571006ADADD /* NSIndexPath+YYAdd.m */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -452,6 +464,8 @@
 				D9A95DBE191F7A4800B1DE28 /* UIFont+YYAdd.m */,
 				D9C2252C1A02013E00CCCC7C /* UIBezierPath+YYAdd.h */,
 				D9C2252D1A02013E00CCCC7C /* UIBezierPath+YYAdd.m */,
+				4A31AB491AE65085006ADADD /* UIViewController+YYAdd.h */,
+				4A31AB4A1AE65085006ADADD /* UIViewController+YYAdd.m */,
 			);
 			name = UIKit;
 			sourceTree = "<group>";
@@ -510,9 +524,11 @@
 				D992B65B19EE3285006E0ADE /* UIBarButtonItem+YYAdd.h in Headers */,
 				D90BD72B191DEF61004AA3D9 /* NSDictionary+YYAdd.h in Headers */,
 				D90BD739191DEF61004AA3D9 /* UIView+YYAdd.h in Headers */,
+				4A31AB4B1AE65085006ADADD /* UIViewController+YYAdd.h in Headers */,
 				D95BD88D19E5732D0001BAA3 /* NSObject+YYAdd.h in Headers */,
 				D95BD88419E3E01B0001BAA3 /* NSParagraphStyle+YYAdd.h in Headers */,
 				D9C9FEEB19F41B7800B20F09 /* YYGIFImage.h in Headers */,
+				4A31AB461AE64571006ADADD /* NSIndexPath+YYAdd.h in Headers */,
 				D9FDB4E119F298D800ACABCD /* YYWeakProxy.h in Headers */,
 				D9C9FEE319F3AFCB00B20F09 /* YYAnimatedImageView.h in Headers */,
 				D90BD72D191DEF61004AA3D9 /* NSDate+YYAdd.h in Headers */,
@@ -576,7 +592,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = YY;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = ibireme;
 				TargetAttributes = {
 					D9A629B51A061EC100D8D3E5 = {
@@ -668,6 +684,7 @@
 				D90BD72A191DEF61004AA3D9 /* NSArray+YYAdd.m in Sources */,
 				D9CBD7A119FCE4430041EA1F /* YYTextDefine.m in Sources */,
 				D90BD744191DEF61004AA3D9 /* UIApplication+YYAdd.m in Sources */,
+				4A31AB4C1AE65085006ADADD /* UIViewController+YYAdd.m in Sources */,
 				D9CBD73A19FC26CA0041EA1F /* YYGestureRecognizer.m in Sources */,
 				D992B65C19EE3285006E0ADE /* UIBarButtonItem+YYAdd.m in Sources */,
 				D965FA6119D86F8900C16572 /* YYProcessStatus.m in Sources */,
@@ -679,6 +696,7 @@
 				D95BD88E19E5732D0001BAA3 /* NSObject+YYAdd.m in Sources */,
 				D99E54AC19C9F7AC002E0BC3 /* NSAttributedString+YYAdd.m in Sources */,
 				D992B66419EE714D006E0ADE /* YYKeychain.m in Sources */,
+				4A31AB471AE64571006ADADD /* NSIndexPath+YYAdd.m in Sources */,
 				D90BD736191DEF61004AA3D9 /* UIImage+YYAdd.m in Sources */,
 				D90BD738191DEF61004AA3D9 /* UIControl+YYAdd.m in Sources */,
 				D93E172019F65143003C3FB4 /* YYThreadSafeArray.m in Sources */,
@@ -718,6 +736,7 @@
 				D9A629DD1A061F6500D8D3E5 /* UIImage+YYAdd.m in Sources */,
 				D9A629DE1A061F6500D8D3E5 /* UIControl+YYAdd.m in Sources */,
 				D9A629DF1A061F6500D8D3E5 /* UIBarButtonItem+YYAdd.m in Sources */,
+				4A31AB4D1AE65085006ADADD /* UIViewController+YYAdd.m in Sources */,
 				D9A629E01A061F6500D8D3E5 /* UIGestureRecognizer+YYAdd.m in Sources */,
 				D9A629E11A061F6500D8D3E5 /* UIView+YYAdd.m in Sources */,
 				D9A629E21A061F6500D8D3E5 /* UIScrollView+YYAdd.m in Sources */,
@@ -729,6 +748,7 @@
 				D9A629E81A061F6500D8D3E5 /* UIFont+YYAdd.m in Sources */,
 				D9A629E91A061F6500D8D3E5 /* UIBezierPath+YYAdd.m in Sources */,
 				D9A629EA1A061F6500D8D3E5 /* CALayer+YYAdd.m in Sources */,
+				4A31AB481AE6459A006ADADD /* NSIndexPath+YYAdd.m in Sources */,
 				D9A629EB1A061F6500D8D3E5 /* YYTextDefine.m in Sources */,
 				D9A629EC1A061F6500D8D3E5 /* NSAttributedString+YYAdd.m in Sources */,
 				D9A629ED1A061F6500D8D3E5 /* NSParagraphStyle+YYAdd.m in Sources */,
@@ -821,7 +841,6 @@
 		D90BD6F0191DE9CB004AA3D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CONTENTS_FOLDER_PATH = "$(WRAPPER_NAME)/Versions/$(FRAMEWORK_VERSION)";
 				DEAD_CODE_STRIPPING = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -845,7 +864,6 @@
 		D90BD6F1191DE9CB004AA3D9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CONTENTS_FOLDER_PATH = "$(WRAPPER_NAME)/Versions/$(FRAMEWORK_VERSION)";
 				DEAD_CODE_STRIPPING = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
