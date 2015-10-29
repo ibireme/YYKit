@@ -14,7 +14,7 @@ It's so huge that I split it into several independent components:
 * YYKeyboardManager — iOS keyboard manager.
 * YYDispatchQueuePool — iOS queue pool  manager.
 * YYAsyncLayer — CALayer subclass for asynchronous rendering and display.
-* [YYCategories](https://github.com/ibireme/YYKeyboardManager) — A set of useful categories for Foundation and UIKit.
+* [YYCategories](https://github.com/ibireme/YYCategories) — A set of useful categories for Foundation and UIKit.
 
 All these components support iOS 6.0 and later.
 
@@ -39,7 +39,7 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 * YYKeyboardManager — iOS 键盘监听管理工具。
 * YYDispatchQueuePool — iOS 全局并发队列管理工具。
 * YYAsyncLayer — iOS 异步绘制与显示的工具。
-* [YYCategories](https://github.com/ibireme/YYKeyboardManager) — 功能丰富的 Category 类型工具库。
+* [YYCategories](https://github.com/ibireme/YYCategories) — 功能丰富的 Category 类型工具库。
 
 以上类库全部都兼容 iOS 6 ~ 9，所有文件都有详尽文档注释。
 
