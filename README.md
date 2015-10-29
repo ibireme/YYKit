@@ -8,6 +8,7 @@ It's so huge that I split it into several independent components:
 * [YYModel](https://github.com/ibireme/YYModel) — High performance model framework for iOS.
 * [YYCache](https://github.com/ibireme/YYCache) — High performance cache framework for iOS.
 * [YYImage](https://github.com/ibireme/YYImage) — Image framework for iOS to display/encode/decode animated WebP, APNG, GIF, and more.
+* [YYWebImage](https://github.com/ibireme/YYWebImage) — Asynchronous image load framework.
 * YYText — Powerful rich text component for iOS.
 * 
 * YYKeyboardManager — iOS keyboard manager.
@@ -32,7 +33,7 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 * [YYModel](https://github.com/ibireme/YYModel) — 高性能的 iOS JSON 模型框架。
 * [YYCache](https://github.com/ibireme/YYCache) — 高性能的 iOS 缓存框架。
 * [YYImage](https://github.com/ibireme/YYImage) — 功能强大的 iOS 图像框架。
-* YYWebImage — 高性能的 iOS 异步图像加载框架。
+* [YYWebImage](https://github.com/ibireme/YYWebImage) — 高性能的 iOS 异步图像加载框架。
 * YYText — 功能强大的 iOS 富文本框架。
 * 
 * YYKeyboardManager — iOS 键盘监听管理工具。
