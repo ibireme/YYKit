@@ -1,5 +1,6 @@
-#YYKit <a href="#中文介绍">中文介绍</a>
+#YYKit
 ==============
+
 YYKit is a collection of iOS component.
 
 It's so huge that I split it into several independent components:
@@ -17,10 +18,11 @@ It's so huge that I split it into several independent components:
 All these components support iOS 6.0 and later.
 
 
-<br/><br/>
+<br/>
 ---
 中文介绍
 ==============
+
 YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS 应用。
 
 这个项目起源于 13 年我还在人人的时候对人人网的一些基础 Category 工具的整理。但随后我在里面更改和添加了大量其他组件，以至于这个项目的代码迅速膨胀了起来。这个项目目前是作为我在公司项目的技术预研而存在，当其中某些组件足够成熟时，我便会将其投入到公司项目的生产环境中去。
@@ -42,3 +44,26 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 
 
 以下是一些功能预览：
+
+###复杂的列表视图 (微博/Twitter 内嵌富文本控件、网络图像加载)
+<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2376.PNG"  style="max-width:50%;"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2375.PNG"  style="max-width:50%;">
+
+
+
+###富文本输入、静态/动态表情显示、自定义键盘、图文混排、竖排版
+<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2380.PNG"  style="max-width:50%;"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2382.PNG"  style="max-width:50%;"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2383.PNG"  style="max-width:50%;">
+
+
+
+###渐进式网络/本地图片加载
+<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/web.gif"  style="max-width:50%;">
+
+
+
+###GIF/WebP/APNG 动图播放
+<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/image.gif"  style="max-width:50%;">
+
+
+
+###高性能的异步绘制组件，即使在 iPhone 4S 或 iPad 3 上也能保持 60 fps 的流畅交互
+<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/scroll.gif"  style="max-width:50%;">
