@@ -8,7 +8,7 @@ It's so huge that I split it into several independent components:
 * [YYModel](https://github.com/ibireme/YYModel) — High performance model framework for iOS.
 * [YYCache](https://github.com/ibireme/YYCache) — High performance cache framework for iOS.
 * [YYImage](https://github.com/ibireme/YYImage) — Image framework for iOS to display/encode/decode animated WebP, APNG, GIF, and more.
-* [YYWebImage](https://github.com/ibireme/YYWebImage) — Asynchronous image load framework.
+* [YYWebImage](https://github.com/ibireme/YYWebImage) — Asynchronous image loading framework.
 * YYText — Powerful rich text component for iOS.
 * 
 * YYKeyboardManager — iOS keyboard manager.
