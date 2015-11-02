@@ -49,10 +49,11 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 ###复杂的列表视图 (微博/Twitter 内嵌富文本控件、网络图像加载)
 <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2376.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2375.PNG" width="320">
 
-
+###文本特效、点击响应
+<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/text_attr.gif" width="320">
 
 ###富文本输入、静态/动态表情显示、自定义键盘、图文混排、竖排版
-<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2380.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2382.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2383.PNG" width="320">
+<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2380.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2382.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2383.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/niconiconi.gif" width="320">
 
 
 
