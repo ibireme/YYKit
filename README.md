@@ -1,5 +1,13 @@
-YYKit
+YYKit <a href="#中文介绍">中文介绍</a>
 ==============
+
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ibireme/YYKit/master/LICENSE)&nbsp;
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)&nbsp;
+[![Cocoapods](http://img.shields.io/cocoapods/v/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
+[![Cocoapods](http://img.shields.io/cocoapods/p/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
+[![Support](https://img.shields.io/badge/support-iOS%206%2B%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/)&nbsp;
+[![Build Status](https://travis-ci.org/ibireme/YYKit.svg?branch=master)](https://travis-ci.org/ibireme/YYKit)
+
 
 YYKit is a collection of iOS components.
 
@@ -7,16 +15,79 @@ It's so huge that I split it into several independent components:
 
 * [YYModel](https://github.com/ibireme/YYModel) — High performance model framework for iOS.
 * [YYCache](https://github.com/ibireme/YYCache) — High performance cache framework for iOS.
-* [YYImage](https://github.com/ibireme/YYImage) — Image framework for iOS to display/encode/decode animated WebP, APNG, GIF, and more.
+* [YYImage](https://github.com/ibireme/YYImage) — Image framework for iOS to display/encode/decode animated WebP, APNG, GIF.
 * [YYWebImage](https://github.com/ibireme/YYWebImage) — Asynchronous image loading framework.
 * [YYText](https://github.com/ibireme/YYText) — Powerful rich text component for iOS.
 * 
-* [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — iOS keyboard manager.
-* [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS queue pool  manager.
-* [YYAsyncLayer](https://github.com/ibireme/YYAsyncLayer) — CALayer subclass for asynchronous rendering and display.
+* [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — iOS utility class allows you to access keyboard view and track keyboard animation.
+* [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS utility class to manage global dispatch queue.
+* [YYAsyncLayer](https://github.com/ibireme/YYAsyncLayer) — iOS utility classes for asynchronous rendering and display.
 * [YYCategories](https://github.com/ibireme/YYCategories) — A set of useful categories for Foundation and UIKit.
 
-All these components support iOS 6.0 and later.
+
+Demo Project
+==============
+<img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/twitter.png" width="320"><br/>
+<img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo.png" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo_compose.png" width="320">
+
+
+Installation
+==============
+
+### Cocoapods
+
+1. Add `pod "YYKit"` to your Podfile.
+2. Run `pod install` or `pod update`.
+3. Import \<YYKit/YYKit.h\>.
+
+
+### Carthage
+
+1. Add `github "ibireme/YYKit"` to your Cartfile.
+2. Run `carthage update --platform ios` and add the framework to your project.
+3. Import \<YYKit/YYKit.h\>.
+
+
+### Manually
+
+1. Download all the files in the `YYKit` subdirectory.
+2. Add the source files to your Xcode project.
+3. Add `-fno-objc-arc` compiler flag to `NSObject+YYAddForARC.m` and `NSThread+YYAdd.m`.
+4. Link with required frameworks:
+    * UIKit
+    * CoreFoundation
+    * CoreText
+    * CoreGraphics
+    * CoreImage
+    * QuartzCore
+    * ImageIO
+    * AssetsLibrary
+    * Accelerate
+    * MobileCoreServices
+    * SystemConfiguration
+    * sqlite3
+    * libz
+5. Import `YYText.h`.
+
+Documentation
+==============
+Full API documentation is available on [CocoaDocs](http://cocoadocs.org/docsets/YYKit/).<br/>
+You can also install documentation locally using [appledoc](https://github.com/tomaz/appledoc).
+
+
+Requirements
+==============
+This library requires a deployment target of iOS 6.0 or greater.
+
+
+About
+==============
+I want to use the APIs as if it was provided by system, so I don't add prefix in
+these categories. You should try the projects above first.
+
+License
+==============
+YYModel is provided under the MIT license. See LICENSE file for details.
 
 
 <br/>
@@ -41,31 +112,66 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 * [YYCategories](https://github.com/ibireme/YYCategories) — iOS 异步绘制与显示的工具。
 * [YYCategories](https://github.com/ibireme/YYCategories) — 功能丰富的 Category 类型工具库。
 
-以上类库全部都兼容 iOS 6 ~ 9，所有文件都有详尽文档注释。
+
+演示项目
+==============
+<img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/twitter.png" width="320"><br/>
+<img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo.png" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo_compose.png" width="320">
 
 
-以下是 Demo 中的一些功能：
+安装
+==============
 
-###复杂的列表视图 (微博/Twitter 内嵌富文本控件、网络图像加载)
-<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2376.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2375.PNG" width="320">
+### Cocoapods
 
-###文本特效、点击响应
-<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/text_attr.gif" width="320">
-
-###富文本输入、静态/动态表情显示、自定义键盘、图文混排、竖排版
-<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2380.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2382.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2383.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/niconiconi.gif" width="320">
+1. 在 Podfile 中添加  `pod "YYKit"`。
+2. 执行 `pod install` 或 `pod update`。
+3. 导入 \<YYKit/YYKit.h\>。
 
 
+### Carthage
 
-###渐进式网络/本地图片加载
-<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/web.gif" width="320">
-
-
-
-###GIF/WebP/APNG 动图播放
-<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/image.gif" width="320">
+1. 在 Cartfile 中添加 `github "ibireme/YYKit"`。
+2. 执行 `carthage update --platform ios` 并将生成的 framework 添加到你的工程。
+3. 导入 \<YYKit/YYKit.h\>。
 
 
+### 手动安装
 
-###高性能的异步绘制组件
-<img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/scroll.gif" width="320">
+1. 下载 YYKit 文件夹内的所有内容。
+2. 将 YYKit 内的源文件添加(拖放)到你的工程。
+3. 为 `NSObject+YYAddForARC.m` 和 `NSThread+YYAdd.m` 添加编译参数 `-fno-objc-arc`。
+4. 链接以下 frameworks:
+    * UIKit
+    * CoreFoundation
+    * CoreText
+    * CoreGraphics
+    * CoreImage
+    * QuartzCore
+    * ImageIO
+    * AssetsLibrary
+    * Accelerate
+    * MobileCoreServices
+    * SystemConfiguration
+    * sqlite3
+    * libz
+5. 导入 `YYKit.h`。
+
+
+文档
+==============
+你可以在 [CocoaDocs](http://cocoadocs.org/docsets/YYKit/) 查看在线 API 文档，也可以用 [appledoc](https://github.com/tomaz/appledoc) 本地生成文档。
+
+系统要求
+==============
+该项目最低支持 iOS 6.0。
+
+
+关于
+==============
+我希望调用 API 时，有着和调用系统自带 API 一样的体验，所以我并没有为 Category 方法添加前缀。我已经用工具扫描过这个项目中的 API，确保没有对系统 API 产生影响。我知道没有前缀的 Category 可能会带来麻烦，所以如果你只需要其中部分功能，请先查看上面那些拆分出来的子项目。
+
+
+许可证
+==============
+YYKit 使用 MIT 许可证，详情见 LICENSE 文件。

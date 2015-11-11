@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'YYKit'
-  s.summary      = 'Asynchronous image loading framework.'
+  s.summary      = 'A collection of iOS components.'
   s.version      = '0.9.0'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.authors      = { 'ibireme' => 'ibireme@gmail.com' }

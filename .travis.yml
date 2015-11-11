@@ -1,0 +1,7 @@
+language: objective-c
+osx_image: xcode7
+xcode_project: Framework/YYKit.xcodeproj
+xcode_scheme: YYKit
+
+script:
+- xctool -project Framework/YYKit.xcodeproj -scheme YYKit build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
