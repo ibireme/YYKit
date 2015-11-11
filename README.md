@@ -19,7 +19,7 @@ It's so huge that I split it into several independent components:
 * [YYWebImage](https://github.com/ibireme/YYWebImage) — Asynchronous image loading framework.
 * [YYText](https://github.com/ibireme/YYText) — Powerful rich text component for iOS.
 * 
-* [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — iOS utility class allows you to access keyboard view and track keyboard animation.
+* [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — Access keyboard view and track keyboard animation.
 * [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS utility class to manage global dispatch queue.
 * [YYAsyncLayer](https://github.com/ibireme/YYAsyncLayer) — iOS utility classes for asynchronous rendering and display.
 * [YYCategories](https://github.com/ibireme/YYCategories) — A set of useful categories for Foundation and UIKit.
