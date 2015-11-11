@@ -13,7 +13,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.source_files = 'YYKit/**/*.{h,m}'
   s.public_header_files = 'YYKit/**/*.{h}'
-  spec.private_header_files = 'YYKit/**/_*.{h}'
 
   non_arc_files = 'YYKit/Base/Foundation/NSObject+YYAddForARC.{h,m}', 'YYKit/Base/Foundation/NSThread+YYAdd.{h,m}'
   s.ios.exclude_files = non_arc_files
