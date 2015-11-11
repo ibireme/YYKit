@@ -1,7 +1,7 @@
 YYKit
 ==============
 
-YYKit is a collection of iOS component.
+YYKit is a collection of iOS components.
 
 It's so huge that I split it into several independent components:
 
@@ -11,9 +11,9 @@ It's so huge that I split it into several independent components:
 * [YYWebImage](https://github.com/ibireme/YYWebImage) — Asynchronous image loading framework.
 * [YYText](https://github.com/ibireme/YYText) — Powerful rich text component for iOS.
 * 
-* YYKeyboardManager — iOS keyboard manager.
-* YYDispatchQueuePool — iOS queue pool  manager.
-* YYAsyncLayer — CALayer subclass for asynchronous rendering and display.
+* [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — iOS keyboard manager.
+* [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS queue pool  manager.
+* [YYAsyncLayer](https://github.com/ibireme/YYAsyncLayer) — CALayer subclass for asynchronous rendering and display.
 * [YYCategories](https://github.com/ibireme/YYCategories) — A set of useful categories for Foundation and UIKit.
 
 All these components support iOS 6.0 and later.
@@ -26,9 +26,9 @@ All these components support iOS 6.0 and later.
 
 YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS 应用。
 
-这个项目起源于 13 年我还在人人的时候对人人网的一些基础 Category 工具的整理。但随后我在里面更改和添加了大量其他组件，以至于这个项目的代码迅速膨胀了起来。这个项目目前是作为我在公司项目的技术预研而存在，当其中某些组件足够成熟时，我便会将其投入到公司项目的生产环境中去。
+这个项目起源于 13 年我对一些 Category 工具的整理。但随后我在里面更改和添加了大量其他组件，以至于这个项目的代码迅速膨胀了起来。这个项目目前是作为我在公司项目的技术预研而存在，当其中某些组件足够成熟时，我便会将其投入到公司项目的生产环境中去。
 
-为了尽量复用代码，这个项目中的某些组件之间有比较强的依赖关系。为了方便其他开发者使用，我从中拆分出以下独立组件 (某些组件还在补充文档中，暂时没有开源)：
+为了尽量复用代码，这个项目中的某些组件之间有比较强的依赖关系。为了方便其他开发者使用，我从中拆分出以下独立组件：
 
 * [YYModel](https://github.com/ibireme/YYModel) — 高性能的 iOS JSON 模型框架。
 * [YYCache](https://github.com/ibireme/YYCache) — 高性能的 iOS 缓存框架。
@@ -36,15 +36,15 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 * [YYWebImage](https://github.com/ibireme/YYWebImage) — 高性能的 iOS 异步图像加载框架。
 * [YYText](https://github.com/ibireme/YYText) — 功能强大的 iOS 富文本框架。
 * 
-* YYKeyboardManager — iOS 键盘监听管理工具。
-* YYDispatchQueuePool — iOS 全局并发队列管理工具。
-* YYAsyncLayer — iOS 异步绘制与显示的工具。
+* [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — iOS 键盘监听管理工具。
+* [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS 全局并发队列管理工具。
+* [YYCategories](https://github.com/ibireme/YYCategories) — iOS 异步绘制与显示的工具。
 * [YYCategories](https://github.com/ibireme/YYCategories) — 功能丰富的 Category 类型工具库。
 
 以上类库全部都兼容 iOS 6 ~ 9，所有文件都有详尽文档注释。
 
 
-以下是一些功能预览：
+以下是 Demo 中的一些功能：
 
 ###复杂的列表视图 (微博/Twitter 内嵌富文本控件、网络图像加载)
 <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2376.PNG" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/IMG_2375.PNG" width="320">
@@ -67,5 +67,5 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 
 
 
-###高性能的异步绘制组件，即使在 iPhone 4S 或 iPad 3 上也能保持 60 fps 的流畅交互
+###高性能的异步绘制组件
 <img src="https://raw.github.com/ibireme/YYKit/master/DemoSnapshot/scroll.gif" width="320">
