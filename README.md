@@ -27,6 +27,8 @@ It's so huge that I split it into several independent components:
 
 Demo Project
 ==============
+See `Demo/YYKitDemo.xcodeproj`
+
 <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/twitter.png" width="320"><br/>
 <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo.png" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo_compose.png" width="320">
 
@@ -95,9 +97,7 @@ YYModel is provided under the MIT license. See LICENSE file for details.
 中文介绍
 ==============
 
-YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS 应用。
-
-这个项目起源于 13 年我对一些 Category 工具的整理。但随后我在里面更改和添加了大量其他组件，以至于这个项目的代码迅速膨胀了起来。这个项目目前是作为我在公司项目的技术预研而存在，当其中某些组件足够成熟时，我便会将其投入到公司项目的生产环境中去。
+YYKit 是一组庞大、功能丰富的 iOS 组件。
 
 为了尽量复用代码，这个项目中的某些组件之间有比较强的依赖关系。为了方便其他开发者使用，我从中拆分出以下独立组件：
 
@@ -115,6 +115,8 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 
 演示项目
 ==============
+查看并运行 `Demo/YYKitDemo.xcodeproj`
+
 <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/twitter.png" width="320"><br/>
 <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo.png" width="320"> <img src="https://raw.github.com/ibireme/YYKit/master/Demo/Snapshots/weibo_compose.png" width="320">
 
@@ -175,3 +177,9 @@ YYKit 是一组功能丰富的 iOS 组件，用于构建大型、复杂的 iOS �
 许可证
 ==============
 YYKit 使用 MIT 许可证，详情见 LICENSE 文件。
+
+
+相关文章
+==============
+[iOS 保持界面流畅的技巧
+](http://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/) 
