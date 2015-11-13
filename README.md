@@ -48,7 +48,7 @@ Installation
 1. Add `github "ibireme/YYKit"` to your Cartfile.
 2. Run `carthage update --platform ios` and add the framework to your project.
 3. Import \<YYKit/YYKit.h\>.
-
+4. Notice: carthage framework doesn't include webp component, if you want to support webp, use cocoapods or install manually.
 
 ### Manually
 
@@ -69,7 +69,8 @@ Installation
     * SystemConfiguration
     * sqlite3
     * libz
-5. Import `YYText.h`.
+5. Add `Vendor/WebP.framework`(static library) to your Xcode project if you want to support webp.
+6. Import `YYText.h`.
 
 Documentation
 ==============
@@ -85,7 +86,7 @@ This library requires a deployment target of iOS 6.0 or greater.
 About
 ==============
 I want to use the APIs as if it was provided by system, so I don't add prefix in
-these categories. You should try the projects above first.
+these categories. You should try the sub-projects above first.
 
 License
 ==============
@@ -136,7 +137,7 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 1. 在 Cartfile 中添加 `github "ibireme/YYKit"`。
 2. 执行 `carthage update --platform ios` 并将生成的 framework 添加到你的工程。
 3. 导入 \<YYKit/YYKit.h\>。
-
+4. 注意: carthage framework 并没有包含 webp 组件。如果你需要支持 webp，可以用 Cocoapods 安装，或者手动安装。
 
 ### 手动安装
 
@@ -157,7 +158,8 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
     * SystemConfiguration
     * sqlite3
     * libz
-5. 导入 `YYKit.h`。
+5. 如果你需要支持 webp，可以将 `Vendor/WebP.framework`(静态库) 加入你的工程。
+6. 导入 `YYKit.h`。
 
 
 文档
