@@ -3,8 +3,8 @@ YYKit <a href="#中文介绍">中文介绍</a>
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ibireme/YYKit/master/LICENSE)&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)&nbsp;
-[![Cocoapods](http://img.shields.io/cocoapods/v/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
-[![Cocoapods](http://img.shields.io/cocoapods/p/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
+[![CocoaPods](http://img.shields.io/cocoapods/v/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
+[![CocoaPods](http://img.shields.io/cocoapods/p/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
 [![Support](https://img.shields.io/badge/support-iOS%206%2B%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/)&nbsp;
 [![Build Status](https://travis-ci.org/ibireme/YYKit.svg?branch=master)](https://travis-ci.org/ibireme/YYKit)
 
@@ -36,7 +36,7 @@ See `Demo/YYKitDemo.xcodeproj`
 Installation
 ==============
 
-### Cocoapods
+### CocoaPods
 
 1. Add `pod "YYKit"` to your Podfile.
 2. Run `pod install` or `pod update`.
@@ -48,7 +48,7 @@ Installation
 1. Add `github "ibireme/YYKit"` to your Cartfile.
 2. Run `carthage update --platform ios` and add the framework to your project.
 3. Import \<YYKit/YYKit.h\>.
-4. Notice: carthage framework doesn't include webp component, if you want to support webp, use cocoapods or install manually.
+4. Notice: carthage framework doesn't include webp component, if you want to support webp, use CocoaPods or install manually.
 
 ### Manually
 
@@ -125,7 +125,7 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 安装
 ==============
 
-### Cocoapods
+### CocoaPods
 
 1. 在 Podfile 中添加  `pod "YYKit"`。
 2. 执行 `pod install` 或 `pod update`。
@@ -137,7 +137,7 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 1. 在 Cartfile 中添加 `github "ibireme/YYKit"`。
 2. 执行 `carthage update --platform ios` 并将生成的 framework 添加到你的工程。
 3. 导入 \<YYKit/YYKit.h\>。
-4. 注意: carthage framework 并没有包含 webp 组件。如果你需要支持 webp，可以用 Cocoapods 安装，或者手动安装。
+4. 注意: carthage framework 并没有包含 webp 组件。如果你需要支持 webp，可以用 CocoaPods 安装，或者手动安装。
 
 ### 手动安装
 
