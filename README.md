@@ -110,7 +110,7 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 * 
 * [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — iOS 键盘监听管理工具。
 * [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS 全局并发队列管理工具。
-* [YYCategories](https://github.com/ibireme/YYCategories) — iOS 异步绘制与显示的工具。
+* [YYAsyncLayer](https://github.com/ibireme/YYAsyncLayer) — iOS 异步绘制与显示的工具。
 * [YYCategories](https://github.com/ibireme/YYCategories) — 功能丰富的 Category 类型工具库。
 
 
