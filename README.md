@@ -70,7 +70,7 @@ Installation
     * sqlite3
     * libz
 5. Add `Vendor/WebP.framework`(static library) to your Xcode project if you want to support webp.
-6. Import `YYText.h`.
+6. Import `YYKit.h`.
 
 Documentation
 ==============
