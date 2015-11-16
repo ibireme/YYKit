@@ -90,7 +90,7 @@ these categories. You should try the sub-projects above first.
 
 License
 ==============
-YYModel is provided under the MIT license. See LICENSE file for details.
+YYKit is provided under the MIT license. See LICENSE file for details.
 
 
 <br/>
