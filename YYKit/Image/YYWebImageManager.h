@@ -69,6 +69,10 @@ typedef NS_OPTIONS(NSUInteger, YYWebImageOptions) {
     /// Do not set the image to the view when image fetch complete.
     /// You may set the image manually.
     YYWebImageOptionAvoidSetImage = 1 << 13,
+    
+    /// This flag will add the URL to a blacklist (in memory) when the URL fail to be downloaded,
+    /// so the library won't keep trying.
+    YYWebImageOptionIgnoreFailedURL = 1 << 14,
 };
 
 /// Indicated where the image came from.
