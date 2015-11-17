@@ -2397,6 +2397,27 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     }
 }
 
+- (CGSize)sizeThatFits:(CGSize)size {
+    YYTextLayout *textLayout = self.textLayout;
+    CGSize currentSize = CGSizePixelCeil(textLayout.textBoundingSize);
+    if (_verticalForm) {
+        if (currentSize.height == size.height) return currentSize;
+    } else {
+        if (currentSize.width == size.width) return currentSize;
+    }
+    
+    if (_verticalForm) {
+        size.width = CGFLOAT_MAX;
+    } else {
+        size.height = CGFLOAT_MAX;
+    }
+    YYTextContainer *newContainer = _innerContainer.mutableCopy;
+    newContainer.size = size;
+    YYTextLayout *newLayout = [YYTextLayout layoutWithContainer:newContainer text:textLayout.text];
+    CGSize newSize = newLayout.textBoundingSize;
+    return CGSizePixelCeil(newSize);
+}
+
 #pragma mark - Override UIResponder
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
