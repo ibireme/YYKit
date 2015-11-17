@@ -883,12 +883,16 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         // the attachment should be removed.
         for (UIView *view in attachmentViews) {
             if (layoutNeedUpdate || ![layout.attachmentContentsSet containsObject:view]) {
-                [view removeFromSuperview];
+                if (view.superview == self) {
+                    [view removeFromSuperview];
+                }
             }
         }
         for (CALayer *layer in attachmentLayers) {
             if (layoutNeedUpdate || ![layout.attachmentContentsSet containsObject:layer]) {
-                [layer removeFromSuperlayer];
+                if (layer.superlayer == self.layer) {
+                    [layer removeFromSuperlayer];
+                }
             }
         }
         [attachmentViews removeAllObjects];
