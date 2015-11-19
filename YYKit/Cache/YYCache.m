@@ -16,14 +16,12 @@
 @implementation YYCache
 
 - (instancetype) init {
-    self = [super init];
     NSLog(@"Use \"initWithName\" or \"initWithPath\" to create YYCache instance.");
-    return self;
+    return [self initWithPath:nil];
 }
 
 - (instancetype)initWithName:(NSString *)name {
     if (name.length == 0) return nil;
-    self = [super init];
     NSString *cacheFolder = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
     NSString *path = [cacheFolder stringByAppendingPathComponent:name];
     return [self initWithPath:path];

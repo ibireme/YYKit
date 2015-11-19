@@ -51,7 +51,7 @@
  @result A new cache object, or nil if an error occurs.
  @warning Multiple instances with the same path will make the storage unstable.
  */
-- (instancetype)initWithPath:(NSString *)path;
+- (instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
