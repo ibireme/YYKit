@@ -2655,6 +2655,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                 if ([self.delegate respondsToSelector:@selector(textViewDidChangeSelection:)]) {
                     [self.delegate textViewDidChangeSelection:self];
                 }
+                [self _updateAttributesHolder];
+                [self _updateOuterProperties];
             }
             if (!_state.trackingGrabber && !_state.trackingPreSelect) {
                 [self _scrollRangeToVisible:_selectedTextRange];
@@ -3243,7 +3245,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     }
     
     BOOL needApplyHolderAttribute = NO;
-    if (_innerText.length > 0) {
+    if (_innerText.length > 0 && _markedTextRange) {
         [self _updateAttributesHolder];
     } else {
         needApplyHolderAttribute = YES;
