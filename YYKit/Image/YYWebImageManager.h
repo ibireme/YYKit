@@ -97,7 +97,7 @@ typedef NS_ENUM(NSUInteger, YYWebImageFromType) {
 };
 
 /// Indicated image fetch complete stage.
-typedef NS_ENUM(NSUInteger, YYWebImageStage) {
+typedef NS_ENUM(NSInteger, YYWebImageStage) {
     
     /// Incomplete, progressive image.
     YYWebImageStageProgress  = -1,
