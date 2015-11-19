@@ -746,6 +746,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Keyboard frame changed, scroll the caret to visible range, or modify the content insets.
 - (void)_keyboardChanged {
+    if (!self.isFirstResponder) return;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if ([YYTextKeyboardManager defaultManager].keyboardVisible) {
             [self _scrollRangeToVisible:_selectedTextRange];
