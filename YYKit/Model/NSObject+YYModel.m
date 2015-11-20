@@ -1376,7 +1376,7 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
     for (_YYModelPropertyMeta *propertyMeta in modelMeta->_allPropertyMetas) {
         if (!propertyMeta->_getter) continue;
         id this = [self valueForKey:NSStringFromSelector(propertyMeta->_getter)];
-        id that = [self valueForKey:NSStringFromSelector(propertyMeta->_getter)];
+        id that = [model valueForKey:NSStringFromSelector(propertyMeta->_getter)];
         if (this == that) continue;
         if (this == nil || that == nil) return NO;
         if ([this isEqual:that]) continue;
