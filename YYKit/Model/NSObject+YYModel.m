@@ -1187,9 +1187,6 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
     if (modelMeta->_nsType) return [self copy];
     
     NSObject *one = [self.class new];
-    [modelMeta->_allPropertyMetas enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        
-    }];
     for (_YYModelPropertyMeta *propertyMeta in modelMeta->_allPropertyMetas) {
         if (!propertyMeta->_getter || !propertyMeta->_setter) continue;
         
