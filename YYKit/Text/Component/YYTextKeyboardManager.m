@@ -146,9 +146,11 @@ static int _YYTextKeyboardViewFrameObserverKey;
 }
 
 + (void)load {
+#ifndef YY_TARGET_IS_EXTENSION
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self defaultManager];
     });
+#endif
 }
 
 - (void)addObserver:(id<YYTextKeyboardObserver>)observer {
@@ -162,6 +164,7 @@ static int _YYTextKeyboardViewFrameObserverKey;
 }
 
 - (UIWindow *)keyboardWindow {
+#ifndef YY_TARGET_IS_EXTENSION
     UIWindow *window = nil;
     for (window in [UIApplication sharedApplication].windows) {
         if ([self _getKeyboardViewFromWindow:window]) return window;
@@ -194,11 +197,12 @@ static int _YYTextKeyboardViewFrameObserverKey;
     if (kbWindows.count == 1) {
         return kbWindows.firstObject;
     }
-    
+#endif
     return nil;
 }
 
 - (UIView *)keyboardView {
+#ifndef YY_TARGET_IS_EXTENSION
     UIWindow *window = nil;
     UIView *view = nil;
     for (window in [UIApplication sharedApplication].windows) {
@@ -208,6 +212,7 @@ static int _YYTextKeyboardViewFrameObserverKey;
     window = [UIApplication sharedApplication].keyWindow;
     view = [self _getKeyboardViewFromWindow:window];
     if (view) return view;
+#endif
     return nil;
 }
 
@@ -362,6 +367,7 @@ static int _YYTextKeyboardViewFrameObserverKey;
 }
 
 - (void)_notifyAllObservers {
+#ifndef YY_TARGET_IS_EXTENSION
     UIView *keyboard = self.keyboardView;
     UIWindow *window = keyboard.window;
     if (!window) {
@@ -443,9 +449,11 @@ static int _YYTextKeyboardViewFrameObserverKey;
     _fromFrame = trans.toFrame;
     _fromVisible = trans.toVisible;
     _fromOrientation = [UIApplication sharedApplication].statusBarOrientation;
+#endif
 }
 
 - (CGRect)convertRect:(CGRect)rect toView:(UIView *)view {
+#ifndef YY_TARGET_IS_EXTENSION
     if (CGRectIsNull(rect)) return rect;
     if (CGRectIsInfinite(rect)) return rect;
     
@@ -472,6 +480,9 @@ static int _YYTextKeyboardViewFrameObserverKey;
     rect = [toWindow convertRect:rect fromWindow:mainWindow];
     rect = [view convertRect:rect fromView:toWindow];
     return rect;
+#else
+    return CGRectZero;
+#endif
 }
 
 @end

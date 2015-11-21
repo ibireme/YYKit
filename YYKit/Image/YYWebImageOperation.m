@@ -198,18 +198,22 @@ static void URLInBlackListAdd(NSURL *url) {
 
 - (void)dealloc {
     [_lock lock];
+#ifndef YY_TARGET_IS_EXTENSION
     if (_taskID != UIBackgroundTaskInvalid) {
         [[UIApplication sharedApplication] endBackgroundTask:_taskID];
         _taskID = UIBackgroundTaskInvalid;
     }
+#endif
     if ([self isExecuting]) {
         self.cancelled = YES;
         self.finished = YES;
         if (_connection) {
             [_connection cancel];
+#ifndef YY_TARGET_IS_EXTENSION
             if (![_request.URL isFileURL] && (_options & YYWebImageOptionShowNetworkActivity)) {
                 [[UIApplication sharedApplication] decrementNetworkActivityCount];
             }
+#endif
         }
         if (_completion) {
             @autoreleasepool {
@@ -221,12 +225,14 @@ static void URLInBlackListAdd(NSURL *url) {
 }
 
 - (void)_endBackgroundTask {
+#ifndef YY_TARGET_IS_EXTENSION
     [_lock lock];
     if (_taskID != UIBackgroundTaskInvalid) {
         [[UIApplication sharedApplication] endBackgroundTask:_taskID];
         _taskID = UIBackgroundTaskInvalid;
     }
     [_lock unlock];
+#endif
 }
 
 #pragma mark - Runs in operation thread
@@ -301,9 +307,11 @@ static void URLInBlackListAdd(NSURL *url) {
         [_lock lock];
         if (![self isCancelled]) {
             _connection = [[NSURLConnection alloc] initWithRequest:_request delegate:[YYWeakProxy proxyWithTarget:self]];
+#ifndef YY_TARGET_IS_EXTENSION
             if (![_request.URL isFileURL] && (_options & YYWebImageOptionShowNetworkActivity)) {
                 [[UIApplication sharedApplication] incrementNetworkActivityCount];
             }
+#endif
         }
         [_lock unlock];
     }
@@ -312,11 +320,13 @@ static void URLInBlackListAdd(NSURL *url) {
 // runs on network thread, called from outer "cancel"
 - (void)_cancelOperation {
     @autoreleasepool {
+#ifndef YY_TARGET_IS_EXTENSION
         if (_connection) {
             if (![_request.URL isFileURL] && (_options & YYWebImageOptionShowNetworkActivity)) {
                 [[UIApplication sharedApplication] decrementNetworkActivityCount];
             }
         }
+#endif
         [_connection cancel];
         _connection = nil;
         if (_completion) _completion(nil, _request.URL, YYWebImageFromNone, YYWebImageStageCancelled, nil);
@@ -626,9 +636,11 @@ static void URLInBlackListAdd(NSURL *url) {
                 
                 [self performSelector:@selector(_didReceiveImageFromWeb:) onThread:[self.class _networkThread] withObject:image waitUntilDone:NO];
             });
+#ifndef YY_TARGET_IS_EXTENSION
             if (![self.request.URL isFileURL] && (self.options & YYWebImageOptionShowNetworkActivity)) {
                 [[UIApplication sharedApplication] decrementNetworkActivityCount];
             }
+#endif
         }
         [_lock unlock];
     }
@@ -643,9 +655,11 @@ static void URLInBlackListAdd(NSURL *url) {
             }
             _connection = nil;
             _data = nil;
+#ifndef YY_TARGET_IS_EXTENSION
             if (![_request.URL isFileURL] && (_options & YYWebImageOptionShowNetworkActivity)) {
                 [[UIApplication sharedApplication] decrementNetworkActivityCount];
             }
+#endif
             [self _finish];
             
             if (_options & YYWebImageOptionIgnoreFailedURL) {
@@ -680,6 +694,7 @@ static void URLInBlackListAdd(NSURL *url) {
             } else {
                 self.executing = YES;
                 [self performSelector:@selector(_startOperation) onThread:[[self class] _networkThread] withObject:nil waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
+#ifndef YY_TARGET_IS_EXTENSION
                 if (_options & YYWebImageOptionAllowBackgroundTask) {
                     __weak __typeof__ (self) _self = self;
                     if (_taskID == UIBackgroundTaskInvalid) {
@@ -692,6 +707,7 @@ static void URLInBlackListAdd(NSURL *url) {
                         }];
                     }
                 }
+#endif
             }
         }
         [_lock unlock];

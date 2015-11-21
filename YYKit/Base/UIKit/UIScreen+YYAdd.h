@@ -29,7 +29,7 @@
  @return A rect indicating the bounds of the screen.
  @see    boundsForOrientation:
  */
-- (CGRect)currentBounds;
+- (CGRect)currentBounds NS_EXTENSION_UNAVAILABLE_IOS("");
 
 /**
  Returns the bounds of the screen for a given device orientation.

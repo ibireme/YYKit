@@ -1530,8 +1530,10 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 /// Returns the `root` view controller (returns nil if not found).
 - (UIViewController *)_getRootViewController {
     UIViewController *ctrl = nil;
+#ifndef YY_TARGET_IS_EXTENSION
     if (!ctrl) ctrl = [UIApplication sharedApplication].keyWindow.rootViewController;
     if (!ctrl) ctrl = [[UIApplication sharedApplication].windows.firstObject rootViewController];
+#endif
     if (!ctrl) ctrl = self.viewController;
     if (!ctrl) return nil;
     
@@ -1629,6 +1631,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Show undo alert if it can undo or redo.
 - (void)_showUndoAlert {
+#ifndef YY_TARGET_IS_EXTENSION
     _state.firstResponderBeforeUndoAlert = self.isFirstResponder;
     __weak typeof(self) _self = self;
     NSArray *strings = [self _localizedUndoStrings];
@@ -1696,6 +1699,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 #pragma clang diagnostic pop
         }
     }
+#endif
 }
 
 /// Get the localized undo alert strings based on app's main bundle.

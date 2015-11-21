@@ -58,8 +58,10 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
 - (BOOL)isJailbroken {
     if ([self isSimulator]) return NO; // Dont't check simulator
     
+#ifndef YY_TARGET_IS_EXTENSION
     NSURL *cydiaURL = [NSURL URLWithString:@"cydia://package"];
     if ([[UIApplication sharedApplication] canOpenURL:cydiaURL]) return YES;
+#endif
     
     NSArray *paths = @[@"/Applications/Cydia.app",
                        @"/private/var/lib/apt/",
@@ -85,12 +87,16 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
 }
 
 - (BOOL)canMakePhoneCalls {
+#ifndef YY_TARGET_IS_EXTENSION
     __block BOOL can;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         can = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel://"]];
     });
     return can;
+#else
+    return NO;
+#endif
 }
 
 - (NSString *)ipAddressWIFI {

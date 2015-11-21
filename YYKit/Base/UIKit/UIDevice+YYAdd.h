@@ -35,7 +35,7 @@
 @property (nonatomic, readonly) BOOL isJailbroken;
 
 /// Wherher the device can make phone calls.
-@property (nonatomic, readonly) BOOL canMakePhoneCalls;
+@property (nonatomic, readonly) BOOL canMakePhoneCalls NS_EXTENSION_UNAVAILABLE_IOS("");
 
 /// The device's machine model.  e.g. "iPhone6,1" "iPad4,6"
 /// @see http://theiphonewiki.com/wiki/Models
