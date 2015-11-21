@@ -958,13 +958,13 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         CGPoint point = CGPointZero;
         if (verticalAlignment == YYTextVerticalAlignmentCenter) {
             if (layout.container.isVerticalForm) {
-                point.x = (size.width - boundingSize.width) * 0.5;
+                point.x = -(size.width - boundingSize.width) * 0.5;
             } else {
                 point.y = (size.height - boundingSize.height) * 0.5;
             }
         } else if (verticalAlignment == YYTextVerticalAlignmentBottom) {
             if (layout.container.isVerticalForm) {
-                point.x = (size.width - boundingSize.width);
+                point.x = -(size.width - boundingSize.width);
             } else {
                 point.y = (size.height - boundingSize.height);
             }
