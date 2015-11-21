@@ -592,13 +592,15 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     }
     
     if (self.isFirstResponder || _containerView.isFirstResponder) {
-        UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setTargetRect:CGRectStandardize(rect) inView:_selectionView];
-        [menu update];
-        if (!_state.showingMenu || !menu.menuVisible) {
-            _state.showingMenu = YES;
-            [menu setMenuVisible:YES animated:YES];
-        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            UIMenuController *menu = [UIMenuController sharedMenuController];
+            [menu setTargetRect:CGRectStandardize(rect) inView:_selectionView];
+            [menu update];
+            if (!_state.showingMenu || !menu.menuVisible) {
+                _state.showingMenu = YES;
+                [menu setMenuVisible:YES animated:YES];
+            }
+        });
     }
 }
 
@@ -2523,7 +2525,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                 [self _updateTextRangeByTrackingPreSelect];
                 showMagnifierCaret = YES;
             } else if (_state.trackingCaret || _markedTextRange || self.isFirstResponder) {
-                if (_state.touchMoved) {
+                if (_state.trackingCaret || _state.touchMoved) {
                     _state.trackingCaret = YES;
                     [self _hideMenu];
                     if (_verticalForm) {
