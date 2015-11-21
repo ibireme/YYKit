@@ -69,8 +69,10 @@ Installation
     * SystemConfiguration
     * sqlite3
     * libz
-5. Add `Vendor/WebP.framework`(static library) to your Xcode project if you want to support webp.
-6. Import `YYKit.h`.
+5. Import `YYKit.h`.
+
+*  If you want to support WebP format, you may add Add `Vendor/WebP.framework`(static library) to your Xcode project.
+*  If you want to use it in App Extension, you may add `YY_TARGET_IS_EXTENSION` flag in `Build Settings` - `Preprocessor Macros` sections.
 
 Documentation
 ==============
@@ -158,8 +160,10 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
     * SystemConfiguration
     * sqlite3
     * libz
-5. 如果你需要支持 webp，可以将 `Vendor/WebP.framework`(静态库) 加入你的工程。
-6. 导入 `YYKit.h`。
+5. 导入 `YYKit.h`。
+
+*  如果你需要支持 WebP 格式，可以将 `Vendor/WebP.framework`(静态库) 加入你的工程。
+*  如果你需要在 App Extension 中使用这些代码, 可以在 `Build Settings` - `Preprocessor Macros` 中添加 `YY_TARGET_IS_EXTENSION` 参数。
 
 
 文档
