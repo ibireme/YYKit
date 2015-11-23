@@ -34,11 +34,7 @@ YYSYNTH_DUMMY_CLASS(UIScreen_YYAdd);
 }
 
 - (CGRect)currentBounds {
-#ifdef YY_TARGET_IS_EXTENSION
     return [self boundsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-#else
-    return CGRectZero;
-#endif
 }
 
 - (CGRect)boundsForOrientation:(UIInterfaceOrientation)orientation {

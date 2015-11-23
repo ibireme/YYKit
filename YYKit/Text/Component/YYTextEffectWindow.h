@@ -27,7 +27,7 @@
  */
 @interface YYTextEffectWindow : UIWindow
 
-/// Returns the shared instance.
+/// Returns the shared instance (returns nil in App Extension).
 + (instancetype)sharedWindow;
 
 /// Show the magnifier in this window with a 'popup' animation. @param mag A magnifier.

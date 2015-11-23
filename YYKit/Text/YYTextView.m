@@ -25,6 +25,7 @@
 #import "NSAttributedString+YYText.h"
 #import "UIPasteboard+YYText.h"
 #import "UIDevice+YYAdd.h"
+#import "UIApplication+YYAdd.h"
 #import "YYImage.h"
 
 
@@ -422,6 +423,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Show or update `_magnifierCaret` based on `_trackingPoint`, and hide `_magnifierRange`.
 - (void)_showMagnifierCaret {
+    if ([UIApplication isAppExtension]) return;
+    
     if (_state.showingMagnifierRanged) {
         _state.showingMagnifierRanged = NO;
         [[YYTextEffectWindow sharedWindow] hideMagnifier:_magnifierRanged];
@@ -439,6 +442,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Show or update `_magnifierRanged` based on `_trackingPoint`, and hide `_magnifierCaret`.
 - (void)_showMagnifierRanged {
+    if ([UIApplication isAppExtension]) return;
+    
     if (_verticalForm) { // hack for vertical form...
         [self _showMagnifierCaret];
         return;
@@ -511,6 +516,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Update the showing magnifier.
 - (void)_updateMagnifier {
+    if ([UIApplication isAppExtension]) return;
+    
     if (_state.showingMagnifierCaret) {
         [[YYTextEffectWindow sharedWindow] moveMagnifier:_magnifierCaret];
     }
@@ -521,6 +528,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Hide the `_magnifierCaret` and `_magnifierRanged`.
 - (void)_hideMagnifier {
+    if ([UIApplication isAppExtension]) return;
+    
     if (_state.showingMagnifierCaret || _state.showingMagnifierRanged) {
         // disable touch began temporary to ignore caret animation overlap
         _state.ignoreTouchBegan = YES;
@@ -1009,6 +1018,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 /// If it shows selection grabber and this view was moved by super view,
 /// update the selection dot in window.
 - (void)_fixSelectionDot {
+    if ([UIApplication isAppExtension]) return;
+    
     CGPoint origin = [self convertPoint:CGPointZero toViewOrWindow:[YYTextEffectWindow sharedWindow]];
     if (!CGPointEqualToPoint(origin, _previousOriginInWindow)) {
         _previousOriginInWindow = origin;
@@ -1532,10 +1543,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 /// Returns the `root` view controller (returns nil if not found).
 - (UIViewController *)_getRootViewController {
     UIViewController *ctrl = nil;
-#ifndef YY_TARGET_IS_EXTENSION
-    if (!ctrl) ctrl = [UIApplication sharedApplication].keyWindow.rootViewController;
-    if (!ctrl) ctrl = [[UIApplication sharedApplication].windows.firstObject rootViewController];
-#endif
+    UIApplication *app = [UIApplication sharedExtensionApplication];
+    if (!ctrl) ctrl = app.keyWindow.rootViewController;
+    if (!ctrl) ctrl = [app.windows.firstObject rootViewController];
     if (!ctrl) ctrl = self.viewController;
     if (!ctrl) return nil;
     
@@ -1632,8 +1642,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 /// Show undo alert if it can undo or redo.
-- (void)_showUndoAlert {
-#ifndef YY_TARGET_IS_EXTENSION
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+- (void)_showUndoRedoAlert NS_EXTENSION_UNAVAILABLE_IOS(""){
     _state.firstResponderBeforeUndoAlert = self.isFirstResponder;
     __weak typeof(self) _self = self;
     NSArray *strings = [self _localizedUndoStrings];
@@ -1701,8 +1711,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 #pragma clang diagnostic pop
         }
     }
-#endif
 }
+#endif
 
 /// Get the localized undo alert strings based on app's main bundle.
 - (NSArray *)_localizedUndoStrings {
@@ -2684,7 +2694,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (motion == UIEventSubtypeMotionShake && _allowsUndoAndRedo) {
-        [self _showUndoAlert];
+        if (![UIApplication isAppExtension]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+            [self performSelector:@selector(_showUndoRedoAlert)];
+#pragma clang diagnostic pop
+        }
     } else {
         [super motionEnded:motion withEvent:event];
     }

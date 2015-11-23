@@ -59,6 +59,8 @@
  status bar network activity indicator.
  
  This method is thread safe.
+ 
+ This method has no effect in App Extension.
  */
 - (void)incrementNetworkActivityCount;
 
@@ -68,7 +70,16 @@
  status bar network activity indicator.
  
  This method is thread safe.
+ 
+ This method has no effect in App Extension.
  */
 - (void)decrementNetworkActivityCount;
+
+
+/// Returns YES in App Extension.
++ (BOOL)isAppExtension;
+
+/// Same as sharedApplication, but returns nil in App Extension.
++ (UIApplication *)sharedExtensionApplication;
 
 @end

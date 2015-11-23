@@ -48,7 +48,7 @@ typedef struct {
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
-/// Get the default manager.
+/// Get the default manager (returns nil in App Extension).
 + (instancetype)defaultManager;
 
 /// Get the keyboard window. nil if there's no keyboard window.

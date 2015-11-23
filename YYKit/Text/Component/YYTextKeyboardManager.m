@@ -10,6 +10,7 @@
 //
 
 #import "YYTextKeyboardManager.h"
+#import "UIApplication+YYAdd.h"
 #import <objc/runtime.h>
 
 
@@ -137,20 +138,20 @@ static int _YYTextKeyboardViewFrameObserverKey;
 }
 
 + (instancetype)defaultManager {
-    static YYTextKeyboardManager *mgr;
+    static YYTextKeyboardManager *mgr = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        mgr = [[self alloc] _init];
+        if (![UIApplication isAppExtension]) {
+            mgr = [[self alloc] _init];
+        }
     });
     return mgr;
 }
 
 + (void)load {
-#ifndef YY_TARGET_IS_EXTENSION
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self defaultManager];
     });
-#endif
 }
 
 - (void)addObserver:(id<YYTextKeyboardObserver>)observer {
@@ -164,16 +165,18 @@ static int _YYTextKeyboardViewFrameObserverKey;
 }
 
 - (UIWindow *)keyboardWindow {
-#ifndef YY_TARGET_IS_EXTENSION
+    UIApplication *app = [UIApplication sharedExtensionApplication];
+    if (!app) return nil;
+    
     UIWindow *window = nil;
-    for (window in [UIApplication sharedApplication].windows) {
+    for (window in app.windows) {
         if ([self _getKeyboardViewFromWindow:window]) return window;
     }
-    window = [UIApplication sharedApplication].keyWindow;
+    window = app.keyWindow;
     if ([self _getKeyboardViewFromWindow:window]) return window;
     
     NSMutableArray *kbWindows = nil;
-    for (window in [UIApplication sharedApplication].windows) {
+    for (window in app.windows) {
         NSString *windowName = NSStringFromClass(window.class);
         if ([self _systemVersion] < 9) {
             // UITextEffectsWindow
@@ -197,22 +200,22 @@ static int _YYTextKeyboardViewFrameObserverKey;
     if (kbWindows.count == 1) {
         return kbWindows.firstObject;
     }
-#endif
     return nil;
 }
 
 - (UIView *)keyboardView {
-#ifndef YY_TARGET_IS_EXTENSION
+    UIApplication *app = [UIApplication sharedExtensionApplication];
+    if (!app) return nil;
+    
     UIWindow *window = nil;
     UIView *view = nil;
-    for (window in [UIApplication sharedApplication].windows) {
+    for (window in app.windows) {
         view = [self _getKeyboardViewFromWindow:window];
         if (view) return view;
     }
-    window = [UIApplication sharedApplication].keyWindow;
+    window = app.keyWindow;
     view = [self _getKeyboardViewFromWindow:window];
     if (view) return view;
-#endif
     return nil;
 }
 
@@ -367,14 +370,16 @@ static int _YYTextKeyboardViewFrameObserverKey;
 }
 
 - (void)_notifyAllObservers {
-#ifndef YY_TARGET_IS_EXTENSION
+    UIApplication *app = [UIApplication sharedExtensionApplication];
+    if (!app) return;
+    
     UIView *keyboard = self.keyboardView;
     UIWindow *window = keyboard.window;
     if (!window) {
-        window = [UIApplication sharedApplication].keyWindow;
+        window = app.keyWindow;
     }
     if (!window) {
-        window = [UIApplication sharedApplication].windows.firstObject;
+        window = app.windows.firstObject;
     }
     
     YYTextKeyboardTransition trans = {0};
@@ -398,7 +403,7 @@ static int _YYTextKeyboardViewFrameObserverKey;
         
         // Fix iPad(iOS7) keyboard frame error after rorate device when the keyboard is not docked to bottom.
         if (((int)[self _systemVersion]) == 7) {
-            UIInterfaceOrientation ori = [UIApplication sharedApplication].statusBarOrientation;
+            UIInterfaceOrientation ori = app.statusBarOrientation;
             if (_fromOrientation != UIInterfaceOrientationUnknown && _fromOrientation != ori) {
                 switch (ori) {
                     case UIInterfaceOrientationPortrait: {
@@ -448,17 +453,18 @@ static int _YYTextKeyboardViewFrameObserverKey;
     _hasObservedChange = NO;
     _fromFrame = trans.toFrame;
     _fromVisible = trans.toVisible;
-    _fromOrientation = [UIApplication sharedApplication].statusBarOrientation;
-#endif
+    _fromOrientation = app.statusBarOrientation;
 }
 
 - (CGRect)convertRect:(CGRect)rect toView:(UIView *)view {
-#ifndef YY_TARGET_IS_EXTENSION
+    UIApplication *app = [UIApplication sharedExtensionApplication];
+    if (!app) return CGRectZero;
+    
     if (CGRectIsNull(rect)) return rect;
     if (CGRectIsInfinite(rect)) return rect;
     
-    UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
-    if (!mainWindow) mainWindow = [UIApplication sharedApplication].windows.firstObject;
+    UIWindow *mainWindow = app.keyWindow;
+    if (!mainWindow) mainWindow = app.windows.firstObject;
     if (!mainWindow) { // no window ?!
         if (view) {
             [view convertRect:rect fromView:nil];
@@ -480,9 +486,6 @@ static int _YYTextKeyboardViewFrameObserverKey;
     rect = [toWindow convertRect:rect fromWindow:mainWindow];
     rect = [view convertRect:rect fromView:toWindow];
     return rect;
-#else
-    return CGRectZero;
-#endif
 }
 
 @end

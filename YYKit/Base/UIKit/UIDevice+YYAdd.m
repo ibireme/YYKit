@@ -58,10 +58,9 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
 - (BOOL)isJailbroken {
     if ([self isSimulator]) return NO; // Dont't check simulator
     
-#ifndef YY_TARGET_IS_EXTENSION
-    NSURL *cydiaURL = [NSURL URLWithString:@"cydia://package"];
-    if ([[UIApplication sharedApplication] canOpenURL:cydiaURL]) return YES;
-#endif
+    // iOS9 URL Scheme query changed ...
+    // NSURL *cydiaURL = [NSURL URLWithString:@"cydia://package"];
+    // if ([[UIApplication sharedApplication] canOpenURL:cydiaURL]) return YES;
     
     NSArray *paths = @[@"/Applications/Cydia.app",
                        @"/private/var/lib/apt/",
@@ -86,18 +85,16 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
     return NO;
 }
 
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 - (BOOL)canMakePhoneCalls {
-#ifndef YY_TARGET_IS_EXTENSION
     __block BOOL can;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         can = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel://"]];
     });
     return can;
-#else
-    return NO;
-#endif
 }
+#endif
 
 - (NSString *)ipAddressWIFI {
     NSString *address = nil;
