@@ -391,10 +391,13 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     CGSize newSize = self.bounds.size;
     if (!CGSizeEqualToSize(oldSize, newSize)) {
         _innerContainer.size = self.bounds.size;
+        if (!_ignoreCommonProperties) {
+            _state.layoutNeedUpdate = YES;
+        }
         if (_displaysAsynchronously && _clearContentsBeforeAsynchronouslyDisplay) {
             [self _clearContents];
         }
-        [self _setLayoutNeedUpdate];
+        [self _setLayoutNeedRedraw];
     }
 }
 
