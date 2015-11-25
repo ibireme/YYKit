@@ -110,7 +110,7 @@
     [decoder updateData:subData final:NO];
     YYImageFrame *frame = [decoder frameAtIndex:0 decodeForDisplay:YES];
     
-    UIImage *image = [frame.image imageByBlurRadius:_slider1.value tintColor:nil tintMode:0 saturation:1 maskImage:nil];;
+    UIImage *image = [frame.image imageByBlurRadius:_slider1.value tintColor:nil tintMode:0 saturation:1 maskImage:nil];
     _imageView.image = image;
 }
 
