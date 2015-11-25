@@ -111,6 +111,13 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    _runloopMode = NSRunLoopCommonModes;
+    _autoPlayAnimatedImage = YES;
+    return self;
+}
+
 - (instancetype)initWithImage:(UIImage *)image {
     self = [super init];
     _runloopMode = NSRunLoopCommonModes;
