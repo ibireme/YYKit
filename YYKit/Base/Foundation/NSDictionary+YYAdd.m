@@ -195,7 +195,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
     for (id key in sortedKeys) {
         [arr addObject:self[key]];
     }
-    return arr;
+    return [arr copy];
 }
 
 - (BOOL)containsObjectForKey:(id)key {
@@ -209,7 +209,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
         id value = self[key];
         if (value) dic[key] = value;
     }
-    return dic;
+    return [dic copy];
 }
 
 - (NSString *)jsonStringEncoded {
