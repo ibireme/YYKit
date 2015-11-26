@@ -21,3 +21,6 @@ DerivedData
 
 # Bundler
 .bundle
+
+#AppCode
+.idea/
