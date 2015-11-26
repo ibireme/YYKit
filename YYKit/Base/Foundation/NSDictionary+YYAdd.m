@@ -386,7 +386,7 @@ return def;
             dic[key] = value;
         }
     }
-    return dic;
+    return [dic copy];
 }
 
 @end
