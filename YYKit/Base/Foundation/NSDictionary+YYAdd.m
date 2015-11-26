@@ -43,7 +43,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
     return _root;
 }
 
-#pragma mark NSXMLParserDelegate
+#pragma mark - NSXMLParserDelegate
 
 #define XMLText @"_text"
 #define XMLName @"_name"
