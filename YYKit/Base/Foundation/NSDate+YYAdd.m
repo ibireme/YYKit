@@ -76,8 +76,7 @@ YYSYNTH_DUMMY_CLASS(NSDate_YYAdd)
 
 - (BOOL)isLeapYear {
     NSUInteger year = self.year;
-    if ((year % 400 == 0) || (year % 100 == 0) || (year % 4 == 0)) return YES;
-    return NO;
+    return ((year % 400 == 0) || (year % 100 == 0) || (year % 4 == 0));
 }
 
 - (BOOL)isToday {
