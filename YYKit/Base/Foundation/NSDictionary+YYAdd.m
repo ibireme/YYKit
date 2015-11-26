@@ -136,7 +136,8 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
     
     id parent = topNew[nodeName];
     if ([parent isKindOfClass:[NSArray class]]) {
-        parent[[parent count] - 1] = inner;
+        NSArray *parentAsArray = parent;
+        parent[parentAsArray.count - 1] = inner;
     } else {
         topNew[nodeName] = inner;
     }
