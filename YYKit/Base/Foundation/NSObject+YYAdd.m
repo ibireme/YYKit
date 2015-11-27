@@ -315,8 +315,8 @@ else if (size <= 4 * _size_ ) { \
     }
 }
 
-- (void)performSelector:(SEL)selector afterDelay:(NSTimeInterval)delay {
-    [self performSelector:selector withObject:nil afterDelay:delay];
+- (void)performSelector:(SEL)sel afterDelay:(NSTimeInterval)delay {
+    [self performSelector:sel withObject:nil afterDelay:delay];
 }
 
 + (BOOL)swizzleInstanceMethod:(SEL)originalSel with:(SEL)newSel {
