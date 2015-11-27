@@ -815,7 +815,7 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                                 if (newOne) [set addObject:newOne];
                             }
                         }
-                        ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, valueSet);
+                        ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, set);
                     } else {
                         if (meta->_nsType == YYEncodingTypeNSSet) {
                             ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, valueSet);
