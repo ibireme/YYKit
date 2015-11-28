@@ -170,7 +170,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
 
 + (NSDictionary *)dictionaryWithPlistString:(NSString *)plist {
     if (!plist) return nil;
-    NSData* data = [plist dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [plist dataUsingEncoding:NSUTF8StringEncoding];
     return [self dictionaryWithPlistData:data];
 }
 
@@ -365,7 +365,7 @@ return def;
 
 + (NSMutableDictionary *)dictionaryWithPlistString:(NSString *)plist {
     if (!plist) return nil;
-    NSData* data = [plist dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [plist dataUsingEncoding:NSUTF8StringEncoding];
     return [self dictionaryWithPlistData:data];
 }
 

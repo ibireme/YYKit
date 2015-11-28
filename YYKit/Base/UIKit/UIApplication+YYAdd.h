@@ -40,7 +40,7 @@
 /// Application's Build number. e.g. "123"
 @property (nonatomic, readonly) NSString *appBuildVersion;
 
-/// Whether this app is priated (not install from appstore).
+/// Whether this app is pirated (not install from appstore).
 @property (nonatomic, readonly) BOOL isPirated;
 
 /// Whether this app is being debugged (debugger attached).

@@ -87,7 +87,7 @@ YYSYNTH_DUMMY_CLASS(NSArray_YYAdd)
 
 + (NSMutableArray *)arrayWithPlistString:(NSString *)plist {
     if (!plist) return nil;
-    NSData* data = [plist dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [plist dataUsingEncoding:NSUTF8StringEncoding];
     return [self arrayWithPlistData:data];
 }
 
