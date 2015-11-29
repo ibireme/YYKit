@@ -722,6 +722,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     } else {
         _innerText = [NSMutableAttributedString new];
     }
+    [_textParser parseText:_innerText selectedRange:NULL];
     if (!_ignoreCommonProperties) {
         if (_displaysAsynchronously && _clearContentsBeforeAsynchronouslyDisplay) {
             [self _clearContents];
