@@ -1344,7 +1344,7 @@ fail:
         return [YYTextPosition positionWithOffset:line.range.location affinity:behind ? YYTextAffinityBackward:YYTextAffinityForward];
     }
     
-    // detect weather the line is a linebreak token
+    // detect whether the line is a linebreak token
     if (line.range.length <= 2) {
         NSString *str = [_text.string substringWithRange:line.range];
         if (YYTextIsLinebreakString(str)) { // an empty line ("\r", "\n", "\r\n")

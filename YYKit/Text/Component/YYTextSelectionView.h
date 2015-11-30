@@ -56,7 +56,7 @@
 @property (nonatomic, strong) UIColor *color; ///< the tint color
 @property (nonatomic, assign, getter = isCaretBlinks) BOOL caretBlinks; ///< whether the caret is blinks
 @property (nonatomic, assign, getter = isCaretVisible) BOOL caretVisible; ///< whether the caret is visible
-@property (nonatomic, assign, getter = isVerticalForm) BOOL verticalForm; ///< weather the text view is vertical form
+@property (nonatomic, assign, getter = isVerticalForm) BOOL verticalForm; ///< whether the text view is vertical form
 
 @property (nonatomic, assign) CGRect caretRect; ///< caret rect (width==0 or height==0)
 @property (nonatomic, copy) NSArray *selectionRects; ///<  array of YYTextSelectionRect, default is nil

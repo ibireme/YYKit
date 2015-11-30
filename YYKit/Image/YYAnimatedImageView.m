@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     NSUInteger _curIndex; ///< current frame index (from 0)
     NSUInteger _totalFrameCount; ///< total frame count
     
-    BOOL _loopEnd; ///< weather the loop is end.
+    BOOL _loopEnd; ///< whether the loop is end.
     NSUInteger _curLoop; ///< current loop count (from 0)
     NSUInteger _totalLoop; ///< total loop count, 0 means infinity
     
