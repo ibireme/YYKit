@@ -77,7 +77,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
         case '#': return YYEncodingTypeClass | qualifier;
         case ':': return YYEncodingTypeSEL | qualifier;
         case '*': return YYEncodingTypeCString | qualifier;
-        case '?': return YYEncodingTypePointer | qualifier;
+        case '^': return YYEncodingTypePointer | qualifier;
         case '[': return YYEncodingTypeCArray | qualifier;
         case '(': return YYEncodingTypeUnion | qualifier;
         case '{': return YYEncodingTypeStruct | qualifier;
@@ -86,7 +86,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
                 return YYEncodingTypeBlock | qualifier;
             else
                 return YYEncodingTypeObject | qualifier;
-        } break;
+        }
         default: return YYEncodingTypeUnknown | qualifier;
     }
 }
@@ -138,13 +138,9 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
         NSMutableArray *argumentTypes = [NSMutableArray new];
         for (unsigned int i = 0; i < argumentCount; i++) {
             char *argumentType = method_copyArgumentType(method, i);
-            if (argumentType) {
-                NSString *type = [NSString stringWithUTF8String:argumentType];
-                [argumentTypes addObject:type ? type : @""];
-                free(argumentType);
-            } else {
-                [argumentTypes addObject:@""];
-            }
+            NSString *type = argumentType ? [NSString stringWithUTF8String:argumentType] : nil;
+            [argumentTypes addObject:type ? type : @""];
+            if (argumentType) free(argumentType);
         }
         _argumentTypeEncodings = argumentTypes;
     }
@@ -207,9 +203,6 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
             case 'W': {
                 type |= YYEncodingTypePropertyWeak;
             } break;
-            case 'P': {
-                type |= YYEncodingTypePropertyGarbage;
-            } break;
             case 'G': {
                 type |= YYEncodingTypePropertyCustomGetter;
                 if (attrs[i].value) {
@@ -222,8 +215,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
                     _setter = [NSString stringWithUTF8String:attrs[i].value];
                 }
             } break;
-            default:
-                break;
+            default: break;
         }
     }
     if (attrs) {
@@ -263,11 +255,6 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
 
     _superClassInfo = [self.class classInfoWithClass:_superCls];
     return self;
-}
-
-- (instancetype)initWithClassName:(NSString *)className {
-    Class cls = NSClassFromString(className);
-    return [self initWithClass:cls];
 }
 
 - (void)_update {

@@ -56,7 +56,7 @@
  
      @implementation YYShadow
      - (void)encodeWithCoder:(NSCoder *)aCoder { [self modelEncodeWithCoder:aCoder]; }
-     - (id)initWithCoder:(NSCoder *)aDecoder { return [self modelInitWithCoder:aDecoder]; }
+     - (id)initWithCoder:(NSCoder *)aDecoder { self = [super init]; return [self modelInitWithCoder:aDecoder]; }
      - (id)copyWithZone:(NSZone *)zone { return [self modelCopy]; }
      - (NSUInteger)hash { return [self modelHash]; }
      - (BOOL)isEqual:(id)object { return [self modelIsEqual:object]; }
@@ -318,6 +318,40 @@
  @return A class mapper.
  */
 + (NSDictionary *)modelContainerPropertyGenericClass;
+
+/**
+ If you need to create instances of different classes during json->object transform,
+ use the method to choose custom class based on dictionary data.
+ 
+ @discussion If the model implements this method, it will be called to determine resulting class
+ during `+modelWithJSON:`, `+modelWithDictionary:`, conveting object of properties of parent objects 
+ (both singular and containers via `+modelContainerPropertyGenericClass`).
+ 
+ Example:
+        @class YYCircle, YYRectangle, YYLine;
+ 
+        @implementation YYShape
+
+        + (Class)modelCustomClassForDictionary:(NSDictionary*)dictionary {
+            if (dictionary[@"radius"] != nil) {
+                return [YYCircle class];
+            } else if (dictionary[@"width"] != nil) {
+                return [YYRectangle class];
+            } else if (dictionary[@"y2"] != nil) {
+                return [YYLine class];
+            } else {
+                return [self class];
+            }
+        }
+
+        @end
+
+ @param dictionary The json/kv dictionary.
+ 
+ @return Class to create from this dictionary, `nil` to use current class.
+
+ */
++ (Class)modelCustomClassForDictionary:(NSDictionary*)dictionary;
 
 /**
  All the properties in blacklist will be ignored in model transform process.

@@ -39,6 +39,21 @@
     return one;
 }
 
+- (UIViewController *)rootViewController {
+    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
+        if (self == window) continue;
+        if (window.hidden) continue;
+        UIViewController *topViewController = window.rootViewController;
+        if (topViewController) return topViewController;
+    }
+    UIViewController *viewController = [super rootViewController];
+    if (!viewController) {
+        viewController = [UIViewController new];
+        [super setRootViewController:viewController];
+    }
+    return viewController;
+}
+
 // Bring self to front
 - (void)_updateWindowLevel {
     UIApplication *app = [UIApplication sharedExtensionApplication];

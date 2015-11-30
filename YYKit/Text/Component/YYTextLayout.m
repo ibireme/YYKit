@@ -2276,6 +2276,8 @@ static void YYTextSetLinePatternInContext(YYTextLineStyle style, CGFloat width, 
 
 
 static void YYTextDrawBorderRects(CGContextRef context, CGSize size, YYTextBorder *border, NSArray *rects, BOOL isVertical) {
+    if (rects.count == 0) return;
+    
     YYTextShadow *shadow = border.shadow;
     if (shadow.color) {
         CGContextSaveGState(context);
@@ -2663,7 +2665,7 @@ static void YYTextDrawBorder(YYTextLayout *layout, CGContextRef context, CGSize 
             }
             
             NSMutableArray *drawRects = [NSMutableArray new];
-            CGRect curRect= ((NSValue *)runRects[0]).CGRectValue;
+            CGRect curRect= ((NSValue *)[runRects firstObject]).CGRectValue;
             for (NSInteger re = 0, reMax = runRects.count; re < reMax; re++) {
                 CGRect rect = ((NSValue *)runRects[re]).CGRectValue;
                 if (isVertical) {

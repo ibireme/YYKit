@@ -31,7 +31,7 @@ static int _YYTextKeyboardViewFrameObserverKey;
     if (_keyboardView == keyboardView) return;
     if (_keyboardView) {
         [self removeFrameObserver];
-        objc_setAssociatedObject(_keyboardView, &_YYTextKeyboardViewFrameObserverKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(_keyboardView, &_YYTextKeyboardViewFrameObserverKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     _keyboardView = keyboardView;
     if (keyboardView) {

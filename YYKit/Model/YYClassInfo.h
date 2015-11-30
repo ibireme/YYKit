@@ -16,7 +16,7 @@
  Type encoding's type.
  */
 typedef NS_OPTIONS(NSUInteger, YYEncodingType) {
-    YYEncodingTypeMask       = 0x1F, ///< mask of type value
+    YYEncodingTypeMask       = 0xFF, ///< mask of type value
     YYEncodingTypeUnknown    = 0, ///< unknown
     YYEncodingTypeVoid       = 1, ///< void
     YYEncodingTypeBool       = 2, ///< bool
@@ -41,25 +41,24 @@ typedef NS_OPTIONS(NSUInteger, YYEncodingType) {
     YYEncodingTypeCString    = 21, ///< char*
     YYEncodingTypeCArray     = 22, ///< char[10] (for example)
     
-    YYEncodingTypeQualifierMask   = 0xFE0,  ///< mask of qualifier
-    YYEncodingTypeQualifierConst  = 1 << 5, ///< const
-    YYEncodingTypeQualifierIn     = 1 << 6, ///< in
-    YYEncodingTypeQualifierInout  = 1 << 7, ///< inout
-    YYEncodingTypeQualifierOut    = 1 << 8, ///< out
-    YYEncodingTypeQualifierBycopy = 1 << 9, ///< bycopy
-    YYEncodingTypeQualifierByref  = 1 << 10, ///< byref
-    YYEncodingTypeQualifierOneway = 1 << 11, ///< oneway
+    YYEncodingTypeQualifierMask   = 0xFF00,   ///< mask of qualifier
+    YYEncodingTypeQualifierConst  = 1 << 8,  ///< const
+    YYEncodingTypeQualifierIn     = 1 << 9,  ///< in
+    YYEncodingTypeQualifierInout  = 1 << 10, ///< inout
+    YYEncodingTypeQualifierOut    = 1 << 11, ///< out
+    YYEncodingTypeQualifierBycopy = 1 << 12, ///< bycopy
+    YYEncodingTypeQualifierByref  = 1 << 13, ///< byref
+    YYEncodingTypeQualifierOneway = 1 << 14, ///< oneway
     
-    YYEncodingTypePropertyMask         = 0x1FF000, ///< mask of property
-    YYEncodingTypePropertyReadonly     = 1 << 12, ///< readonly
-    YYEncodingTypePropertyCopy         = 1 << 13, ///< copy
-    YYEncodingTypePropertyRetain       = 1 << 14, ///< retain
-    YYEncodingTypePropertyNonatomic    = 1 << 15, ///< nonatomic
-    YYEncodingTypePropertyWeak         = 1 << 16, ///< weak
-    YYEncodingTypePropertyCustomGetter = 1 << 17, ///< getter=
-    YYEncodingTypePropertyCustomSetter = 1 << 18, ///< setter=
-    YYEncodingTypePropertyDynamic      = 1 << 19, ///< @dynamic
-    YYEncodingTypePropertyGarbage      = 1 << 20,
+    YYEncodingTypePropertyMask         = 0xFF0000, ///< mask of property
+    YYEncodingTypePropertyReadonly     = 1 << 16, ///< readonly
+    YYEncodingTypePropertyCopy         = 1 << 17, ///< copy
+    YYEncodingTypePropertyRetain       = 1 << 18, ///< retain
+    YYEncodingTypePropertyNonatomic    = 1 << 19, ///< nonatomic
+    YYEncodingTypePropertyWeak         = 1 << 20, ///< weak
+    YYEncodingTypePropertyCustomGetter = 1 << 21, ///< getter=
+    YYEncodingTypePropertyCustomSetter = 1 << 22, ///< setter=
+    YYEncodingTypePropertyDynamic      = 1 << 23, ///< @dynamic
 };
 
 /**

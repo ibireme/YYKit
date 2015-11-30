@@ -1971,6 +1971,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     self.debugOption = [YYTextDebugOption sharedDebugOption];
     [YYTextDebugOption addDebugTarget:self];
     
+    [self _updateInnerContainerSize];
     [self _update];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_pasteboardChanged) name:UIPasteboardChangedNotification object:nil];

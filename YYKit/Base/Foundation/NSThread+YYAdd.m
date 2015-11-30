@@ -32,7 +32,7 @@ static inline void YYAutoreleasePoolPush() {
         dic[YYNSThreadAutoleasePoolStackKey] = poolStack;
         CFRelease(poolStack);
     }
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; //< create
     [poolStack addObject:pool]; // push
 }
 
@@ -41,7 +41,7 @@ static inline void YYAutoreleasePoolPop() {
     NSMutableArray *poolStack = dic[YYNSThreadAutoleasePoolStackKey];
     NSAutoreleasePool *pool = [poolStack lastObject];
     [poolStack removeLastObject]; // pop
-    [pool release];
+    [pool release]; //< release, may get warning in analyze...
 }
 
 static void YYRunLoopAutoreleasePoolObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
