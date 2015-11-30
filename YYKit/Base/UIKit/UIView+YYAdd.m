@@ -39,7 +39,7 @@ YYSYNTH_DUMMY_CLASS(UIView_YYAdd)
 
 - (NSData *)snapshotPDF {
     CGRect bounds = self.bounds;
-    NSMutableData* data = [NSMutableData data];
+    NSMutableData *data = [NSMutableData data];
     CGDataConsumerRef consumer = CGDataConsumerCreateWithCFData((__bridge CFMutableDataRef)data);
     CGContextRef context = CGPDFContextCreate(consumer, &bounds, NULL);
     CGDataConsumerRelease(consumer);
