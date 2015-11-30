@@ -267,14 +267,14 @@ typedef NS_ENUM (NSUInteger, YYKeychainAccessible) {
  */
 typedef NS_ENUM (NSUInteger, YYKeychainQuerySynchronizationMode) {
     
-    /** Default, Don't care for synchonization  */
+    /** Default, Don't care for synchronization  */
     YYKeychainQuerySynchronizationModeAny = 0,
     
-    /** Do not synchronizable */
+    /** Is not synchronized */
     YYKeychainQuerySynchronizationModeNo,
     
     /** To add a new item which can be synced to other devices, or to obtain 
-     synchronizable results from a query*/
+     synchronized results from a query*/
     YYKeychainQuerySynchronizationModeYes,
 } NS_AVAILABLE_IOS (7_0);
 

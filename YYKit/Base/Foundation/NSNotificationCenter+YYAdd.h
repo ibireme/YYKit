@@ -19,8 +19,8 @@
 
 /**
  Posts a given notification to the receiver on main thread.
- If current thread is main thread, the notification is posted synchronized;
- otherwise, is posted asynchronized.
+ If current thread is main thread, the notification is posted synchronously;
+ otherwise, is posted asynchronously.
  
  @param notification  The notification to post.
                       An exception is raised if notification is nil.
@@ -45,7 +45,7 @@
 /**
  Creates a notification with a given name and sender and posts it to the 
  receiver on main thread. If current thread is main thread, the notification 
- is posted synchronized; otherwise, is posted asynchronized.
+ is posted synchronously; otherwise, is posted asynchronously.
  
  @param name    The name of the notification.
  
@@ -57,7 +57,7 @@
 /**
  Creates a notification with a given name and sender and posts it to the
  receiver on main thread. If current thread is main thread, the notification
- is posted synchronized; otherwise, is posted asynchronized.
+ is posted synchronously; otherwise, is posted asynchronously.
  
  @param name      The name of the notification.
  
