@@ -54,7 +54,7 @@ YYSYNTH_DUMMY_CLASS(NSArray_YYAdd)
 
 - (NSString *)jsonStringEncoded {
     if ([NSJSONSerialization isValidJSONObject:self]) {
-        NSError *error;
+        NSError *error = nil;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:0 error:&error];
         NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         if (!error) return json;
@@ -64,7 +64,7 @@ YYSYNTH_DUMMY_CLASS(NSArray_YYAdd)
 
 - (NSString *)jsonPrettyStringEncoded {
     if ([NSJSONSerialization isValidJSONObject:self]) {
-        NSError *error;
+        NSError *error = nil;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
         NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         if (!error) return json;
