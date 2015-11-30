@@ -132,7 +132,7 @@
 - (NSString *)stringByURLDecode;
 
 /**
- Escape commmon HTML to Entity.
+ Escape common HTML to Entity.
  Example: "a<b" will be escape to "a&lt;b".
  */
 - (NSString *)stringByEscapingHTML;

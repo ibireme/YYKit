@@ -35,7 +35,7 @@
 /**
  Serialize the array to a binary property list data.
  
- @return A bplist data, or nil if an error occurs.
+ @return A plist data, or nil if an error occurs.
  */
 - (NSData *)plistData;
 

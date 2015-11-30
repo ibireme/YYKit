@@ -43,7 +43,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
     return _root;
 }
 
-#pragma mark NSXMLParserDelegate
+#pragma mark - NSXMLParserDelegate
 
 #define XMLText @"_text"
 #define XMLName @"_name"
@@ -136,7 +136,8 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
     
     id parent = topNew[nodeName];
     if ([parent isKindOfClass:[NSArray class]]) {
-        parent[[parent count] - 1] = inner;
+        NSArray *parentAsArray = parent;
+        parent[parentAsArray.count - 1] = inner;
     } else {
         topNew[nodeName] = inner;
     }
@@ -194,7 +195,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
     for (id key in sortedKeys) {
         [arr addObject:self[key]];
     }
-    return arr;
+    return [arr copy];
 }
 
 - (BOOL)containsObjectForKey:(id)key {
@@ -208,7 +209,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
         id value = self[key];
         if (value) dic[key] = value;
     }
-    return dic;
+    return [dic copy];
 }
 
 - (NSString *)jsonStringEncoded {
@@ -216,7 +217,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
         NSError *error;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:0 error:&error];
         NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        return json;
+        if (!error) return json;
     }
     return nil;
 }
@@ -226,7 +227,7 @@ YYSYNTH_DUMMY_CLASS(NSDictionary_YYAdd)
         NSError *error;
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
         NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        return json;
+        if (!error) return json;
     }
     return nil;
 }
@@ -385,7 +386,7 @@ return def;
             dic[key] = value;
         }
     }
-    return dic;
+    return [dic copy];
 }
 
 @end
