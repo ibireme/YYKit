@@ -20,7 +20,7 @@
  Creates and returns an array from a specified property list data.
  
  @param plist   A property list data whose root object is an array.
- @return A new array created from the plist data, or nil if an error occurs.
+ @return A new array created from the binary plist data, or nil if an error occurs.
  */
 + (NSArray *)arrayWithPlistData:(NSData *)plist;
 
@@ -35,7 +35,7 @@
 /**
  Serialize the array to a binary property list data.
  
- @return A plist data, or nil if an error occurs.
+ @return A binary plist data, or nil if an error occurs.
  */
 - (NSData *)plistData;
 
@@ -88,7 +88,7 @@
  Creates and returns an array from a specified property list data.
  
  @param plist   A property list data whose root object is an array.
- @return A new array created from the plist data, or nil if an error occurs.
+ @return A new array created from the binary plist data, or nil if an error occurs.
  */
 + (NSMutableArray *)arrayWithPlistData:(NSData *)plist;
 
