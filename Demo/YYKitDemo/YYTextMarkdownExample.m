@@ -39,7 +39,7 @@
         textView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     }
     textView.backgroundColor = [UIColor colorWithWhite:0.134 alpha:1.000];
-    textView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
+    textView.contentInset = UIEdgeInsetsMake((kiOS7Later ? 64 : 0), 0, 0, 0);
     textView.scrollIndicatorInsets = textView.contentInset;
     textView.selectedRange = NSMakeRange(text.length, 0);
     [self.view addSubview:textView];

@@ -87,7 +87,7 @@
     _label.userInteractionEnabled = YES;
     _label.numberOfLines = 0;
     _label.size = CGSizeMake(260, 260);
-    _label.center = CGPointMake(self.view.width / 2, self.view.height / 2);
+    _label.center = CGPointMake(self.view.width / 2, self.view.height / 2 - (kiOS7Later ? 0 : 32));
     _label.attributedText = text;
     [self.view addSubview:_label];
     
