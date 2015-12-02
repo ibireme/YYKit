@@ -204,7 +204,7 @@ static void CodingCopyingHashEqualExample() {
     self.view.backgroundColor = [UIColor whiteColor];
     UILabel *label = [UILabel new];
     label.size = CGSizeMake(kScreenWidth, 30);
-    label.centerY = self.view.height / 2;
+    label.centerY = self.view.height / 2 - (kiOS7Later ? 0 : 32);
     label.textAlignment = NSTextAlignmentCenter;
     label.text = @"See code in YYModelExample.m";
     [self.view addSubview:label];
