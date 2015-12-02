@@ -294,13 +294,13 @@ YYSYNTH_DUMMY_CLASS(CALayer_YYAdd)
     NSString *mediaFunction;
     switch (curve) {
         case UIViewAnimationCurveEaseInOut: {
-            mediaFunction = kCAMediaTimingFunctionEaseOut;
+            mediaFunction = kCAMediaTimingFunctionEaseInEaseOut;
         } break;
         case UIViewAnimationCurveEaseIn: {
             mediaFunction = kCAMediaTimingFunctionEaseIn;
         } break;
         case UIViewAnimationCurveEaseOut: {
-            mediaFunction = kCAMediaTimingFunctionEaseInEaseOut;
+            mediaFunction = kCAMediaTimingFunctionEaseOut;
         } break;
         case UIViewAnimationCurveLinear: {
             mediaFunction = kCAMediaTimingFunctionLinear;
