@@ -130,6 +130,10 @@ static inline UIEdgeInsets UIEdgeInsetRotateVertical(UIEdgeInsets insets) {
     return one;
 }
 
+- (id)mutableCopyWithZone:(nullable NSZone *)zone {
+    return [self copyWithZone:zone];
+}
+
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [aCoder encodeObject:[NSValue valueWithCGSize:_size] forKey:@"size"];
     [aCoder encodeObject:[NSValue valueWithUIEdgeInsets:_insets] forKey:@"insets"];
