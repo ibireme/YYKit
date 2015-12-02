@@ -169,15 +169,6 @@ static NSDate *YYNSDateFromString(__unsafe_unretained NSString *string) {
                 if ([string characterAtIndex:10] == 'T') {
                     return [formatter1 dateFromString:string];
                 } else {
-                    time_t t = 0;
-                    struct tm tm = {0};
-                    strptime([string cStringUsingEncoding:NSUTF8StringEncoding], "%Y-%m-%d %H:%M:%S", &tm);
-                    tm.tm_isdst = -1;
-                    t = mktime(&tm);
-                    if (t >= 0) {
-                        NSDate *date = [NSDate dateWithTimeIntervalSince1970:t + [[NSTimeZone localTimeZone] secondsFromGMT]];
-                        if (date) return date;
-                    }
                     return [formatter2 dateFromString:string];
                 }
             };
@@ -192,18 +183,7 @@ static NSDate *YYNSDateFromString(__unsafe_unretained NSString *string) {
             NSDateFormatter *formatter = [NSDateFormatter new];
             formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-            blocks[20] = ^(NSString *string) {
-                time_t t = 0;
-                struct tm tm = {0};
-                strptime([string cStringUsingEncoding:NSUTF8StringEncoding], "%Y-%m-%dT%H:%M:%S%z", &tm);
-                tm.tm_isdst = -1;
-                t = mktime(&tm);
-                if (t >= 0) {
-                    NSDate *date = [NSDate dateWithTimeIntervalSince1970:t + [[NSTimeZone localTimeZone] secondsFromGMT]];
-                    if (date) return date;
-                }
-                return [formatter dateFromString:string];
-            };
+            blocks[20] = ^(NSString *string) { return [formatter dateFromString:string]; };
             blocks[24] = ^(NSString *string) { return [formatter dateFromString:string]; };
             blocks[25] = ^(NSString *string) { return [formatter dateFromString:string]; };
         }
