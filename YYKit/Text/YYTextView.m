@@ -1949,7 +1949,6 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _placeHolderView.hidden = YES;
     
     _containerView = [YYTextContainerView new];
-    _containerView.userInteractionEnabled = NO;
     _containerView.hostView = self;
     
     _selectionView = [YYTextSelectionView new];
