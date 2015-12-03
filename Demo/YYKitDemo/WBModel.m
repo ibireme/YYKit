@@ -12,7 +12,7 @@
 + (NSDictionary *)modelCustomPropertyMapper {
     return @{@"cutType" : @"cut_type"};
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     if ([_type isEqualToString:@"GIF"]) {
         _badgeType = WBPictureBadgeTypeGIF;
     } else {
@@ -20,6 +20,7 @@
             _badgeType = WBPictureBadgeTypeLong;
         }
     }
+    return YES;
 }
 @end
 
@@ -31,9 +32,10 @@
              @"objectID" : @"object_id",
              @"middlePlus" : @"middleplus"};
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     WBPictureMetadata *meta = _large ? _large : _largest ? _largest : _original;
     _badgeType = meta.badgeType;
+    return YES;
 }
 @end
 
@@ -54,7 +56,7 @@
     return @{@"picIds" : [NSString class],
              @"picInfos" : [WBPicture class]};
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     // 自动 model-mapper 不能完成的，这里可以进行额外处理
     _pics = nil;
     if (_picIds.count != 0) {
@@ -67,6 +69,7 @@
         }
         _pics = pics;
     }
+    return YES;
 }
 @end
 
@@ -163,7 +166,7 @@
              @"verifiedSource" : @"verified_source",
              @"userAbility" : @"user_ability"};
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     // 自动 model-mapper 不能完成的，这里可以进行额外处理
     _gender = 0;
     if ([_genderString isEqualToString:@"m"]) {
@@ -182,6 +185,7 @@
     } else {
         _userVerifyType = WBUserVerifyTypeNone;
     }
+    return YES;
 }
 @end
 
@@ -222,7 +226,7 @@
              @"topicStruct" : [WBTopic class],
              @"tagStruct" : [WBTag class]};
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     // 自动 model-mapper 不能完成的，这里可以进行额外处理
     _pics = nil;
     if (_picIds.count != 0) {
@@ -243,6 +247,7 @@
             _retweetedStatus.pageInfo = _pageInfo;
         }
     }
+    return YES;
     
 }
 @end
@@ -282,9 +287,10 @@
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{@"emoticons" : [WBEmoticon class]};
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     [_emoticons enumerateObjectsUsingBlock:^(WBEmoticon *emoticon, NSUInteger idx, BOOL *stop) {
         emoticon.group = self;
     }];
+    return YES;
 }
 @end

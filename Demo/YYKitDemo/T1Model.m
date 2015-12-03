@@ -19,7 +19,7 @@
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{ @"indices" : [NSNumber class] };
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     int rangeCount = (int)_indices.count / 2;
     NSMutableArray *ranges = nil;
     for (int i = 0; i < rangeCount; i++) {
@@ -34,6 +34,7 @@
         }
     }
     _ranges = ranges;
+    return YES;
 }
 @end
 
@@ -47,7 +48,7 @@
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{ @"indices" : [NSNumber class] };
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     int rangeCount = (int)_indices.count / 2;
     NSMutableArray *ranges = nil;
     for (int i = 0; i < rangeCount; i++) {
@@ -62,6 +63,7 @@
         }
     }
     _ranges = ranges;
+    return YES;
 }
 @end
 
@@ -69,7 +71,7 @@
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{ @"indices" : [NSNumber class] };
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     int rangeCount = (int)_indices.count / 2;
     NSMutableArray *ranges = nil;
     for (int i = 0; i < rangeCount; i++) {
@@ -84,6 +86,7 @@
         }
     }
     _ranges = ranges;
+    return YES;
 }
 @end
 
@@ -91,7 +94,7 @@
 + (NSDictionary *)modelContainerPropertyGenericClass {
     return @{ @"faces" : [NSValue class] };
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     _size = CGSizeMake(_width, _height);
     _isCrop = [_resize isEqualToString:@"crop"];
     _faces = nil;
@@ -110,6 +113,7 @@
         }
         _faces = faces;
     }
+    return YES;
 }
 @end
 
@@ -131,7 +135,7 @@
         @"mediaOrig" : @"sizes.orig"
     };
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     int rangeCount = (int)_indices.count / 2;
     NSMutableArray *ranges = nil;
     for (int i = 0; i < rangeCount; i++) {
@@ -167,6 +171,7 @@
         url = [_mediaURL stringByAppendingString:@":orig"];
         _mediaOrig.url = url ? [NSURL URLWithString:url] : nil;
     }
+    return YES;
 }
 @end
 
@@ -229,7 +234,7 @@
     };
 }
 
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     if (_profileImageURL) {
         NSMutableString *url = _profileImageURL.absoluteString.mutableCopy;
         NSString *ext = [url pathExtension];
@@ -241,6 +246,7 @@
             }
         }
     }
+    return YES;
 }
 
 @end
@@ -322,7 +328,7 @@
         @"cursorGaps" : @"response.cursor.gaps"
     };
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     NSMutableArray *timelineItems = [NSMutableArray new];
     for (NSDictionary *dic in _timeline) {
         NSDictionary *tDic = dic[@"tweet"];
@@ -368,6 +374,7 @@
             }
         }
     }
+    return YES;
 }
 
 - (void)_updateTweetReference:(T1Tweet *)tweet {

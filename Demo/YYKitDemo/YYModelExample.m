@@ -141,9 +141,10 @@ static void ContainerObjectExample() {
              @"content":@"c",
              @"time":@"t"};
 }
-- (void)modelCustomTransformFromDictionary:(NSDictionary *)dic {
+- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic {
     uint64_t timestamp = [dic unsignedLongLongValueForKey:@"t" default:0];
     self.time = [NSDate dateWithTimeIntervalSince1970:timestamp / 1000.0];
+    return YES;
 }
 - (void)modelCustomTransformToDictionary:(NSMutableDictionary *)dic {
     dic[@"t"] = @([self.time timeIntervalSince1970] * 1000).description;
