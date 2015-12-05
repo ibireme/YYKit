@@ -538,12 +538,6 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
                 }
                 if (!propertyMeta->_mappedToKey) return;
                 
-//                // reverse
-//                NSUInteger count = mappedToKeyArray.count;
-//                for (NSUInteger i = 0, mid = count / 2.0; i < mid; i++) {
-//                    [mappedToKeyArray exchangeObjectAtIndex:i withObjectAtIndex:(count - (i + 1))];
-//                }
-                
                 propertyMeta->_mappedToKeyArray = mappedToKeyArray;
                 [multiKeysPropertyMetas addObject:propertyMeta];
                 
