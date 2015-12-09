@@ -18,7 +18,6 @@ It's so huge that I split it into several independent components:
 * [YYImage](https://github.com/ibireme/YYImage) — Image framework for iOS to display/encode/decode animated WebP, APNG, GIF.
 * [YYWebImage](https://github.com/ibireme/YYWebImage) — Asynchronous image loading framework.
 * [YYText](https://github.com/ibireme/YYText) — Powerful rich text component for iOS.
-* 
 * [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — Access keyboard view and track keyboard animation.
 * [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS utility class to manage global dispatch queue.
 * [YYAsyncLayer](https://github.com/ibireme/YYAsyncLayer) — iOS utility classes for asynchronous rendering and display.
@@ -108,7 +107,6 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 * [YYImage](https://github.com/ibireme/YYImage) — 功能强大的 iOS 图像框架。
 * [YYWebImage](https://github.com/ibireme/YYWebImage) — 高性能的 iOS 异步图像加载框架。
 * [YYText](https://github.com/ibireme/YYText) — 功能强大的 iOS 富文本框架。
-* 
 * [YYKeyboardManager](https://github.com/ibireme/YYKeyboardManager) — iOS 键盘监听管理工具。
 * [YYDispatchQueuePool](https://github.com/ibireme/YYDispatchQueuePool) — iOS 全局并发队列管理工具。
 * [YYAsyncLayer](https://github.com/ibireme/YYAsyncLayer) — iOS 异步绘制与显示的工具。
