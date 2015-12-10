@@ -116,7 +116,7 @@ YY_EXTERN_C_BEGIN
     objc_setAssociatedObject(self, _cmd, value, OBJC_ASSOCIATION_RETAIN); \
     [self didChangeValueForKey:@#_getter_]; \
 } \
-- (type)_getter_ { \
+- (_type_)_getter_ { \
     _type_ cValue = { 0 }; \
     NSValue *value = objc_getAssociatedObject(self, @selector(_setter_:)); \
     [value getValue:&cValue]; \
