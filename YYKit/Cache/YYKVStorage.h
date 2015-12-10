@@ -13,6 +13,7 @@
 
 /**
  YYKVStorageItem is used by `YYKVStorage` to store key-value pair and meta data.
+ Typically, you should not use this class directly.
  */
 @interface YYKVStorageItem : NSObject
 @property (nonatomic, strong) NSString *key;        ///< key
@@ -56,6 +57,7 @@ typedef NS_ENUM(NSUInteger, YYKVStorageType) {
 
 /**
  YYKVStorage is a key-value storage based on sqlite and file system.
+ Typically, you should not use this class directly.
  
  @discussion The designated initializer for YYKVStorage is `initWithPath:type:`. 
  After initialized, a directory is created based on the `path` to hold key-value data.

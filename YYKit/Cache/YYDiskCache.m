@@ -13,6 +13,7 @@
 #import "YYKVStorage.h"
 #import "NSString+YYAdd.h"
 #import "UIDevice+YYAdd.h"
+#import <libkern/OSAtomic.h>
 #import <objc/runtime.h>
 #import <time.h>
 
@@ -30,6 +31,38 @@ static int64_t _YYDiskSpaceFree() {
     if (space < 0) space = -1;
     return space;
 }
+
+
+/// weak reference for all instances
+static NSMapTable *_globalInstances;
+static OSSpinLock _globalInstancesLock;
+
+static void _YYDiskCacheInitGlobal() {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _globalInstancesLock = OS_SPINLOCK_INIT;
+        _globalInstances = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:0];
+    });
+}
+
+static YYDiskCache *_YYDiskCacheGetGlobal(NSString *path) {
+    if (path.length == 0) return nil;
+    _YYDiskCacheInitGlobal();
+    OSSpinLockLock(&_globalInstancesLock);
+    id cache = [_globalInstances objectForKey:path];
+    OSSpinLockUnlock(&_globalInstancesLock);
+    return cache;
+}
+
+static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
+    if (cache.path.length == 0) return;
+    _YYDiskCacheInitGlobal();
+    OSSpinLockLock(&_globalInstancesLock);
+    [_globalInstances setObject:cache forKey:cache.path];
+    OSSpinLockUnlock(&_globalInstancesLock);
+}
+
+
 
 @implementation YYDiskCache {
     YYKVStorage *_kv;
@@ -120,6 +153,9 @@ static int64_t _YYDiskSpaceFree() {
     self = [super init];
     if (!self) return nil;
     
+    YYDiskCache *globalCache = _YYDiskCacheGetGlobal(path);
+    if (globalCache) return globalCache;
+    
     YYKVStorageType type;
     if (threshold == 0) {
         type = YYKVStorageTypeFile;
@@ -144,6 +180,7 @@ static int64_t _YYDiskSpaceFree() {
     _autoTrimInterval = 60;
     
     [self _trimRecursively];
+    _YYDiskCacheSetGlobal(self);
     return self;
 }
 
