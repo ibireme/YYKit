@@ -145,7 +145,8 @@
  
  @return A new cache object, or nil if an error occurs.
  
- @warning Multiple instances with the same path will make the storage unstable.
+ @warning If the cache instance for the specified path already exists in memory,
+     this method will return it directly, instead of creating a new instance.
  */
 - (instancetype)initWithPath:(NSString *)path;
 
@@ -164,7 +165,8 @@
  
  @return A new cache object, or nil if an error occurs.
  
- @warning Multiple instances with the same path will make the storage unstable.
+ @warning If the cache instance for the specified path already exists in memory,
+     this method will return it directly, instead of creating a new instance.
  */
 - (instancetype)initWithPath:(NSString *)path
              inlineThreshold:(NSUInteger)threshold NS_DESIGNATED_INITIALIZER;

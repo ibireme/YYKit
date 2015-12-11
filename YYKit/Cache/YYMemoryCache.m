@@ -18,8 +18,6 @@
 
 #if __has_include("YYDispatchQueuePool.h")
 #import "YYDispatchQueuePool.h"
-#else
-#import <libkern/OSAtomic.h>
 #endif
 
 #ifdef YYDispatchQueuePool_h
