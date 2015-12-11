@@ -234,7 +234,7 @@ static inline void YYBenchmark(void (^block)(void), void (^complete)(double ms))
 
 /**
  Get compile timestamp.
- @return NSData
+ @return A new date object set to the compile date and time.
  */
 static inline NSDate *YYCompileTime() {
     NSString *timeStr = [NSString stringWithFormat:@"%s %s",__DATE__, __TIME__];
