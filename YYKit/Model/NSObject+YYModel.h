@@ -267,7 +267,7 @@
             "n":"Harry Pottery",
             "p": 256,
             "ext" : {
-                "desc" : "A book written by J.K.Rowing."
+                "desc" : "A book written by J.K.Rowling."
             },
             "ID" : 100010
         }
