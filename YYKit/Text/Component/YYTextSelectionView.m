@@ -90,6 +90,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self setDotDirection:_dotDirection];
+    CGFloat minWidth = MIN(self.bounds.size.width, self.bounds.size.height);
+    self.layer.cornerRadius = minWidth / 2;
 }
 
 - (CGRect)touchRect {
@@ -243,6 +245,8 @@
 - (void)setCaretRect:(CGRect)caretRect {
     _caretRect = caretRect;
     self.caretView.frame = [self _standardCaretRect:caretRect];
+    CGFloat minWidth = MIN(self.caretView.bounds.size.width, self.caretView.bounds.size.height);
+    self.caretView.layer.cornerRadius = minWidth / 2;
 }
 
 - (void)setSelectionRects:(NSArray *)selectionRects {
