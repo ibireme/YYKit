@@ -298,7 +298,7 @@
     if (mag.type == YYTextMagnifierTypeRanged) {
         mag.alpha = 0;
     }
-    NSTimeInterval time = mag.type == YYTextMagnifierTypeCaret ? 0.06 : 0.1;
+    NSTimeInterval time = mag.type == YYTextMagnifierTypeCaret ? 0.08 : 0.1;
     [UIView animateWithDuration:time delay:0 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
         if (mag.type == YYTextMagnifierTypeCaret) {
             CGPoint newCenter = CGPointMake(0, -mag.fitSize.height / 2);
