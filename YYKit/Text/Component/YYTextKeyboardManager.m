@@ -116,6 +116,13 @@ static int _YYTextKeyboardViewFrameObserverKey;
                                              selector:@selector(_keyboardFrameWillChangeNotification:)
                                                  name:UIKeyboardWillChangeFrameNotification
                                                object:nil];
+    // for iPad (iOS 9)
+    if ([UIDevice currentDevice].systemVersion.floatValue >= 9) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(_keyboardFrameDidChangeNotification:)
+                                                     name:UIKeyboardDidChangeFrameNotification
+                                                   object:nil];
+    }
     return self;
 }
 
@@ -351,6 +358,29 @@ static int _YYTextKeyboardViewFrameObserverKey;
     } else {
         [self _notifyAllObservers];
     }
+}
+
+- (void)_keyboardFrameDidChangeNotification:(NSNotification *)notif {
+    if (![notif.name isEqualToString:UIKeyboardDidChangeFrameNotification]) return;
+    NSDictionary *info = notif.userInfo;
+    if (!info) return;
+    
+    [self _initFrameObserver];
+    
+    NSValue *afterValue = info[UIKeyboardFrameEndUserInfoKey];
+    CGRect after = afterValue.CGRectValue;
+    
+    // ignore zero end frame
+    if (after.size.width <= 0 && after.size.height <= 0) return;
+    
+    _notificationToFrame = after;
+    _notificationCurve = UIViewAnimationCurveEaseInOut;
+    _notificationDuration = 0;
+    _hasNotification = YES;
+    _lastIsNotification = YES;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_notifyAllObservers) object:nil];
+    [self performSelector:@selector(_notifyAllObservers) withObject:nil afterDelay:0 inModes:@[NSRunLoopCommonModes]];
 }
 
 - (void)_keyboardFrameChanged:(UIView *)keyboard {
