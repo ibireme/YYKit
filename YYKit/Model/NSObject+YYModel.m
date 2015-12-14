@@ -751,9 +751,7 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                                                                        ((NSNumber *)value).stringValue.mutableCopy);
                     } else if ([value isKindOfClass:[NSData class]]) {
                         NSMutableString *string = [[NSMutableString alloc] initWithData:value encoding:NSUTF8StringEncoding];
-                        ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter,  (meta->_nsType == YYEncodingTypeNSString) ?
-                                                                       string.copy :
-                                                                       string);
+                        ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, string);
                     } else if ([value isKindOfClass:[NSURL class]]) {
                         ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model,
                                                                        meta->_setter,
