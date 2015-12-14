@@ -112,14 +112,23 @@ static force_inline NSNumber *YYNSNumberCreateFromID(__unsafe_unretained id valu
     if (!value || value == (id)kCFNull) return nil;
     if ([value isKindOfClass:[NSNumber class]]) return value;
     if ([value isKindOfClass:[NSString class]]) {
+        /** 用字典key处理num对象 */
         NSNumber *num = dic[value];
         if (num) {
             if (num == (id)kCFNull) return nil;
             return num;
         }
+        /** 如果值中存在点“.” */
         if ([(NSString *)value rangeOfCharacterFromSet:dot].location != NSNotFound) {
+            /** 转c字符串 */
             const char *cstring = ((NSString *)value).UTF8String;
             if (!cstring) return nil;
+            /** 
+             1. 函数名： atof
+             功 能： 把字符串转换成浮点数
+             名字来源：ascii to floating point numbers 的缩写
+             用 法： double atof(const char *nptr); 
+             */
             double num = atof(cstring);
             if (isnan(num) || isinf(num)) return nil;
             return @(num);
