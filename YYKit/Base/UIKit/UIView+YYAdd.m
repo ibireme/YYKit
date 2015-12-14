@@ -269,4 +269,12 @@ YYSYNTH_DUMMY_CLASS(UIView_YYAdd)
     self.frame = frame;
 }
 
+- (CGFloat)mainScreenWidth {
+    return [UIScreen mainScreen].bounds.size.width;
+}
+
+- (CGFloat)mainScreenHeight {
+    return [UIScreen mainScreen].bounds.size.height;
+}
+
 @end

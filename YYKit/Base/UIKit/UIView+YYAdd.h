@@ -109,5 +109,7 @@
 @property (nonatomic) CGFloat centerY;     ///< Shortcut for center.y
 @property (nonatomic) CGPoint origin;      ///< Shortcut for frame.origin.
 @property (nonatomic) CGSize  size;        ///< Shortcut for frame.size.
+@property (nonatomic,readonly) CGFloat mainScreenWidth;  ///< Shortcut for [UIScreen mainScreen].bounds.size.width
+@property (nonatomic,readonly) CGFloat mainScreenHeight; ///< Shortcut for [UIScreen mainScreen].bounds.size.height
 
 @end
