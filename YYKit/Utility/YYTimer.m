@@ -12,7 +12,7 @@
 #import "YYTimer.h"
 #import <pthread.h>
 
-#define LOCK(...) dispatch_semaphore_signal(_lock); \
+#define LOCK(...) dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
 dispatch_semaphore_signal(_lock);
 
