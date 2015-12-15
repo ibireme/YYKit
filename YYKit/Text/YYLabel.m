@@ -423,7 +423,11 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     self = [super initWithCoder:aDecoder];
     [self _initLabel];
     YYTextContainer *innerContainer = [aDecoder decodeObjectForKey:@"innerContainer"];
-    if (innerContainer) _innerContainer = innerContainer;
+    if (innerContainer) {
+        _innerContainer = innerContainer;
+    } else {
+        _innerContainer.size = self.bounds.size;
+    }
     [self _updateOuterContainerProperties];
     self.attributedText = [aDecoder decodeObjectForKey:@"attributedText"];
     [self _setLayoutNeedUpdate];
