@@ -30,7 +30,7 @@ static inline qos_class_t NSQualityOfServiceToQOSClass(NSQualityOfService qos) {
     switch (qos) {
         case NSQualityOfServiceUserInteractive: return QOS_CLASS_USER_INTERACTIVE;
         case NSQualityOfServiceUserInitiated: return QOS_CLASS_USER_INITIATED;
-        case NSQualityOfServiceUtility: return QOS_CLASS_USER_INITIATED;
+        case NSQualityOfServiceUtility: return QOS_CLASS_UTILITY;
         case NSQualityOfServiceBackground: return QOS_CLASS_BACKGROUND;
         case NSQualityOfServiceDefault: return QOS_CLASS_DEFAULT;
         default: return QOS_CLASS_UNSPECIFIED;

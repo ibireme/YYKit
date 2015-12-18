@@ -553,7 +553,7 @@ OSSpinLockUnlock(&_lock);
         if (container.linePositionModifier) {
             [container.linePositionModifier modifyLines:lines fromText:text inContainer:container];
             textBoundingRect = CGRectZero;
-            for (NSUInteger i = 0; i < lineCount; i++) {
+            for (NSUInteger i = 0, max = lines.count; i < max; i++) {
                 YYTextLine *line = lines[i];
                 if (i == 0) textBoundingRect = line.bounds;
                 else textBoundingRect = CGRectUnion(textBoundingRect, line.bounds);
