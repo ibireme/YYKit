@@ -27,12 +27,12 @@ __VA_ARGS__; \
 OSSpinLockUnlock(&view->_lock);
 
 
-typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
-    YYAnimagedImageTypeNone = 0,
-    YYAnimagedImageTypeImage,
-    YYAnimagedImageTypeHighlightedImage,
-    YYAnimagedImageTypeImages,
-    YYAnimagedImageTypeHighlightedImages,
+typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
+    YYAnimatedImageTypeNone = 0,
+    YYAnimatedImageTypeImage,
+    YYAnimatedImageTypeHighlightedImage,
+    YYAnimatedImageTypeImages,
+    YYAnimatedImageTypeHighlightedImages,
 };
 
 @interface YYAnimatedImageView() {
@@ -186,22 +186,22 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
 
 - (void)setImage:(UIImage *)image {
     if (self.image == image) return;
-    [self setImage:image withType:YYAnimagedImageTypeImage];
+    [self setImage:image withType:YYAnimatedImageTypeImage];
 }
 
 - (void)setHighlightedImage:(UIImage *)highlightedImage {
     if (self.highlightedImage == highlightedImage) return;
-    [self setImage:highlightedImage withType:YYAnimagedImageTypeHighlightedImage];
+    [self setImage:highlightedImage withType:YYAnimatedImageTypeHighlightedImage];
 }
 
 - (void)setAnimationImages:(NSArray *)animationImages {
     if (self.animationImages == animationImages) return;
-    [self setImage:animationImages withType:YYAnimagedImageTypeImages];
+    [self setImage:animationImages withType:YYAnimatedImageTypeImages];
 }
 
 - (void)setHighlightedAnimationImages:(NSArray *)highlightedAnimationImages {
     if (self.highlightedAnimationImages == highlightedAnimationImages) return;
-    [self setImage:highlightedAnimationImages withType:YYAnimagedImageTypeHighlightedImages];
+    [self setImage:highlightedAnimationImages withType:YYAnimatedImageTypeHighlightedImages];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
@@ -210,46 +210,46 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     [self imageChanged];
 }
 
-- (id)imageForType:(YYAnimagedImageType)type {
+- (id)imageForType:(YYAnimatedImageType)type {
     switch (type) {
-        case YYAnimagedImageTypeNone: return nil;
-        case YYAnimagedImageTypeImage: return self.image;
-        case YYAnimagedImageTypeHighlightedImage: return self.highlightedImage;
-        case YYAnimagedImageTypeImages: return self.animationImages;
-        case YYAnimagedImageTypeHighlightedImages: return self.highlightedAnimationImages;
+        case YYAnimatedImageTypeNone: return nil;
+        case YYAnimatedImageTypeImage: return self.image;
+        case YYAnimatedImageTypeHighlightedImage: return self.highlightedImage;
+        case YYAnimatedImageTypeImages: return self.animationImages;
+        case YYAnimatedImageTypeHighlightedImages: return self.highlightedAnimationImages;
     }
     return nil;
 }
 
-- (YYAnimagedImageType)currentImageType {
-    YYAnimagedImageType curType = YYAnimagedImageTypeNone;
+- (YYAnimatedImageType)currentImageType {
+    YYAnimatedImageType curType = YYAnimatedImageTypeNone;
     if (self.highlighted) {
-        if (self.highlightedAnimationImages.count) curType = YYAnimagedImageTypeHighlightedImages;
-        else if (self.highlightedImage) curType = YYAnimagedImageTypeHighlightedImage;
+        if (self.highlightedAnimationImages.count) curType = YYAnimatedImageTypeHighlightedImages;
+        else if (self.highlightedImage) curType = YYAnimatedImageTypeHighlightedImage;
     }
-    if (curType == YYAnimagedImageTypeNone) {
-        if (self.animationImages.count) curType = YYAnimagedImageTypeImages;
-        else if (self.image) curType = YYAnimagedImageTypeImage;
+    if (curType == YYAnimatedImageTypeNone) {
+        if (self.animationImages.count) curType = YYAnimatedImageTypeImages;
+        else if (self.image) curType = YYAnimatedImageTypeImage;
     }
     return curType;
 }
 
-- (void)setImage:(id)image withType:(YYAnimagedImageType)type {
+- (void)setImage:(id)image withType:(YYAnimatedImageType)type {
     [self stopAnimating];
     if (_link) [self resetAnimated];
     _curFrame = nil;
     switch (type) {
-        case YYAnimagedImageTypeNone: break;
-        case YYAnimagedImageTypeImage: super.image = image; break;
-        case YYAnimagedImageTypeHighlightedImage: super.highlightedImage = image; break;
-        case YYAnimagedImageTypeImages: super.animationImages = image; break;
-        case YYAnimagedImageTypeHighlightedImages: super.highlightedAnimationImages = image; break;
+        case YYAnimatedImageTypeNone: break;
+        case YYAnimatedImageTypeImage: super.image = image; break;
+        case YYAnimatedImageTypeHighlightedImage: super.highlightedImage = image; break;
+        case YYAnimatedImageTypeImages: super.animationImages = image; break;
+        case YYAnimatedImageTypeHighlightedImages: super.highlightedAnimationImages = image; break;
     }
     [self imageChanged];
 }
 
 - (void)imageChanged {
-    YYAnimagedImageType newType = [self currentImageType];
+    YYAnimatedImageType newType = [self currentImageType];
     id newVisibleImage = [self imageForType:newType];
     NSUInteger newImageFrameCount = 0;
     BOOL hasContentsRect = NO;
@@ -318,8 +318,8 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
 }
 
 - (void)startAnimating {
-    YYAnimagedImageType type = [self currentImageType];
-    if (type == YYAnimagedImageTypeImages || type == YYAnimagedImageTypeHighlightedImages) {
+    YYAnimatedImageType type = [self currentImageType];
+    if (type == YYAnimatedImageTypeImages || type == YYAnimatedImageTypeHighlightedImages) {
         NSArray *images = [self imageForType:type];
         if (images.count > 0) {
             [super startAnimating];
@@ -541,11 +541,11 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     UIImage *highlightedImage = [aDecoder decodeObjectForKey:@"YYHighlightedAnimatedImage"];
     if (image) {
         self.image = image;
-        [self setImage:image withType:YYAnimagedImageTypeImage];
+        [self setImage:image withType:YYAnimatedImageTypeImage];
     }
     if (highlightedImage) {
         self.highlightedImage = highlightedImage;
-        [self setImage:highlightedImage withType:YYAnimagedImageTypeHighlightedImage];
+        [self setImage:highlightedImage withType:YYAnimatedImageTypeHighlightedImage];
     }
     return self;
 }
