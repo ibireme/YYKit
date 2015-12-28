@@ -249,7 +249,7 @@ static void URLInBlackListAdd(NSURL *url) {
             if (image) {
                 [_lock lock];
                 if (![self isCancelled]) {
-                    if (_completion) _completion(image, _request.URL, YYWebImageFromMemoryCache, YYWebImageStageCancelled, nil);
+                    if (_completion) _completion(image, _request.URL, YYWebImageFromMemoryCache, YYWebImageStageFinished, nil);
                 }
                 [self _finish];
                 [_lock unlock];
