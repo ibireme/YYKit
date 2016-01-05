@@ -30,13 +30,13 @@
     NSString *path = nil;
     CGFloat scale = 1;
     
+    // If no extension, guess by system supported (same as UIImage).
+    NSArray *supportedExtensions = ext.length > 0 ? @[ext] : @[@"", @"png", @"jpeg", @"jpg", @"gif", @"webp"];
     NSArray *scales = [NSBundle preferredScales];
     for (int s = 0; s < scales.count; s++) {
         scale = ((NSNumber *)scales[s]).floatValue;
         NSString *scaledName = [res stringByAppendingNameScale:scale];
-        // If no extension, guess by system supported (same as UIImage).
-        NSArray *exts = ext.length > 0 ? @[ext] : @[@"", @"png", @"jpeg", @"jpg", @"gif", @"webp"];
-        for (NSString *e in exts) {
+        for (NSString *e in supportedExtensions) {
             path = [[NSBundle mainBundle] pathForResource:scaledName ofType:e];
             if (path) break;
         }
