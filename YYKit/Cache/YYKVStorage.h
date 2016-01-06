@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, YYKVStorageType) {
  After initialized, a directory is created based on the `path` to hold key-value data.
  Once initialized you should not read or write this directory without the instance.
  
- You may compile the lastest version of sqlite and ignore the libsqlite3.dylib in
+ You may compile the latest version of sqlite and ignore the libsqlite3.dylib in
  iOS system to get 2x~4x speed up.
  
  @warning The instance of this class is *NOT* thread safe, you need to make sure 
