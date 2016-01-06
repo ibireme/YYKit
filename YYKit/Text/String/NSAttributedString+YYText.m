@@ -551,20 +551,29 @@ return style. _attr_;
     switch (alignment) {
         case YYTextVerticalAlignmentTop: {
             delegate.ascent = font.ascender;
-            delegate.descent = attachmentSize.height + font.descender;
-            if (delegate.descent < 0) delegate.descent = 0;
+            delegate.descent = attachmentSize.height - font.ascender;
+            if (delegate.descent < 0) {
+                delegate.descent = 0;
+                delegate.ascent = attachmentSize.height;
+            }
         } break;
         case YYTextVerticalAlignmentCenter: {
             CGFloat fontHeight = font.ascender - font.descender;
             CGFloat yOffset = font.ascender - fontHeight * 0.5;
             delegate.ascent = attachmentSize.height * 0.5 + yOffset;
             delegate.descent = attachmentSize.height - delegate.ascent;
-            if (delegate.descent < 0) delegate.descent = 0;
+            if (delegate.descent < 0) {
+                delegate.descent = 0;
+                delegate.ascent = attachmentSize.height;
+            }
         } break;
         case YYTextVerticalAlignmentBottom: {
             delegate.ascent = attachmentSize.height + font.descender;
             delegate.descent = -font.descender;
-            if (delegate.ascent < 0) delegate.ascent = 0;
+            if (delegate.ascent < 0) {
+                delegate.ascent = 0;
+                delegate.descent = attachmentSize.height;
+            }
         } break;
         default: {
             delegate.ascent = attachmentSize.height;
