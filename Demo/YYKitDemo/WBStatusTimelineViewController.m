@@ -83,7 +83,7 @@
             WBTimelineItem *item = [WBTimelineItem modelWithJSON:data];
             for (WBStatus *status in item.statuses) {
                 WBStatusLayout *layout = [[WBStatusLayout alloc] initWithStatus:status style:WBLayoutStyleTimeline];
-                [layout layout];
+//                [layout layout];
                 [_layouts addObject:layout];
             }
         }
