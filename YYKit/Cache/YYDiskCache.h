@@ -23,7 +23,7 @@
  * It can automatically decide the storage type (sqlite/file) for each object to get
       better performance.
  
- You may compile the lastest version of sqlite and ignore the libsqlite3.dylib in
+ You may compile the latest version of sqlite and ignore the libsqlite3.dylib in
  iOS system to get 2x~4x speed up.
  */
 @interface YYDiskCache : NSObject
