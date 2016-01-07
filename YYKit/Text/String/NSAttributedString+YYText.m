@@ -1235,6 +1235,44 @@ return style. _attr_;
     [self setAttribute:YYTextGlyphTransformAttributeName value:value range:range];
 }
 
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                     userInfo:(NSDictionary *)userInfo
+                    tapAction:(YYTextAction)tapAction
+              longPressAction:(YYTextAction)longPressAction {
+    YYTextHighlight *highlight = [YYTextHighlight highlightWithBackgroundColor:backgroundColor];
+    highlight.userInfo = userInfo;
+    highlight.tapAction = tapAction;
+    highlight.longPressAction = longPressAction;
+    if (color) [self setColor:color range:range];
+    [self setTextHighlight:highlight range:range];
+}
+
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                    tapAction:(YYTextAction)tapAction {
+    [self setTextHighlightRange:range
+                          color:color
+                backgroundColor:backgroundColor
+                       userInfo:nil
+                      tapAction:tapAction
+                longPressAction:nil];
+}
+
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                     userInfo:(NSDictionary *)userInfo {
+    [self setTextHighlightRange:range
+                          color:color
+                backgroundColor:backgroundColor
+                       userInfo:userInfo
+                      tapAction:nil
+                longPressAction:nil];
+}
+
 - (void)insertString:(NSString *)string atIndex:(NSUInteger)location {
     [self replaceCharactersInRange:NSMakeRange(location, 0) withString:string];
     [self removeDiscontinuousAttributesInRange:NSMakeRange(location, string.length)];
