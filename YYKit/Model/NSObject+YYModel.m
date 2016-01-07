@@ -1558,7 +1558,7 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
         id that = [model valueForKey:NSStringFromSelector(propertyMeta->_getter)];
         if (this == that) continue;
         if (this == nil || that == nil) return NO;
-        if ([this isEqual:that]) continue;
+        if (![this isEqual:that]) return NO;
     }
     return YES;
 }
