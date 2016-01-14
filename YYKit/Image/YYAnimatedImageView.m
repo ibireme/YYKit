@@ -535,7 +535,11 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
     self = [super initWithCoder:aDecoder];
     _runloopMode = [aDecoder decodeObjectForKey:@"runloopMode"];
     if (_runloopMode.length == 0) _runloopMode = NSRunLoopCommonModes;
-    _autoPlayAnimatedImage = [aDecoder decodeBoolForKey:@"autoPlayAnimatedImage"];
+    if ([aDecoder containsValueForKey:@"autoPlayAnimatedImage"]) {
+        _autoPlayAnimatedImage = [aDecoder decodeBoolForKey:@"autoPlayAnimatedImage"];
+    } else {
+        _autoPlayAnimatedImage = YES;
+    }
     
     UIImage *image = [aDecoder decodeObjectForKey:@"YYAnimatedImage"];
     UIImage *highlightedImage = [aDecoder decodeObjectForKey:@"YYHighlightedAnimatedImage"];
