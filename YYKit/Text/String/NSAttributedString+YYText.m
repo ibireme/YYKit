@@ -189,7 +189,7 @@ YYSYNTH_DUMMY_CLASS(NSAttributedString_YYText)
 - (UIColor *)underlineColorAtIndex:(NSUInteger)index {
     UIColor *color = nil;
     if (kSystemVersion >= 7) {
-        [self attribute:NSUnderlineColorAttributeName atIndex:index];
+        color = [self attribute:NSUnderlineColorAttributeName atIndex:index];
     }
     if (!color) {
         CGColorRef ref = (__bridge CGColorRef)([self attribute:(NSString *)kCTUnderlineColorAttributeName atIndex:index]);
