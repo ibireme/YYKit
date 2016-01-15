@@ -15,7 +15,6 @@
 #import "YYTextUtilities.h"
 #import "YYTextAttribute.h"
 #import "YYTextArchiver.h"
-#import <libkern/OSAtomic.h>
 
 #import "NSAttributedString+YYText.h"
 #import "UIFont+YYAdd.h"
@@ -72,7 +71,7 @@ static inline UIEdgeInsets UIEdgeInsetRotateVertical(UIEdgeInsets insets) {
 @implementation YYTextContainer {
     @package
     BOOL _readonly; ///< used only in YYTextLayout.implementation
-    OSSpinLock _lock;
+    dispatch_semaphore_t _lock;
     
     CGSize _size;
     UIEdgeInsets _insets;
@@ -108,14 +107,14 @@ static inline UIEdgeInsets UIEdgeInsetRotateVertical(UIEdgeInsets insets) {
 - (instancetype)init {
     self = [super init];
     if (!self) return nil;
-    _lock = OS_SPINLOCK_INIT;
+    _lock = dispatch_semaphore_create(1);
     _pathFillEvenOdd = YES;
     return self;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
     YYTextContainer *one = [self.class new];
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     one->_size = _size;
     one->_insets = _insets;
     one->_path = _path;
@@ -127,7 +126,7 @@ static inline UIEdgeInsets UIEdgeInsetRotateVertical(UIEdgeInsets insets) {
     one->_truncationType = _truncationType;
     one->_truncationToken = _truncationToken.copy;
     one->_linePositionModifier = [(NSObject *)_linePositionModifier copy];
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
     return one;
 }
 
@@ -169,9 +168,9 @@ static inline UIEdgeInsets UIEdgeInsetRotateVertical(UIEdgeInsets insets) {
 }
 
 #define Getter(...) \
-OSSpinLockLock(&_lock); \
+dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
-OSSpinLockUnlock(&_lock);
+dispatch_semaphore_signal(_lock);
 
 #define Setter(...) \
 if (_readonly) { \
@@ -179,9 +178,9 @@ if (_readonly) { \
 reason:@"Cannot change the property of the 'container' in 'YYTextLayout'." userInfo:nil]; \
 return; \
 } \
-OSSpinLockLock(&_lock); \
+dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
-OSSpinLockUnlock(&_lock);
+dispatch_semaphore_signal(_lock);
 
 - (CGSize)size {
     Getter(CGSize size = _size) return size;

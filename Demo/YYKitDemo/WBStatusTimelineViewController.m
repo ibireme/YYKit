@@ -92,7 +92,7 @@
         [_layouts addObjectsFromArray:_layouts];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.title = [NSString stringWithFormat:@"Weibo (loaded:%d)", (int)_layouts.count];;
+            self.title = [NSString stringWithFormat:@"Weibo (loaded:%d)", (int)_layouts.count];
             [indicator removeFromSuperview];
             self.navigationController.view.userInteractionEnabled = YES;
             [_tableView reloadData];

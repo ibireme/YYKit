@@ -13,7 +13,6 @@
 #import "YYKitMacro.h"
 #import "UIColor+YYAdd.h"
 #import "YYWeakProxy.h"
-#import <libkern/OSAtomic.h>
 
 
 static pthread_mutex_t _sharedDebugLock;

@@ -11,7 +11,6 @@
 
 #import "NSObject+YYModel.h"
 #import "YYClassInfo.h"
-#import <libkern/OSAtomic.h>
 #import <objc/message.h>
 
 #define force_inline __inline__ __attribute__((always_inline))
@@ -571,20 +570,20 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
     if (!cls) return nil;
     static CFMutableDictionaryRef cache;
     static dispatch_once_t onceToken;
-    static OSSpinLock lock;
+    static dispatch_semaphore_t lock;
     dispatch_once(&onceToken, ^{
         cache = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        lock = OS_SPINLOCK_INIT;
+        lock = dispatch_semaphore_create(1);
     });
-    OSSpinLockLock(&lock);
+    dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
     _YYModelMeta *meta = CFDictionaryGetValue(cache, (__bridge const void *)(cls));
-    OSSpinLockUnlock(&lock);
+    dispatch_semaphore_signal(lock);
     if (!meta) {
         meta = [[_YYModelMeta alloc] initWithClass:cls];
         if (meta) {
-            OSSpinLockLock(&lock);
+            dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
             CFDictionarySetValue(cache, (__bridge const void *)(cls), (__bridge const void *)(meta));
-            OSSpinLockUnlock(&lock);
+            dispatch_semaphore_signal(lock);
         }
     }
     return meta;
