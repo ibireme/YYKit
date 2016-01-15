@@ -1792,6 +1792,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if (_text == text || [_text isEqualToString:text]) return;
     [self willChangeValueForKey:@"text"];
     _text = text.copy;
+    if (!_text) _text = @"";
     [self didChangeValueForKey:@"text"];
     self.accessibilityLabel = _text;
 }
@@ -1856,6 +1857,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if (_attributedText == attributedText || [_attributedText isEqual:attributedText]) return;
     [self willChangeValueForKey:@"attributedText"];
     _attributedText = attributedText.copy;
+    if (!_attributedText) _attributedText = [NSAttributedString new];
     [self didChangeValueForKey:@"attributedText"];
 }
 
@@ -1911,6 +1913,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     self.canCancelContentTouches = YES;
     self.multipleTouchEnabled = NO;
     [super setDelegate:self];
+    
+    _text = @"";
+    _attributedText = [NSAttributedString new];
     
     // UITextInputTraits
     _autocapitalizationType = UITextAutocapitalizationTypeSentences;
@@ -2742,7 +2747,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (BOOL)canResignFirstResponder {
-    if (self.isFirstResponder) return YES;
+    if (!self.isFirstResponder) return YES;
     if ([self.delegate respondsToSelector:@selector(textViewShouldEndEditing:)]) {
         if (![self.delegate textViewShouldEndEditing:self]) return NO;
     }

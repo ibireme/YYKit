@@ -21,6 +21,8 @@
 #import "YYTextAttribute.h"
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class YYTextView;
 
 /**
@@ -72,7 +74,7 @@
 /// @name Accessing the Delegate
 ///=============================================================================
 
-@property (nonatomic, weak) id<YYTextViewDelegate> delegate;
+@property (nullable, nonatomic, weak) id<YYTextViewDelegate> delegate;
 
 
 #pragma mark - Configuring the Text Attributes
@@ -85,21 +87,21 @@
  Set a new value to this property also replaces the text in `attributedText`.
  Get the value returns the plain text in `attributedText`.
  */
-@property (nonatomic, copy) NSString *text;
+@property (null_resettable, nonatomic, copy) NSString *text;
 
 /**
  The font of the text. Default is 12-point system font.
  Set a new value to this property also causes the new font to be applied to the entire `attributedText`.
  Get the value returns the font at the head of `attributedText`.
  */
-@property (nonatomic, strong) UIFont *font;
+@property (nullable, nonatomic, strong) UIFont *font;
 
 /**
  The color of the text. Default is black.
  Set a new value to this property also causes the new color to be applied to the entire `attributedText`.
  Get the value returns the color at the head of `attributedText`.
  */
-@property (nonatomic, strong) UIColor *textColor;
+@property (nullable, nonatomic, strong) UIColor *textColor;
 
 /**
  The technique to use for aligning the text. Default is NSLeftTextAlignment.
@@ -124,20 +126,20 @@
  When a range of text is detected by the `dataDetectorTypes`, this value would be
  used to modify the original attributes in the range.
  */
-@property (nonatomic, copy) NSDictionary *linkTextAttributes;
+@property (nullable, nonatomic, copy) NSDictionary *linkTextAttributes;
 
 /**
  The attributes to apply to links at highlight state. Default is a gray border.
  When a range of text is detected by the `dataDetectorTypes` and the range was touched by user,
  this value would be used to modify the original attributes in the range.
  */
-@property (nonatomic, copy) NSDictionary *highlightTextAttributes;
+@property (nullable, nonatomic, copy) NSDictionary *highlightTextAttributes;
 
 /**
  The attributes to apply to new text being entered by the user.
  When the text view's selection changes, this value is reset automatically.
  */
-@property (nonatomic, copy) NSDictionary *typingAttributes;
+@property (nullable, nonatomic, copy) NSDictionary *typingAttributes;
 
 /**
  The styled text displayed by the text view.
@@ -147,7 +149,7 @@
  @discussion It only support the attributes declared in CoreText and YYTextAttribute.
  See `NSAttributedString+YYText` for more convenience methods to set the attributes.
  */
-@property (nonatomic, copy) NSAttributedString *attributedText;
+@property (nullable, nonatomic, copy) NSAttributedString *attributedText;
 
 /**
  When `text` or `attributedText` is changed, the parser will be called to modify the text.
@@ -156,13 +158,13 @@
  
  See `YYTextParser` protocol for more information.
  */
-@property (nonatomic, strong) id<YYTextParser> textParser;
+@property (nullable, nonatomic, strong) id<YYTextParser> textParser;
 
 /**
  The current text layout in text view (readonly).
  It can be used to query the text layout information.
  */
-@property (nonatomic, strong, readonly) YYTextLayout *textLayout;
+@property (nullable, nonatomic, strong, readonly) YYTextLayout *textLayout;
 
 
 #pragma mark - Configuring the Placeholder
@@ -175,21 +177,21 @@
  Set a new value to this property also replaces the text in `placeholderAttributedText`.
  Get the value returns the plain text in `placeholderAttributedText`.
  */
-@property (nonatomic, copy) NSString *placeholderText;
+@property (nullable, nonatomic, copy) NSString *placeholderText;
 
 /**
  The font of the placeholder text. Default is same as `font` property.
  Set a new value to this property also causes the new font to be applied to the entire `placeholderAttributedText`.
  Get the value returns the font at the head of `placeholderAttributedText`.
  */
-@property (nonatomic, strong) UIFont *placeholderFont;
+@property (nullable, nonatomic, strong) UIFont *placeholderFont;
 
 /**
  The color of the placeholder text. Default is gray.
  Set a new value to this property also causes the new color to be applied to the entire `placeholderAttributedText`.
  Get the value returns the color at the head of `placeholderAttributedText`.
  */
-@property (nonatomic, strong) UIColor *placeholderTextColor;
+@property (nullable, nonatomic, strong) UIColor *placeholderTextColor;
 
 /**
  The styled placeholder text displayed by the text view (when the text view is empty).
@@ -199,7 +201,7 @@
  @discussion It only support the attributes declared in CoreText and YYTextAttribute.
  See `NSAttributedString+YYText` for more convenience methods to set the attributes.
  */
-@property (nonatomic, copy) NSAttributedString *placeholderAttributedText;
+@property (nullable, nonatomic, copy) NSAttributedString *placeholderAttributedText;
 
 
 #pragma mark - Configuring the Text Container
@@ -216,7 +218,7 @@
  An array of UIBezierPath objects representing the exclusion paths inside the 
  receiver's bounding rectangle. Default value is nil.
  */
-@property (nonatomic, copy) NSArray *exclusionPaths;
+@property (nullable, nonatomic, copy) NSArray *exclusionPaths;
 
 /**
  Whether the receiver's layout orientation is vertical form. Default is NO.
@@ -228,13 +230,13 @@
  The text line position modifier used to modify the lines' position in layout.
  See `YYTextLinePositionModifier` protocol for more information.
  */
-@property (nonatomic, copy) id<YYTextLinePositionModifier> linePositionModifier;
+@property (nullable, nonatomic, copy) id<YYTextLinePositionModifier> linePositionModifier;
 
 /**
  The debug option to display CoreText layout result.
  The default value is [YYTextDebugOption sharedDebugOption].
  */
-@property (nonatomic, copy) YYTextDebugOption *debugOption;
+@property (nullable, nonatomic, copy) YYTextDebugOption *debugOption;
 
 
 #pragma mark - Working with the Selection and Menu
@@ -325,7 +327,7 @@
  @discussion If set the value while first responder, it will not take effect until 
  'reloadInputViews' is called.
  */
-@property (readwrite, retain) UIView *inputView;
+@property (nullable, readwrite, retain) UIView *inputView;
 
 /**
  The custom accessory view to display when the text view becomes the first responder.
@@ -334,7 +336,7 @@
  @discussion If set the value while first responder, it will not take effect until
  'reloadInputViews' is called.
  */
-@property (readwrite, retain) UIView *inputAccessoryView;
+@property (nullable, readwrite, retain) UIView *inputAccessoryView;
 
 /**
  If you use an custom accessory view without "inputAccessoryView" property,
@@ -349,3 +351,5 @@
 UIKIT_EXTERN NSString *const YYTextViewTextDidBeginEditingNotification;
 UIKIT_EXTERN NSString *const YYTextViewTextDidChangeNotification;
 UIKIT_EXTERN NSString *const YYTextViewTextDidEndEditingNotification;
+
+NS_ASSUME_NONNULL_END
