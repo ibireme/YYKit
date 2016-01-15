@@ -168,7 +168,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
                 if (attrs[i].value) {
                     _typeEncoding = [NSString stringWithUTF8String:attrs[i].value];
                     type = YYEncodingGetType(attrs[i].value);
-                    if (type & YYEncodingTypeObject) {
+                    if ((type & YYEncodingTypeMask) == YYEncodingTypeObject) {
                         size_t len = strlen(attrs[i].value);
                         if (len > 3) {
                             char name[len - 2];
