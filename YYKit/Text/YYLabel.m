@@ -17,8 +17,6 @@
 
 #if __has_include("YYDispatchQueuePool.h")
 #import "YYDispatchQueuePool.h"
-#else
-#import <libkern/OSAtomic.h>
 #endif
 
 #ifdef YYDispatchQueuePool_h
@@ -291,7 +289,9 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 - (void)_updateOuterTextProperties {
     _text = [_innerText plainTextForRange:NSMakeRange(0, _innerText.length)];
     _font = _innerText.font;
+    if (!_font) _font = [self _defaultFont];
     _textColor = _innerText.color;
+    if (!_textColor) _textColor = [UIColor blackColor];
     _textAlignment = _innerText.alignment;
     _lineBreakMode = _innerText.lineBreakMode;
     NSShadow *shadow = _innerText.shadow;
@@ -334,6 +334,8 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     _debugOption = [YYTextDebugOption sharedDebugOption];
     [YYTextDebugOption addDebugTarget:self];
     
+    _font = [self _defaultFont];
+    _textColor = [UIColor blackColor];
     _textVerticalAlignment = YYTextVerticalAlignmentCenter;
     _numberOfLines = 1;
     _lineBreakMode = NSLineBreakByTruncatingTail;
@@ -529,8 +531,9 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     _text = text.copy;
     BOOL needAddAttributes = _innerText.length == 0 && text.length > 0;
     [_innerText replaceCharactersInRange:NSMakeRange(0, _innerText.length) withString:text ? text : @""];
+    [_innerText removeDiscontinuousAttributesInRange:NSMakeRange(0, _innerText.length)];
     if (needAddAttributes) {
-        _innerText.font = _font ? _font : [self _defaultFont];
+        _innerText.font = _font;
         _innerText.color = _textColor;
         _innerText.shadow = [self _shadowFromProperties];
         _innerText.alignment = _textAlignment;
@@ -561,9 +564,12 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 }
 
 - (void)setFont:(UIFont *)font {
+    if (!font) {
+        font = [self _defaultFont];
+    }
     if (_font == font || [_font isEqual:font]) return;
     _font = font;
-    _innerText.font = _font ? _font : [self _defaultFont];
+    _innerText.font = _font;
     if (_innerText.length && !_ignoreCommonProperties) {
         if (_displaysAsynchronously && _clearContentsBeforeAsynchronouslyDisplay) {
             [self _clearContents];
@@ -574,6 +580,9 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 }
 
 - (void)setTextColor:(UIColor *)textColor {
+    if (!textColor) {
+        textColor = [UIColor blackColor];
+    }
     if (_textColor == textColor || [_textColor isEqual:textColor]) return;
     _textColor = textColor;
     _innerText.color = textColor;
@@ -856,17 +865,19 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     return _innerLayout;
 }
 
+- (void)setDisplaysAsynchronously:(BOOL)displaysAsynchronously {
+    _displaysAsynchronously = displaysAsynchronously;
+    ((YYAsyncLayer *)self.layer).displaysAsynchronously = displaysAsynchronously;
+}
+
+#pragma mark - YYTextDebugTarget
+
 - (void)setDebugOption:(YYTextDebugOption *)debugOption {
     BOOL needDraw = _debugOption.needDrawDebug;
     _debugOption = debugOption.copy;
     if (_debugOption.needDrawDebug != needDraw) {
         [self _setLayoutNeedRedraw];
     }
-}
-
-- (void)setDisplaysAsynchronously:(BOOL)displaysAsynchronously {
-    _displaysAsynchronously = displaysAsynchronously;
-    ((YYAsyncLayer *)self.layer).displaysAsynchronously = displaysAsynchronously;
 }
 
 #pragma mark - YYAsyncLayerDelegate

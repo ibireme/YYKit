@@ -48,28 +48,28 @@
  Set a new value to this property also replaces the text in `attributedText`.
  Get the value returns the plain text in `attributedText`.
  */
-@property (nonatomic, copy) NSString *text;
+@property (nullable, nonatomic, copy) NSString *text;
 
 /**
- The font of the text. Default is 12-point system font.
+ The font of the text. Default is 17-point system font.
  Set a new value to this property also causes the new font to be applied to the entire `attributedText`.
  Get the value returns the font at the head of `attributedText`.
  */
-@property (nonatomic, retain) UIFont *font;
+@property (null_resettable, nonatomic, retain) UIFont *font;
 
 /**
  The color of the text. Default is black.
  Set a new value to this property also causes the new color to be applied to the entire `attributedText`.
  Get the value returns the color at the head of `attributedText`.
  */
-@property (nonatomic, retain) UIColor *textColor;
+@property (null_resettable, nonatomic, retain) UIColor *textColor;
 
 /**
  The shadow color of the text. Default is nil.
  Set a new value to this property also causes the shadow color to be applied to the entire `attributedText`.
  Get the value returns the shadow color at the head of `attributedText`.
  */
-@property (nonatomic, retain) UIColor *shadowColor;
+@property (nullable, nonatomic, retain) UIColor *shadowColor;
 
 /**
  The shadow offset of the text. Default is CGSizeZero.
@@ -105,7 +105,7 @@
  @discussion It only support the attributes declared in CoreText and YYTextAttribute.
  See `NSAttributedString+YYText` for more convenience methods to set the attributes.
  */
-@property (nonatomic, copy) NSAttributedString *attributedText;
+@property (nullable, nonatomic, copy) NSAttributedString *attributedText;
 
 /**
  The technique to use for wrapping and truncating the label's text.
@@ -117,7 +117,7 @@
  The truncation token string used when text is truncated. Default is nil.
  When the value is nil, the label use "…" as default truncation token.
  */
-@property (nonatomic, copy) NSAttributedString *truncationToken;
+@property (nullable, nonatomic, copy) NSAttributedString *truncationToken;
 
 /**
  The maximum number of lines to use for rendering text. Default value is 1.
@@ -132,14 +132,14 @@
  
  See `YYTextParser` protocol for more information.
  */
-@property (nonatomic, strong) id<YYTextParser> textParser;
+@property (nullable, nonatomic, strong) id<YYTextParser> textParser;
 
 /**
  The current text layout in text view. It can be used to query the text layout information.
  Set a new value to this property also replaces most properties in this label, such as `text`,
  `color`, `attributedText`, `lineBreakMode`, `textContainerPath`, `exclusionPaths` and so on.
  */
-@property (nonatomic, strong) YYTextLayout *textLayout;
+@property (nullable, nonatomic, strong) YYTextLayout *textLayout;
 
 
 #pragma mark - Configuring the Text Container
@@ -150,13 +150,13 @@
 /**
  A UIBezierPath object that specifies the shape of the text frame. Default value is nil.
  */
-@property (nonatomic, copy) UIBezierPath *textContainerPath;
+@property (nullable, nonatomic, copy) UIBezierPath *textContainerPath;
 
 /**
  An array of UIBezierPath objects representing the exclusion paths inside the
  receiver's bounding rectangle. Default value is nil.
  */
-@property (nonatomic, copy) NSArray *exclusionPaths;
+@property (nullable, nonatomic, copy) NSArray *exclusionPaths;
 
 /**
  The inset of the text container's layout area within the text view's content area.
@@ -175,13 +175,13 @@
  Default value is nil.
  See `YYTextLinePositionModifier` protocol for more information.
  */
-@property (nonatomic, copy) id<YYTextLinePositionModifier> linePositionModifier;
+@property (nullable, nonatomic, copy) id<YYTextLinePositionModifier> linePositionModifier;
 
 /**
  The debug option to display CoreText layout result.
  The default value is [YYTextDebugOption sharedDebugOption].
  */
-@property (nonatomic, copy) YYTextDebugOption *debugOption;
+@property (nonnull, nonatomic, copy) YYTextDebugOption *debugOption;
 
 
 #pragma mark - Interacting with Text Data
@@ -193,13 +193,13 @@
  When user tap the highlight range of text, this action will be called.
  The default value is nil.
  */
-@property (nonatomic, copy) YYTextAction highlightTapAction;
+@property (nullable, nonatomic, copy) YYTextAction highlightTapAction;
 
 /**
  When user long press the highlight range of text, this action will be called.
  The default value is nil. 
  */
-@property (nonatomic, copy) YYTextAction highlightLongPressAction;
+@property (nullable, nonatomic, copy) YYTextAction highlightLongPressAction;
 
 
 #pragma mark - Configuring the Display Mode

@@ -65,12 +65,12 @@
  Network traffic type:
  
  WWAN: Wireless Wide Area Network.
- For example: 3G/4G.
+       For example: 3G/4G.
  
  WIFI: Wi-Fi.
  
  AWDL: Apple Wireless Direct Link (peer-to-peer connection).
- For exmaple: AirDrop, AirPlay, GameKit.
+       For exmaple: AirDrop, AirPlay, GameKit.
  */
 typedef NS_OPTIONS(NSUInteger, YYNetworkTrafficType) {
     YYNetworkTrafficTypeWWANSent     = 1 << 0,

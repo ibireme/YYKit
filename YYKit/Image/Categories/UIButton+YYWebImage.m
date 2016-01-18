@@ -13,7 +13,6 @@
 #import "YYWebImageOperation.h"
 #import "_YYWebImageSetter.h"
 #import "YYKitMacro.h"
-#import <libkern/OSAtomic.h>
 #import <objc/runtime.h>
 
 YYSYNTH_DUMMY_CLASS(UIButton_YYWebImage)
@@ -45,29 +44,29 @@ static int _YYWebImageBackgroundSetterKey;
 
 @implementation _YYWebImageSetterDicForButton {
     NSMutableDictionary *_dic;
-    OSSpinLock _lock;
+    dispatch_semaphore_t _lock;
 }
 - (instancetype)init {
     self = [super init];
-    _lock = OS_SPINLOCK_INIT;
+    _lock = dispatch_semaphore_create(1);
     _dic = [NSMutableDictionary new];
     return self;
 }
 - (_YYWebImageSetter *)setterForState:(NSNumber *)state {
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     _YYWebImageSetter *setter = _dic[state];
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
     return setter;
     
 }
 - (_YYWebImageSetter *)lazySetterForState:(NSNumber *)state {
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     _YYWebImageSetter *setter = _dic[state];
     if (!setter) {
         setter = [_YYWebImageSetter new];
         _dic[state] = setter;
     }
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
     return setter;
 }
 @end

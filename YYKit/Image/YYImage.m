@@ -12,12 +12,11 @@
 #import "YYImage.h"
 #import "NSString+YYAdd.h"
 #import "NSBundle+YYAdd.h"
-#import <libkern/OSAtomic.h>
 
 @implementation YYImage {
     YYImageDecoder *_decoder;
     NSArray *_preloadedFrames;
-    OSSpinLock _preloadedLock;
+    dispatch_semaphore_t _preloadedLock;
     NSUInteger _bytesPerFrame;
 }
 
@@ -31,7 +30,7 @@
     CGFloat scale = 1;
     
     // If no extension, guess by system supported (same as UIImage).
-    NSArray *supportedExtensions = ext.length > 0 ? @[ext] : @[@"", @"png", @"jpeg", @"jpg", @"gif", @"webp"];
+    NSArray *supportedExtensions = ext.length > 0 ? @[ext] : @[@"", @"png", @"jpeg", @"jpg", @"gif", @"webp", @"apng"];
     NSArray *scales = [NSBundle preferredScales];
     for (int s = 0; s < scales.count; s++) {
         scale = ((NSNumber *)scales[s]).floatValue;
@@ -74,7 +73,7 @@
 - (instancetype)initWithData:(NSData *)data scale:(CGFloat)scale {
     if (data.length == 0) return nil;
     if (scale <= 0) scale = [UIScreen mainScreen].scale;
-    _preloadedLock = OS_SPINLOCK_INIT;
+    _preloadedLock = dispatch_semaphore_create(1);
     @autoreleasepool {
         YYImageDecoder *decoder = [YYImageDecoder decoderWithData:data scale:scale];
         YYImageFrame *frame = [decoder frameAtIndex:0 decodeForDisplay:YES];
@@ -109,13 +108,13 @@
                     [frames addObject:[NSNull null]];
                 }
             }
-            OSSpinLockLock(&_preloadedLock);
+            dispatch_semaphore_wait(_preloadedLock, DISPATCH_TIME_FOREVER);
             _preloadedFrames = frames;
-            OSSpinLockUnlock(&_preloadedLock);
+            dispatch_semaphore_signal(_preloadedLock);
         } else {
-            OSSpinLockLock(&_preloadedLock);
+            dispatch_semaphore_wait(_preloadedLock, DISPATCH_TIME_FOREVER);
             _preloadedFrames = nil;
-            OSSpinLockUnlock(&_preloadedLock);
+            dispatch_semaphore_signal(_preloadedLock);
         }
     }
 }
@@ -158,9 +157,9 @@
 
 - (UIImage *)animatedImageFrameAtIndex:(NSUInteger)index {
     if (index >= _decoder.frameCount) return nil;
-    OSSpinLockLock(&_preloadedLock);
+    dispatch_semaphore_wait(_preloadedLock, DISPATCH_TIME_FOREVER);
     UIImage *image = _preloadedFrames[index];
-    OSSpinLockUnlock(&_preloadedLock);
+    dispatch_semaphore_signal(_preloadedLock);
     if (image) return image == (id)[NSNull null] ? nil : image;
     return [_decoder frameAtIndex:index decodeForDisplay:YES].image;
 }

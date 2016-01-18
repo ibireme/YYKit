@@ -366,7 +366,7 @@
         _retweetButton.width = _retweetLabel.right - _retweetButton.left;
     } else {
         _retweetLabel.hidden = YES;
-        _retweetButton.width = _retweetButton.height;;
+        _retweetButton.width = _retweetButton.height;
     }
     
     if (layout.favoriteCountTextLayout) {
@@ -413,7 +413,7 @@
         _retweetButton.width = _retweetLabel.right - _retweetButton.left;
     } else {
         _retweetLabel.hidden = YES;
-        _retweetButton.width = _retweetButton.height;;
+        _retweetButton.width = _retweetButton.height;
     }
 }
 

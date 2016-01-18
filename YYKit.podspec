@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = 'YYKit'
   s.summary      = 'A collection of iOS components.'
-  s.version      = '0.9.8'
+  s.version      = '0.9.11'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.authors      = { 'ibireme' => 'ibireme@gmail.com' }
   s.social_media_url = 'http://blog.ibireme.com'

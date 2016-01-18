@@ -40,7 +40,7 @@
 }
 
 - (UIViewController *)rootViewController {
-    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
+    for (UIWindow *window in [[UIApplication sharedExtensionApplication] windows]) {
         if (self == window) continue;
         if (window.hidden) continue;
         UIViewController *topViewController = window.rootViewController;

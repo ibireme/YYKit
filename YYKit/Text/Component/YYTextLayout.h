@@ -142,7 +142,7 @@ extern const CGSize YYTextContainerMaxSize;
      │ [--------Line9--------]  │  <- Row6
      └──────────────────────────┘
  */
-@interface YYTextLayout : NSObject
+@interface YYTextLayout : NSObject <NSCoding>
 
 
 #pragma mark - Generate text layout
@@ -212,6 +212,7 @@ extern const CGSize YYTextContainerMaxSize;
 
 @property (nonatomic, readonly) YYTextContainer *container;    ///< The text contaner
 @property (nonatomic, readonly) NSAttributedString *text;      ///< The full text
+@property (nonatomic, readonly) NSRange range;                 ///< The text range in full text
 @property (nonatomic, readonly) CTFramesetterRef frameSetter;  ///< CTFrameSetter
 @property (nonatomic, readonly) CTFrameRef frame;              ///< CTFrame
 @property (nonatomic, readonly) NSArray *lines;                ///< Array of `YYTextLine`, no truncated
