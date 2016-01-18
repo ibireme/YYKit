@@ -189,7 +189,7 @@ YYSYNTH_DUMMY_CLASS(NSAttributedString_YYText)
 - (UIColor *)underlineColorAtIndex:(NSUInteger)index {
     UIColor *color = nil;
     if (kSystemVersion >= 7) {
-        [self attribute:NSUnderlineColorAttributeName atIndex:index];
+        color = [self attribute:NSUnderlineColorAttributeName atIndex:index];
     }
     if (!color) {
         CGColorRef ref = (__bridge CGColorRef)([self attribute:(NSString *)kCTUnderlineColorAttributeName atIndex:index]);
@@ -551,20 +551,29 @@ return style. _attr_;
     switch (alignment) {
         case YYTextVerticalAlignmentTop: {
             delegate.ascent = font.ascender;
-            delegate.descent = attachmentSize.height + font.descender;
-            if (delegate.descent < 0) delegate.descent = 0;
+            delegate.descent = attachmentSize.height - font.ascender;
+            if (delegate.descent < 0) {
+                delegate.descent = 0;
+                delegate.ascent = attachmentSize.height;
+            }
         } break;
         case YYTextVerticalAlignmentCenter: {
             CGFloat fontHeight = font.ascender - font.descender;
             CGFloat yOffset = font.ascender - fontHeight * 0.5;
             delegate.ascent = attachmentSize.height * 0.5 + yOffset;
             delegate.descent = attachmentSize.height - delegate.ascent;
-            if (delegate.descent < 0) delegate.descent = 0;
+            if (delegate.descent < 0) {
+                delegate.descent = 0;
+                delegate.ascent = attachmentSize.height;
+            }
         } break;
         case YYTextVerticalAlignmentBottom: {
             delegate.ascent = attachmentSize.height + font.descender;
             delegate.descent = -font.descender;
-            if (delegate.ascent < 0) delegate.ascent = 0;
+            if (delegate.ascent < 0) {
+                delegate.ascent = 0;
+                delegate.descent = attachmentSize.height;
+            }
         } break;
         default: {
             delegate.ascent = attachmentSize.height;
@@ -1224,6 +1233,44 @@ return style. _attr_;
 - (void)setTextGlyphTransform:(CGAffineTransform)textGlyphTransform range:(NSRange)range {
     NSValue *value = CGAffineTransformIsIdentity(textGlyphTransform) ? nil : [NSValue valueWithCGAffineTransform:textGlyphTransform];
     [self setAttribute:YYTextGlyphTransformAttributeName value:value range:range];
+}
+
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                     userInfo:(NSDictionary *)userInfo
+                    tapAction:(YYTextAction)tapAction
+              longPressAction:(YYTextAction)longPressAction {
+    YYTextHighlight *highlight = [YYTextHighlight highlightWithBackgroundColor:backgroundColor];
+    highlight.userInfo = userInfo;
+    highlight.tapAction = tapAction;
+    highlight.longPressAction = longPressAction;
+    if (color) [self setColor:color range:range];
+    [self setTextHighlight:highlight range:range];
+}
+
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                    tapAction:(YYTextAction)tapAction {
+    [self setTextHighlightRange:range
+                          color:color
+                backgroundColor:backgroundColor
+                       userInfo:nil
+                      tapAction:tapAction
+                longPressAction:nil];
+}
+
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                     userInfo:(NSDictionary *)userInfo {
+    [self setTextHighlightRange:range
+                          color:color
+                backgroundColor:backgroundColor
+                       userInfo:userInfo
+                      tapAction:nil
+                longPressAction:nil];
 }
 
 - (void)insertString:(NSString *)string atIndex:(NSUInteger)location {

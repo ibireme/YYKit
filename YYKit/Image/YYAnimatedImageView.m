@@ -14,17 +14,16 @@
 #import "UIDevice+YYAdd.h"
 #import "YYImageCoder.h"
 #import "YYKitMacro.h"
-#import <libkern/OSAtomic.h>
 
 #define BUFFER_SIZE (10 * 1024 * 1024) // 10MB (minimum memory buffer size)
 
-#define LOCK(...) OSSpinLockLock(&self->_lock); \
+#define LOCK(...) dispatch_semaphore_wait(self->_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
-OSSpinLockUnlock(&self->_lock);
+dispatch_semaphore_signal(self->_lock);
 
-#define LOCK_VIEW(...) OSSpinLockLock(&view->_lock); \
+#define LOCK_VIEW(...) dispatch_semaphore_wait(view->_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
-OSSpinLockUnlock(&view->_lock);
+dispatch_semaphore_signal(view->_lock);
 
 
 typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
@@ -40,7 +39,7 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
     UIImage <YYAnimatedImage> *_curAnimatedImage;
     
     dispatch_once_t _onceToken;
-    OSSpinLock _lock; ///< lock for _buffer
+    dispatch_semaphore_t _lock; ///< lock for _buffer
     NSOperationQueue *_requestQueue; ///< image request queue, serial
     
     CADisplayLink *_link; ///< ticker for change frame
@@ -141,7 +140,7 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
 // init the animated params.
 - (void)resetAnimated {
     dispatch_once(&_onceToken, ^{
-        _lock = OS_SPINLOCK_INIT;
+        _lock = dispatch_semaphore_create(1);
         _buffer = [NSMutableDictionary new];
         _requestQueue = [[NSOperationQueue alloc] init];
         _requestQueue.maxConcurrentOperationCount = 1;
@@ -535,7 +534,11 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
     self = [super initWithCoder:aDecoder];
     _runloopMode = [aDecoder decodeObjectForKey:@"runloopMode"];
     if (_runloopMode.length == 0) _runloopMode = NSRunLoopCommonModes;
-    _autoPlayAnimatedImage = [aDecoder decodeBoolForKey:@"autoPlayAnimatedImage"];
+    if ([aDecoder containsValueForKey:@"autoPlayAnimatedImage"]) {
+        _autoPlayAnimatedImage = [aDecoder decodeBoolForKey:@"autoPlayAnimatedImage"];
+    } else {
+        _autoPlayAnimatedImage = YES;
+    }
     
     UIImage *image = [aDecoder decodeObjectForKey:@"YYAnimatedImage"];
     UIImage *highlightedImage = [aDecoder decodeObjectForKey:@"YYHighlightedAnimatedImage"];

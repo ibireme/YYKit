@@ -17,7 +17,6 @@
 #include <mach/mach.h>
 #include <arpa/inet.h>
 #include <ifaddrs.h>
-#include <libkern/OSAtomic.h>
 #import "YYKitMacro.h"
 #import "NSString+YYAdd.h"
 
@@ -170,13 +169,14 @@ static uint64_t yy_net_counter_get_by_type(yy_net_interface_counter *counter, YY
 }
 
 static yy_net_interface_counter yy_get_net_interface_counter() {
-    static OSSpinLock lock = OS_SPINLOCK_INIT;
+    static dispatch_semaphore_t lock;
     static NSMutableDictionary *sharedInCounters;
     static NSMutableDictionary *sharedOutCounters;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInCounters = [NSMutableDictionary new];
         sharedOutCounters = [NSMutableDictionary new];
+        lock = dispatch_semaphore_create(1);
     });
     
     yy_net_interface_counter counter = {0};
@@ -184,7 +184,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     const struct ifaddrs *cursor;
     if (getifaddrs(&addrs) == 0) {
         cursor = addrs;
-        OSSpinLockLock(&lock);
+        dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
         while (cursor) {
             if (cursor->ifa_addr->sa_family == AF_LINK) {
                 const struct if_data *data = cursor->ifa_data;
@@ -212,7 +212,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             }
             cursor = cursor->ifa_next;
         }
-        OSSpinLockUnlock(&lock);
+        dispatch_semaphore_signal(lock);
         freeifaddrs(addrs);
     }
     

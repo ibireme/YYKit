@@ -1306,6 +1306,55 @@
 - (void)setTextBlockBorder:(YYTextBorder *)textBlockBorder range:(NSRange)range;
 - (void)setTextRubyAnnotation:(YYTextRubyAnnotation *)ruby range:(NSRange)range NS_AVAILABLE_IOS(8_0);
 
+
+#pragma mark - Convenience methods for text highlight
+///=============================================================================
+/// @name Convenience methods for text highlight
+///=============================================================================
+
+/**
+ Convenience method to set text highlight
+ 
+ @param range           text range
+ @param color           text color (pass nil to ignore)
+ @param backgroundColor text background color when highlight
+ @param userInfo        user information dictionary (pass nil to ignore)
+ @param tapAction       tap action when user tap the highlight (pass nil to ignore)
+ @param longPressAction long press action when user long press the highlight (pass nil to ignore)
+ */
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                     userInfo:(NSDictionary *)userInfo
+                    tapAction:(YYTextAction)tapAction
+              longPressAction:(YYTextAction)longPressAction;
+
+/**
+ Convenience method to set text highlight
+
+ @param range           text range
+ @param color           text color (pass nil to ignore)
+ @param backgroundColor text background color when highlight
+ @param tapAction       tap action when user tap the highlight (pass nil to ignore)
+ */
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                    tapAction:(YYTextAction)tapAction;
+
+/**
+ Convenience method to set text highlight
+
+ @param range           text range
+ @param color           text color (pass nil to ignore)
+ @param backgroundColor text background color when highlight
+ @param userInfo        tap action when user tap the highlight (pass nil to ignore)
+ */
+- (void)setTextHighlightRange:(NSRange)range
+                        color:(UIColor *)color
+              backgroundColor:(UIColor *)backgroundColor
+                     userInfo:(NSDictionary *)userInfo;
+
 #pragma mark - Utilities
 ///=============================================================================
 /// @name Utilities
