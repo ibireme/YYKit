@@ -11,7 +11,6 @@
 
 #import "NSObject+YYModel.h"
 #import "YYClassInfo.h"
-#import <libkern/OSAtomic.h>
 #import <objc/message.h>
 
 #define force_inline __inline__ __attribute__((always_inline))
@@ -571,20 +570,20 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
     if (!cls) return nil;
     static CFMutableDictionaryRef cache;
     static dispatch_once_t onceToken;
-    static OSSpinLock lock;
+    static dispatch_semaphore_t lock;
     dispatch_once(&onceToken, ^{
         cache = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        lock = OS_SPINLOCK_INIT;
+        lock = dispatch_semaphore_create(1);
     });
-    OSSpinLockLock(&lock);
+    dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
     _YYModelMeta *meta = CFDictionaryGetValue(cache, (__bridge const void *)(cls));
-    OSSpinLockUnlock(&lock);
+    dispatch_semaphore_signal(lock);
     if (!meta) {
         meta = [[_YYModelMeta alloc] initWithClass:cls];
         if (meta) {
-            OSSpinLockLock(&lock);
+            dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
             CFDictionarySetValue(cache, (__bridge const void *)(cls), (__bridge const void *)(meta));
-            OSSpinLockUnlock(&lock);
+            dispatch_semaphore_signal(lock);
         }
     }
     return meta;
@@ -1226,6 +1225,154 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
     return result;
 }
 
+/// Add indent to string (exclude first line)
+static NSMutableString *ModelDescriptionAddIndent(NSMutableString *desc, NSUInteger indent) {
+    for (NSUInteger i = 0, max = desc.length; i < max; i++) {
+        unichar c = [desc characterAtIndex:i];
+        if (c == '\n') {
+            for (NSUInteger j = 0; j < indent; j++) {
+                [desc insertString:@"    " atIndex:i + 1];
+            }
+            i += indent * 4;
+            max += indent * 4;
+        }
+    }
+    return desc;
+}
+
+/// Generaate a description string
+static NSString *ModelDescription(NSObject *model) {
+    static const int kDescMaxLength = 100;
+    if (!model) return @"<nil>";
+    if (model == (id)kCFNull) return @"<null>";
+    if (![model isKindOfClass:[NSObject class]]) return [NSString stringWithFormat:@"%@",model];
+    
+    
+    _YYModelMeta *modelMeta = [_YYModelMeta metaWithClass:model.class];
+    switch (modelMeta->_nsType) {
+        case YYEncodingTypeNSString: case YYEncodingTypeNSMutableString: {
+            return [NSString stringWithFormat:@"\"%@\"",model];
+        }
+            
+        case YYEncodingTypeNSValue:
+        case YYEncodingTypeNSData: case YYEncodingTypeNSMutableData: {
+            NSString *tmp = model.description;
+            if (tmp.length > kDescMaxLength) {
+                tmp = [tmp substringToIndex:kDescMaxLength];
+                tmp = [tmp stringByAppendingString:@"..."];
+            }
+            return tmp;
+        }
+            
+        case YYEncodingTypeNSNumber:
+        case YYEncodingTypeNSDecimalNumber:
+        case YYEncodingTypeNSDate:
+        case YYEncodingTypeNSURL: {
+            return [NSString stringWithFormat:@"%@",model];
+        }
+            
+        case YYEncodingTypeNSSet: case YYEncodingTypeNSMutableSet: {
+            model = ((NSSet *)model).allObjects;
+        } // no break
+            
+        case YYEncodingTypeNSArray: case YYEncodingTypeNSMutableArray: {
+            NSArray *array = (id)model;
+            NSMutableString *desc = [NSMutableString new];
+            if (array.count == 0) {
+                return [desc stringByAppendingString:@"[]"];
+            } else {
+                [desc appendFormat:@"[\n"];
+                for (NSUInteger i = 0, max = array.count; i < max; i++) {
+                    NSObject *obj = array[i];
+                    [desc appendString:@"    "];
+                    [desc appendString:ModelDescriptionAddIndent(ModelDescription(obj).mutableCopy, 1)];
+                    [desc appendString:(i + 1 == max) ? @"\n" : @";\n"];
+                }
+                [desc appendString:@"]"];
+                return desc;
+            }
+        }
+        case YYEncodingTypeNSDictionary: case YYEncodingTypeNSMutableDictionary: {
+            NSDictionary *dic = (id)model;
+            NSMutableString *desc = [NSMutableString new];
+            if (dic.count == 0) {
+                return [desc stringByAppendingString:@"{}"];
+            } else {
+                NSArray *keys = dic.allKeys;
+                
+                [desc appendFormat:@"[\n"];
+                for (NSUInteger i = 0, max = keys.count; i < max; i++) {
+                    NSString *key = keys[i];
+                    NSObject *value = dic[key];
+                    [desc appendString:@"    "];
+                    [desc appendFormat:@"%@ = %@",key, ModelDescriptionAddIndent(ModelDescription(value).mutableCopy, 1)];
+                    [desc appendString:(i + 1 == max) ? @"\n" : @";\n"];
+                }
+                [desc appendString:@"]"];
+            }
+            return desc;
+        }
+            
+        default: {
+            NSMutableString *desc = [NSMutableString new];
+            [desc appendFormat:@"<%@: %p>", model.class, model];
+            if (modelMeta->_allPropertyMetas.count == 0) return desc;
+            
+            // sort property names
+            NSArray *properties = [modelMeta->_allPropertyMetas
+                                   sortedArrayUsingComparator:^NSComparisonResult(_YYModelPropertyMeta *p1, _YYModelPropertyMeta *p2) {
+                                       return [p1->_name compare:p2->_name];
+                                   }];
+            
+            [desc appendFormat:@" {\n"];
+            for (NSUInteger i = 0, max = properties.count; i < max; i++) {
+                _YYModelPropertyMeta *property = properties[i];
+                NSString *propertyDesc;
+                if (property->_isCNumber) {
+                    NSNumber *num = ModelCreateNumberFromProperty(model, property);
+                    propertyDesc = num.stringValue;
+                } else {
+                    switch (property->_type & YYEncodingTypeMask) {
+                        case YYEncodingTypeObject: {
+                            id v = ((id (*)(id, SEL))(void *) objc_msgSend)((id)model, property->_getter);
+                            propertyDesc = ModelDescription(v);
+                            if (!propertyDesc) propertyDesc = @"<nil>";
+                        } break;
+                        case YYEncodingTypeClass: {
+                            id v = ((id (*)(id, SEL))(void *) objc_msgSend)((id)model, property->_getter);
+                            propertyDesc = ((NSObject *)v).description;
+                            if (!propertyDesc) propertyDesc = @"<nil>";
+                        } break;
+                        case YYEncodingTypeSEL: {
+                            SEL sel = ((SEL (*)(id, SEL))(void *) objc_msgSend)((id)model, property->_getter);
+                            if (sel) propertyDesc = NSStringFromSelector(sel);
+                            else propertyDesc = @"<NULL>";
+                        } break;
+                        case YYEncodingTypeBlock: {
+                            id block = ((id (*)(id, SEL))(void *) objc_msgSend)((id)model, property->_getter);
+                            propertyDesc = block ? ((NSObject *)block).description : @"<nil>";
+                        } break;
+                        case YYEncodingTypeCArray: case YYEncodingTypeCString: case YYEncodingTypePointer: {
+                            void *pointer = ((void* (*)(id, SEL))(void *) objc_msgSend)((id)model, property->_getter);
+                            propertyDesc = [NSString stringWithFormat:@"%p",pointer];
+                        } break;
+                        case YYEncodingTypeStruct: case YYEncodingTypeUnion: {
+                            NSValue *value = [model valueForKey:property->_name];
+                            propertyDesc = value ? value.description : @"{unknown}";
+                        } break;
+                        default: propertyDesc = @"<unknown>";
+                    }
+                }
+                
+                propertyDesc = ModelDescriptionAddIndent(propertyDesc.mutableCopy, 1);
+                [desc appendFormat:@"    %@ = %@",property->_name, propertyDesc];
+                [desc appendString:(i + 1 == max) ? @"\n" : @";\n"];
+            }
+            [desc appendFormat:@"}"];
+            return desc;
+        }
+    }
+}
 
 
 @implementation NSObject (YYModel)
@@ -1558,9 +1705,13 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
         id that = [model valueForKey:NSStringFromSelector(propertyMeta->_getter)];
         if (this == that) continue;
         if (this == nil || that == nil) return NO;
-        if ([this isEqual:that]) continue;
+        if (![this isEqual:that]) return NO;
     }
     return YES;
+}
+
+- (NSString *)modelDescription {
+    return ModelDescription(self);
 }
 
 @end

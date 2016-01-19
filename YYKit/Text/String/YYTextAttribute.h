@@ -287,6 +287,7 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  (set or remove) the original attributes in the range for display.
  */
 @interface YYTextHighlight : NSObject <NSCoding, NSCopying>
+
 /**
  Attributes that you can apply to text in an attributed string when highlight.
  Key:   Same as CoreText/YYText Attribute Name.
@@ -294,7 +295,20 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  */
 @property (nonatomic, copy) NSDictionary *attributes;
 
+/**
+ Creates a highlight object with specified attributes.
+ 
+ @param attributes The attributes which will replace original attributes when highlight,
+ If the value is NSNull, it will removed when highlight.
+ */
 + (instancetype)highlightWithAttributes:(NSDictionary *)attributes;
+
+/**
+ Convenience methods to create a default highlight with the specifeid background color.
+ 
+ @param color The background border color.
+ */
++ (instancetype)highlightWithBackgroundColor:(UIColor *)color;
 
 // Convenience methods below to set the `attributes`.
 - (void)setFont:(UIFont *)font;

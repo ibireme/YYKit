@@ -11,7 +11,6 @@
 
 #import "YYKVStorage.h"
 #import <UIKit/UIKit.h>
-#import <libkern/OSAtomic.h>
 #import <time.h>
 
 #if __has_include(<sqlite3.h>)
@@ -58,7 +57,6 @@ static NSString *const kTrashDirectoryName = @"trash";
     
     BOOL _invalidated; ///< If YES, then the db should not open again, all read/write should be ignored.
     BOOL _dbIsClosing; ///< If YES, then the db is during closing.
-    OSSpinLock _dbStateLock;
 }
 
 
@@ -66,7 +64,6 @@ static NSString *const kTrashDirectoryName = @"trash";
 
 - (BOOL)_dbOpen {
     BOOL shouldOpen = YES;
-    OSSpinLockLock(&_dbStateLock);
     if (_invalidated) {
         shouldOpen = NO;
     } else if (_dbIsClosing) {
@@ -74,7 +71,6 @@ static NSString *const kTrashDirectoryName = @"trash";
     } else if (_db){
         shouldOpen = NO;
     }
-    OSSpinLockUnlock(&_dbStateLock);
     if (!shouldOpen) return YES;
     
     int result = sqlite3_open(_dbPath.UTF8String, &_db);
@@ -91,7 +87,6 @@ static NSString *const kTrashDirectoryName = @"trash";
 
 - (BOOL)_dbClose {
     BOOL needClose = YES;
-    OSSpinLockLock(&_dbStateLock);
     if (!_db) {
         needClose = NO;
     } else if (_invalidated) {
@@ -101,7 +96,6 @@ static NSString *const kTrashDirectoryName = @"trash";
     } else {
         _dbIsClosing = YES;
     }
-    OSSpinLockUnlock(&_dbStateLock);
     if (!needClose) return YES;
     
     int  result = 0;
@@ -128,11 +122,7 @@ static NSString *const kTrashDirectoryName = @"trash";
         }
     } while (retry);
     _db = NULL;
-    
-    OSSpinLockLock(&_dbStateLock);
     _dbIsClosing = NO;
-    OSSpinLockUnlock(&_dbStateLock);
-    
     return YES;
 }
 
@@ -646,9 +636,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (void)_appWillBeTerminated {
-    OSSpinLockLock(&_dbStateLock);
     _invalidated = YES;
-    OSSpinLockUnlock(&_dbStateLock);
 }
 
 #pragma mark - public
@@ -674,8 +662,7 @@ static NSString *const kTrashDirectoryName = @"trash";
     _dataPath = [path stringByAppendingPathComponent:kDataDirectoryName];
     _trashPath = [path stringByAppendingPathComponent:kTrashDirectoryName];
     _trashQueue = dispatch_queue_create("com.ibireme.cache.disk.trash", DISPATCH_QUEUE_SERIAL);
-    _dbPath = [path stringByAppendingPathComponent:kDBFileName];
-    _dbStateLock = OS_SPINLOCK_INIT;
+    _dbPath = [path stringByAppendingPathComponent:kDBFileName];;
     _errorLogsEnabled = YES;
     NSError *error = nil;
     if (![[NSFileManager defaultManager] createDirectoryAtPath:path

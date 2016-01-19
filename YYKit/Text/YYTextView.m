@@ -1781,12 +1781,18 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     return [UIColor colorWithRed:69/255.0 green:111/255.0 blue:238/255.0 alpha:1];
 }
 
+/// Returns the default placeholder color for text view (same as UITextField).
+- (UIColor *)_defaultPlaceholderColor {
+    return [UIColor colorWithRed:0 green:0 blue:25/255.0 alpha:44/255.0];
+}
+
 #pragma mark - Private Setter
 
 - (void)_setText:(NSString *)text {
     if (_text == text || [_text isEqualToString:text]) return;
     [self willChangeValueForKey:@"text"];
     _text = text.copy;
+    if (!_text) _text = @"";
     [self didChangeValueForKey:@"text"];
     self.accessibilityLabel = _text;
 }
@@ -1851,6 +1857,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if (_attributedText == attributedText || [_attributedText isEqual:attributedText]) return;
     [self willChangeValueForKey:@"attributedText"];
     _attributedText = attributedText.copy;
+    if (!_attributedText) _attributedText = [NSAttributedString new];
     [self didChangeValueForKey:@"attributedText"];
 }
 
@@ -1906,6 +1913,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     self.canCancelContentTouches = YES;
     self.multipleTouchEnabled = NO;
     [super setDelegate:self];
+    
+    _text = @"";
+    _attributedText = [NSAttributedString new];
     
     // UITextInputTraits
     _autocapitalizationType = UITextAutocapitalizationTypeSentences;
@@ -2146,11 +2156,11 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if ([self.delegate respondsToSelector:@selector(textViewDidChange:)]) {
         [self.delegate textViewDidChange:self];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:YYTextViewTextDidChangeNotification object:self];
     
     if (!_state.insideUndoBlock) {
         [self _resetUndoAndRedoStack];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:YYTextViewTextDidChangeNotification object:self];
 }
 
 - (void)setTextVerticalAlignment:(YYTextVerticalAlignment)textVerticalAlignment {
@@ -2313,7 +2323,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:placeholderText];
             if (!_placeholderFont) _placeholderFont = _font;
             if (!_placeholderFont) _placeholderFont = [self _defaultFont];
-            if (_placeholderTextColor) _placeholderTextColor = [UIColor grayColor];
+            if (!_placeholderTextColor) _placeholderTextColor = [self _defaultPlaceholderColor];
             atr.font = _placeholderFont;
             atr.color = _placeholderTextColor;
             _placeholderAttributedText = atr;
@@ -2737,7 +2747,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (BOOL)canResignFirstResponder {
-    if (self.isFirstResponder) return YES;
+    if (!self.isFirstResponder) return YES;
     if ([self.delegate respondsToSelector:@selector(textViewShouldEndEditing:)]) {
         if (![self.delegate textViewShouldEndEditing:self]) return NO;
     }
@@ -3305,6 +3315,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if ([self.delegate respondsToSelector:@selector(textViewDidChange:)]) {
         [self.delegate textViewDidChange:self];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:YYTextViewTextDidChangeNotification object:self];
     
     _lastTypeRange = _selectedTextRange.asRange;
 }
@@ -3379,10 +3390,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if ([self.delegate respondsToSelector:@selector(textViewDidChange:)]) {
         [self.delegate textViewDidChange:self];
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:YYTextViewTextDidChangeNotification object:self];
     
     _lastTypeRange = _selectedTextRange.asRange;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:YYTextViewTextDidChangeNotification object:self];
 }
 
 - (void)setBaseWritingDirection:(UITextWritingDirection)writingDirection forRange:(YYTextRange *)range {

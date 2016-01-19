@@ -13,7 +13,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreFoundation/CoreFoundation.h>
 #import <QuartzCore/QuartzCore.h>
-#import <libkern/OSAtomic.h>
 #import <pthread.h>
 
 #if __has_include("YYDispatchQueuePool.h")
@@ -183,7 +182,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 
 
 @implementation YYMemoryCache {
-    OSSpinLock _lock;
+    pthread_mutex_t _lock;
     _YYLinkedMap *_lru;
     dispatch_queue_t _queue;
 }
@@ -208,26 +207,26 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 
 - (void)_trimToCost:(NSUInteger)costLimit {
     BOOL finish = NO;
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     if (costLimit == 0) {
         [_lru removeAll];
         finish = YES;
     } else if (_lru->_totalCost <= costLimit) {
         finish = YES;
     }
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     if (finish) return;
     
     NSMutableArray *holder = [NSMutableArray new];
     while (!finish) {
-        if (OSSpinLockTry(&_lock)) {
+        if (pthread_mutex_trylock(&_lock) == 0) {
             if (_lru->_totalCost > costLimit) {
                 _YYLinkedMapNode *node = [_lru removeTailNode];
                 if (node) [holder addObject:node];
             } else {
                 finish = YES;
             }
-            OSSpinLockUnlock(&_lock);
+            pthread_mutex_unlock(&_lock);
         } else {
             usleep(10 * 1000); //10 ms
         }
@@ -242,26 +241,26 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 
 - (void)_trimToCount:(NSUInteger)countLimit {
     BOOL finish = NO;
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     if (countLimit == 0) {
         [_lru removeAll];
         finish = YES;
     } else if (_lru->_totalCount <= countLimit) {
         finish = YES;
     }
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     if (finish) return;
     
     NSMutableArray *holder = [NSMutableArray new];
     while (!finish) {
-        if (OSSpinLockTry(&_lock)) {
+        if (pthread_mutex_trylock(&_lock) == 0) {
             if (_lru->_totalCount > countLimit) {
                 _YYLinkedMapNode *node = [_lru removeTailNode];
                 if (node) [holder addObject:node];
             } else {
                 finish = YES;
             }
-            OSSpinLockUnlock(&_lock);
+            pthread_mutex_unlock(&_lock);
         } else {
             usleep(10 * 1000); //10 ms
         }
@@ -277,26 +276,26 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 - (void)_trimToAge:(NSTimeInterval)ageLimit {
     BOOL finish = NO;
     NSTimeInterval now = CACurrentMediaTime();
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     if (ageLimit <= 0) {
         [_lru removeAll];
         finish = YES;
     } else if (!_lru->_tail || (now - _lru->_tail->_time) <= ageLimit) {
         finish = YES;
     }
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     if (finish) return;
     
     NSMutableArray *holder = [NSMutableArray new];
     while (!finish) {
-        if (OSSpinLockTry(&_lock)) {
+        if (pthread_mutex_trylock(&_lock) == 0) {
             if (_lru->_tail && (now - _lru->_tail->_time) > ageLimit) {
                 _YYLinkedMapNode *node = [_lru removeTailNode];
                 if (node) [holder addObject:node];
             } else {
                 finish = YES;
             }
-            OSSpinLockUnlock(&_lock);
+            pthread_mutex_unlock(&_lock);
         } else {
             usleep(10 * 1000); //10 ms
         }
@@ -331,7 +330,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 
 - (instancetype)init {
     self = super.init;
-    _lock = OS_SPINLOCK_INIT;
+    pthread_mutex_init(&_lock, NULL);
     _lru = [_YYLinkedMap new];
     _queue = dispatch_queue_create("com.ibireme.cache.memory", DISPATCH_QUEUE_SERIAL);
     
@@ -356,62 +355,62 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 }
 
 - (NSUInteger)totalCount {
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     NSUInteger count = _lru->_totalCount;
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     return count;
 }
 
 - (NSUInteger)totalCost {
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     NSUInteger totalCost = _lru->_totalCost;
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     return totalCost;
 }
 
 - (BOOL)releaseInMainThread {
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     BOOL releaseInMainThread = _lru->_releaseOnMainThread;
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     return releaseInMainThread;
 }
 
 - (void)setReleaseInMainThread:(BOOL)releaseInMainThread {
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     _lru->_releaseOnMainThread = releaseInMainThread;
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
 }
 
 - (BOOL)releaseAsynchronously {
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     BOOL releaseAsynchronously = _lru->_releaseAsynchronously;
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     return releaseAsynchronously;
 }
 
 - (void)setReleaseAsynchronously:(BOOL)releaseAsynchronously {
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     _lru->_releaseAsynchronously = releaseAsynchronously;
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
 }
 
 - (BOOL)containsObjectForKey:(id)key {
     if (!key) return NO;
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     BOOL contains = CFDictionaryContainsKey(_lru->_dic, (__bridge const void *)(key));
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     return contains;
 }
 
 - (id)objectForKey:(id)key {
     if (!key) return nil;
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     _YYLinkedMapNode *node = CFDictionaryGetValue(_lru->_dic, (__bridge const void *)(key));
     if (node) {
         node->_time = CACurrentMediaTime();
         [_lru bringNodeToHead:node];
     }
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
     return node ? node->_value : nil;
 }
 
@@ -425,7 +424,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
         [self removeObjectForKey:key];
         return;
     }
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     _YYLinkedMapNode *node = CFDictionaryGetValue(_lru->_dic, (__bridge const void *)(key));
     NSTimeInterval now = CACurrentMediaTime();
     if (node) {
@@ -461,12 +460,12 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
             });
         }
     }
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
 }
 
 - (void)removeObjectForKey:(id)key {
     if (!key) return;
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     _YYLinkedMapNode *node = CFDictionaryGetValue(_lru->_dic, (__bridge const void *)(key));
     if (node) {
         [_lru removeNode:node];
@@ -481,13 +480,13 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
             });
         }
     }
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
 }
 
 - (void)removeAllObjects {
-    OSSpinLockLock(&_lock);
+    pthread_mutex_lock(&_lock);
     [_lru removeAll];
-    OSSpinLockUnlock(&_lock);
+    pthread_mutex_unlock(&_lock);
 }
 
 - (void)trimToCount:(NSUInteger)count {
