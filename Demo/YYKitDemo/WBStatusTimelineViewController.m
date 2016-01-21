@@ -138,13 +138,26 @@
     }
 }
 
+/** 点击状态栏的时候调用，哈哈哈 */
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    if (_fpsLabel.alpha != 0) {
+        [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            _fpsLabel.alpha = 0;
+            NSLog(@"222222222222");
+        } completion:NULL];
+    }
+}
+
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha == 0) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _fpsLabel.alpha = 1;
+            NSLog(@"44444444");
         } completion:^(BOOL finished) {
         }];
     }
+    return YES;
 }
 
 
