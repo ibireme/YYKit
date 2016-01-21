@@ -150,7 +150,6 @@
     if (_fpsLabel.alpha != 0) {
         [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _fpsLabel.alpha = 0;
-            NSLog(@"222222222222");
         } completion:NULL];
     }
 }
@@ -160,7 +159,6 @@
     if (_fpsLabel.alpha == 0) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _fpsLabel.alpha = 1;
-            NSLog(@"44444444");
         } completion:^(BOOL finished) {
         }];
     }
