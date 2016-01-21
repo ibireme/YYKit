@@ -138,7 +138,7 @@
     }
 }
 
-/** 点击状态栏的时候调用，哈哈哈 */
+/** 点击状态栏的时候调用 */
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha != 0) {
         [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
