@@ -285,7 +285,7 @@
     }
     
     YYPhotoGroupView *v = [[YYPhotoGroupView alloc] initWithGroupItems:items];
-    [v presentFromImageView:fromView toContainer:self.navigationController.view animated:YES completion:nil];
+    [v presentFromImageView:fromView toContainer:[UIApplication sharedApplication].keyWindow animated:YES completion:nil];
 }
 
 /// 点击了 Label 的链接

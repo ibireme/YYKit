@@ -240,7 +240,7 @@
     }
     
     YYPhotoGroupView *v = [[YYPhotoGroupView alloc] initWithGroupItems:items];
-    [v presentFromImageView:fromView toContainer:self.navigationController.view animated:YES completion:nil];
+    [v presentFromImageView:fromView toContainer:[UIApplication sharedApplication].keyWindow animated:YES completion:nil];
 }
 
 - (void)cell:(T1StatusCell *)cell didClickQuoteWithLongPress:(BOOL)longPress {
