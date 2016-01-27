@@ -86,7 +86,7 @@ This library requires a deployment target of iOS 6.0 or greater.
 About
 ==============
 I want to use the APIs as if it was provided by system, so I don't add prefix in
-these categories. You should try the sub-projects above first.
+these categories. I don't recommend using the `YYKit` directly, you should try the separated components first.
 
 License
 ==============
@@ -172,7 +172,7 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 
 关于
 ==============
-我希望调用 API 时，有着和调用系统自带 API 一样的体验，所以我并没有为 Category 方法添加前缀。我已经用工具扫描过这个项目中的 API，确保没有对系统 API 产生影响。我知道没有前缀的 Category 可能会带来麻烦，所以如果你只需要其中部分功能，请先查看上面那些拆分出来的子项目。
+我希望调用 API 时，有着和调用系统自带 API 一样的体验，所以我并没有为 Category 方法添加前缀。我已经用工具扫描过这个项目中的 API，确保没有对系统 API 产生影响，但即使这样没有前缀的 Category 也可能会带来其他麻烦。我不太推荐直接使用 `YYKit` 这个库，你应该先尝试一下上面那些拆分出来的独立组件。 
 
 
 许可证
