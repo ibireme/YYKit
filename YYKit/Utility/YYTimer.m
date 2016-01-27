@@ -72,17 +72,22 @@ dispatch_semaphore_signal(_lock);
 }
 
 - (void)fire {
-    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [_target performSelector:_selector];
-#pragma clang diagnostic pop
+    id target;
+    SEL selector;
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
+    target = _target;
+    selector = _selector;
     if (!_repeats || !_target) {
         dispatch_semaphore_signal(_lock);
+        [_target performSelector:_selector];
         [self invalidate];
     } else {
         dispatch_semaphore_signal(_lock);
+        [_target performSelector:_selector];
     }
+#pragma clang diagnostic pop
 }
 
 - (BOOL)repeats {
