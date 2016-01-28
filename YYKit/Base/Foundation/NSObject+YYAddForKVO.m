@@ -83,6 +83,8 @@ static const int block_key;
     [arr enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
         [self removeObserver:obj forKeyPath:keyPath];
     }];
+    
+    [dic removeObjectForKey:keyPath];
 }
 
 - (void)removeObserverBlocks {
@@ -92,6 +94,8 @@ static const int block_key;
             [self removeObserver:obj forKeyPath:key];
         }];
     }];
+    
+    [dic removeAllObjects];
 }
 
 - (NSMutableDictionary *)_yy_allNSObjectObserverBlocks {
