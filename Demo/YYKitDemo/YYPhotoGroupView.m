@@ -759,6 +759,7 @@
     
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:@[imageItem] applicationActivities:nil];
+    activityViewController.popoverPresentationController.sourceView = self;
     
     UIViewController *toVC = self.toContainerView.viewController;
     if (!toVC) toVC = self.viewController;
