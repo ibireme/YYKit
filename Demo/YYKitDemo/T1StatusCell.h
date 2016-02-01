@@ -14,7 +14,7 @@
 @class T1StatusCell;
 
 @interface T1StatusMediaView : YYControl
-@property (nonatomic, strong) NSArray *imageViews; //Array<UIImageView>
+@property (nonatomic, strong) NSArray<UIImageView *> *imageViews;
 @property (nonatomic, weak) T1StatusCell *cell;
 @end
 

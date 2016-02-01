@@ -844,7 +844,7 @@
     int picsCount = (int)pics.count;
     
     for (int i = 0; i < 9; i++) {
-        YYControl *imageView = _picViews[i];
+        UIView *imageView = _picViews[i];
         if (i >= picsCount) {
             [imageView.layer cancelCurrentImageRequest];
             imageView.hidden = YES;
@@ -905,7 +905,7 @@
                         imageView.contentMode = UIViewContentModeScaleToFill;
                         imageView.layer.contentsRect = CGRectMake(0, 0, 1, (float)width / height);
                     }
-                    imageView.image = image;
+                    ((YYControl *)imageView).image = image;
                     if (from != YYWebImageFromMemoryCacheFast) {
                         CATransition *transition = [CATransition animation];
                         transition.duration = 0.15;
