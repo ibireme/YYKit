@@ -760,7 +760,7 @@
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:@[imageItem] applicationActivities:nil];
     activityViewController.popoverPresentationController.sourceView = self;
-    
+
     UIViewController *toVC = self.toContainerView.viewController;
     if (!toVC) toVC = self.viewController;
     [toVC presentViewController:activityViewController animated:YES completion:nil];

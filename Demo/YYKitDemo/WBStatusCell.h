@@ -10,7 +10,7 @@
 #import "YYKit.h"
 #import "WBStatusLayout.h"
 #import "YYTableViewCell.h"
-@class WBStatusCell, YYControl;
+@class WBStatusCell;
 @protocol WBStatusCellDelegate;
 
 

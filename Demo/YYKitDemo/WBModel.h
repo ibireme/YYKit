@@ -205,14 +205,14 @@ typedef NS_ENUM(NSUInteger, WBPictureBadgeType) {
 @property (nonatomic, assign) BOOL geoEnabled;
 @property (nonatomic, assign) int32_t onlineStatus;
 @property (nonatomic, strong) NSString *location; ///< 所在地
-@property (nonatomic, strong) NSArray *icons;
+@property (nonatomic, strong) NSArray<NSDictionary<NSString *, NSString *> *> *icons;
 @property (nonatomic, strong) NSString *weihao;
 @property (nonatomic, strong) NSString *badgeTop;
 @property (nonatomic, assign) int32_t blockWord;
 @property (nonatomic, assign) int32_t blockApp;
 @property (nonatomic, assign) int32_t hasAbilityTag;
 @property (nonatomic, assign) int32_t creditScore; ///< 信用积分
-@property (nonatomic, strong) NSDictionary *badge; ///< 勋章
+@property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *badge; ///< 勋章
 @property (nonatomic, strong) NSString *lang;
 @property (nonatomic, assign) int32_t userAbility;
 @property (nonatomic, strong) NSDictionary *extend;
@@ -310,7 +310,7 @@ typedef NS_ENUM(NSUInteger, WBPictureBadgeType) {
 @property (nonatomic, strong) NSString *maxID;
 @property (nonatomic, strong) NSString *previousCursor;
 @property (nonatomic, strong) NSString *nextCursor;
-@property (nonatomic, strong) NSArray *statuses;
+@property (nonatomic, strong) NSArray<WBStatus *> *statuses;
 /*
  groupInfo
  trends
