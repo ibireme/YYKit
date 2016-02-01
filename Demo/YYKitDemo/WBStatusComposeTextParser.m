@@ -38,7 +38,7 @@
             ];
         });
         
-        NSArray *topicResults = [[WBStatusHelper regexTopic] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
+        NSArray<NSTextCheckingResult *> *topicResults = [[WBStatusHelper regexTopic] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
         NSUInteger clipLength = 0;
         for (NSTextCheckingResult *topic in topicResults) {
             if (topic.range.location == NSNotFound && topic.range.length <= 1) continue;
@@ -93,7 +93,7 @@
     
     
     {
-        NSArray *atResults = [[WBStatusHelper regexAt] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
+        NSArray<NSTextCheckingResult *> *atResults = [[WBStatusHelper regexAt] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
         for (NSTextCheckingResult *at in atResults) {
             if (at.range.location == NSNotFound && at.range.length <= 1) continue;
             
@@ -112,7 +112,7 @@
     }
     
     {
-        NSArray *emoticonResults = [[WBStatusHelper regexEmoticon] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
+        NSArray<NSTextCheckingResult *> *emoticonResults = [[WBStatusHelper regexEmoticon] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
         NSUInteger clipLength = 0;
         for (NSTextCheckingResult *emo in emoticonResults) {
             if (emo.range.location == NSNotFound && emo.range.length <= 1) continue;

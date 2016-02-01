@@ -74,9 +74,9 @@ typedef NS_ENUM(NSUInteger, WBPictureBadgeType) {
 @property (nonatomic, strong) NSString *pageID; ///< 对应着 WBPageInfo
 @property (nonatomic, strong) NSString *storageType;
 //如果是图片，则会有下面这些，可以直接点开看
-@property (nonatomic, strong) NSArray *picIds; /// Array<NSString>
-@property (nonatomic, strong) NSDictionary *picInfos; /// Dic<NSString,WBPicItem>
-@property (nonatomic, strong) NSArray *pics; ///< Array<WBPicItem>
+@property (nonatomic, strong) NSArray<NSString *> *picIds;
+@property (nonatomic, strong) NSDictionary<NSString *, WBPicture *> *picInfos;
+@property (nonatomic, strong) NSArray<WBPicture *> *pics;
 @end
 
 
@@ -132,7 +132,8 @@ typedef NS_ENUM(NSUInteger, WBPictureBadgeType) {
 @property (nonatomic, strong) NSString *objectType; ///< 类型，例如"place" "video"
 @property (nonatomic, strong) NSString *objectID;
 @property (nonatomic, strong) NSString *scheme; ///< 真实链接，例如 http://v.qq.com/xxx
-@property (nonatomic, strong) NSArray *buttons; ///< Array<WBButtonLink>
+@property (nonatomic, strong) NSArray<WBButtonLink *> *buttons;
+
 @property (nonatomic, assign) int32_t isAsyn;
 @property (nonatomic, assign) int32_t type;
 @property (nonatomic, strong) NSString *pageURL; ///< 链接 sinaweibo://...
@@ -204,14 +205,14 @@ typedef NS_ENUM(NSUInteger, WBPictureBadgeType) {
 @property (nonatomic, assign) BOOL geoEnabled;
 @property (nonatomic, assign) int32_t onlineStatus;
 @property (nonatomic, strong) NSString *location; ///< 所在地
-@property (nonatomic, strong) NSArray *icons;
+@property (nonatomic, strong) NSArray<NSDictionary<NSString *, NSString *> *> *icons;
 @property (nonatomic, strong) NSString *weihao;
 @property (nonatomic, strong) NSString *badgeTop;
 @property (nonatomic, assign) int32_t blockWord;
 @property (nonatomic, assign) int32_t blockApp;
 @property (nonatomic, assign) int32_t hasAbilityTag;
 @property (nonatomic, assign) int32_t creditScore; ///< 信用积分
-@property (nonatomic, strong) NSDictionary *badge; ///< 勋章
+@property (nonatomic, strong) NSDictionary<NSString *, NSNumber *> *badge; ///< 勋章
 @property (nonatomic, strong) NSString *lang;
 @property (nonatomic, assign) int32_t userAbility;
 @property (nonatomic, strong) NSDictionary *extend;
@@ -257,12 +258,13 @@ typedef NS_ENUM(NSUInteger, WBPictureBadgeType) {
 
 @property (nonatomic, strong) WBStatus *retweetedStatus; ///转发微博
 
-@property (nonatomic, strong) NSArray *picIds; /// Array<NSString>
-@property (nonatomic, strong) NSDictionary *picInfos; /// Dic<NSString,WBPicture>
-@property (nonatomic, strong) NSArray *pics; ///< Array<WBPicItem>
-@property (nonatomic, strong) NSArray *urlStruct; ///< Array<WBURL>
-@property (nonatomic, strong) NSArray *topicStruct; ///< Array<WBTopic>
-@property (nonatomic, strong) NSArray *tagStruct; ///< Array<WBTag>
+@property (nonatomic, strong) NSArray<NSString *> *picIds;
+@property (nonatomic, strong) NSDictionary<NSString *, WBPicture *> *picInfos;
+
+@property (nonatomic, strong) NSArray<WBPicture *> *pics;
+@property (nonatomic, strong) NSArray<WBURL *> *urlStruct;
+@property (nonatomic, strong) NSArray<WBTopic *> *topicStruct;
+@property (nonatomic, strong) NSArray<WBTag *> *tagStruct;
 @property (nonatomic, strong) WBPageInfo *pageInfo;
 
 @property (nonatomic, assign) BOOL favorited; ///< 是否收藏
@@ -308,7 +310,7 @@ typedef NS_ENUM(NSUInteger, WBPictureBadgeType) {
 @property (nonatomic, strong) NSString *maxID;
 @property (nonatomic, strong) NSString *previousCursor;
 @property (nonatomic, strong) NSString *nextCursor;
-@property (nonatomic, strong) NSArray *statuses;
+@property (nonatomic, strong) NSArray<WBStatus *> *statuses;
 /*
  groupInfo
  trends
@@ -347,5 +349,5 @@ typedef NS_ENUM(NSUInteger, WBEmoticonType) {
 @property (nonatomic, strong) NSString *nameTW;
 @property (nonatomic, assign) NSInteger displayOnly;
 @property (nonatomic, assign) NSInteger groupType;
-@property (nonatomic, strong) NSArray *emoticons; ///< Array<WBEmoticon>
+@property (nonatomic, strong) NSArray<WBEmoticon *> *emoticons;
 @end

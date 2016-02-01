@@ -253,12 +253,12 @@
 
 
 @interface WBEmoticonInputView () <UICollectionViewDelegate, UICollectionViewDataSource, UIInputViewAudioFeedback,WBEmoticonScrollViewDelegate>
-@property (nonatomic, strong) NSArray *toolbarButtons;
+@property (nonatomic, strong) NSArray<UIButton *> *toolbarButtons;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UIView *pageControl;
-@property (nonatomic, strong) NSArray *emoticonGroups; ///< Array<WBEmoticonGroup>
-@property (nonatomic, strong) NSArray *emoticonGroupPageIndexs; ///< Array<NSNumber>
-@property (nonatomic, strong) NSArray *emoticonGroupPageCounts; ///< Array<NSNumber>
+@property (nonatomic, strong) NSArray<WBEmoticonGroup *> *emoticonGroups;
+@property (nonatomic, strong) NSArray<NSNumber *> *emoticonGroupPageIndexs;
+@property (nonatomic, strong) NSArray<NSNumber *> *emoticonGroupPageCounts;
 @property (nonatomic, assign) NSInteger emoticonGroupTotalPageCount;
 @property (nonatomic, assign) NSInteger currentPageIndex;
 

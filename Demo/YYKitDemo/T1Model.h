@@ -17,10 +17,10 @@
 @property (nonatomic, strong) NSString *uidStr;
 @property (nonatomic, strong) NSString *name;       // e.g. "Nick Lockwood"
 @property (nonatomic, strong) NSString *screenName; // e.g. "nicklockwood"
-@property (nonatomic, strong) NSArray *indices;     // Array<NSNumber> from, to
+@property (nonatomic, strong) NSArray<NSNumber *> *indices;     // Array<NSNumber> from, to
 
 @property (nonatomic, assign) NSRange range;        // range from indices
-@property (nonatomic, strong) NSArray *ranges;      // Array<NSValue(NSRange)> nil if range is less than or equal to one.
+@property (nonatomic, strong) NSArray<NSValue *> *ranges;      // Array<NSValue(NSRange)> nil if range is less than or equal to one.
 @property (nonatomic, strong) T1User *user;         // reference
 @end
 
@@ -29,19 +29,19 @@
 @property (nonatomic, strong) NSString *url;         // e.g. "http://t.co/YuvsPou0rj"
 @property (nonatomic, strong) NSString *displayURL;  // e.g. "apple.com/tv/compare/"
 @property (nonatomic, strong) NSString *expandedURL; // e.g. "http://www.apple.com/tv/compare/"
-@property (nonatomic, strong) NSArray *indices;      // Array<NSNumber> from, to
+@property (nonatomic, strong) NSArray<NSNumber *> *indices;      // Array<NSNumber> from, to
 
 @property (nonatomic, assign) NSRange range;         // range from indices
-@property (nonatomic, strong) NSArray *ranges;       // Array<NSValue(NSRange)> nil if range is less than or equal to one.
+@property (nonatomic, strong) NSArray<NSValue *> *ranges;       // Array<NSValue(NSRange)> nil if range is less than or equal to one.
 @end
 
 
 @interface T1HashTag : NSObject
 @property (nonatomic, strong) NSString *text;
-@property (nonatomic, strong) NSArray *indices;  // Array<NSNumber> from, to
+@property (nonatomic, strong) NSArray<NSNumber *> *indices;  // Array<NSNumber> from, to
 
 @property (nonatomic, assign) NSRange range;     // range from indices
-@property (nonatomic, strong) NSArray *ranges;   // Array<NSValue(NSRange)> nil if range is less than or equal to one.
+@property (nonatomic, strong) NSArray<NSValue *> *ranges;   // Array<NSValue(NSRange)> nil if range is less than or equal to one.
 @end
 
 
@@ -51,7 +51,7 @@
 @property (nonatomic, assign) CGSize size;
 @property (nonatomic, strong) NSString *resize; // fit, crop
 @property (nonatomic, assign) BOOL isCrop;      // resize is "crop"
-@property (nonatomic, strong) NSArray *faces;   // Array<NSValue(CGRect)>
+@property (nonatomic, strong) NSArray<NSValue *> *faces;   // Array<NSValue(CGRect)>
 @property (nonatomic, strong) NSURL *url;       // add
 @end
 
@@ -65,10 +65,10 @@
 @property (nonatomic, strong) NSString *expandedURL;   // e.g. "http://twitter.com/edelwax/status/652117831883034624/photo/1"
 @property (nonatomic, strong) NSString *mediaURL;      // e.g. "http://pbs.twimg.com/media/CQzJtkbXAAAO2v3.png"
 @property (nonatomic, strong) NSString *mediaURLHttps; // e.g. "https://pbs.twimg.com/media/CQzJtkbXAAAO2v3.png"
-@property (nonatomic, strong) NSArray *indices;        // Array<NSNumber> from, to
+@property (nonatomic, strong) NSArray<NSNumber *> *indices;        // Array<NSNumber> from, to
 
 @property (nonatomic, assign) NSRange range;           // range from indices
-@property (nonatomic, strong) NSArray *ranges;         // Array<NSValue(NSRange)> nil if range is less than or equal to one.
+@property (nonatomic, strong) NSArray<NSValue *> *ranges;         // Array<NSValue(NSRange)> nil if range is less than or equal to one.
 
 @property (nonatomic, strong) T1MediaMeta *mediaThumb;
 @property (nonatomic, strong) T1MediaMeta *mediaSmall;
@@ -168,11 +168,11 @@
 
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSString *source;
-@property (nonatomic, strong) NSArray *medias;         // Array<T1Media>
-@property (nonatomic, strong) NSArray *extendedMedias; // Array<T1Media>
-@property (nonatomic, strong) NSArray *userMentions;   // Array<T1UserMention>
-@property (nonatomic, strong) NSArray *urls;           // Array<T1URL>
-@property (nonatomic, strong) NSArray *hashTags;       // Array<T1HashTag>
+@property (nonatomic, strong) NSArray<T1Media *> *medias;
+@property (nonatomic, strong) NSArray<T1Media *> *extendedMedias;
+@property (nonatomic, strong) NSArray<T1UserMention *> *userMentions;
+@property (nonatomic, strong) NSArray<T1URL *> *urls;
+@property (nonatomic, strong) NSArray<T1HashTag *> *hashTags;
 
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, assign) BOOL truncated;
@@ -213,8 +213,8 @@
 
 @interface T1APIRespose : NSObject
 @property (nonatomic, strong) NSDictionary *moments; ///< empty
-@property (nonatomic, strong) NSDictionary *users; ///< <UID(NSString), T1User>
-@property (nonatomic, strong) NSDictionary *tweets; ///< <TID(NSString), T1Tweet>
+@property (nonatomic, strong) NSDictionary<NSString *, T1User *> *users; ///< <UID(NSString), T1User>
+@property (nonatomic, strong) NSDictionary<NSString *, T1Tweet *> *tweets; ///< <TID(NSString), T1Tweet>
 @property (nonatomic, strong) NSArray *timelineItmes; ///< Array<T1Tweet/T1Conversation>
 @property (nonatomic, strong) NSArray *timeline; ///< Array<Dictionary>
 
