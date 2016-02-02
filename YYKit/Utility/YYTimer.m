@@ -81,11 +81,11 @@ dispatch_semaphore_signal(_lock);
     selector = _selector;
     if (!_repeats || !_target) {
         dispatch_semaphore_signal(_lock);
-        [_target performSelector:_selector];
+        [_target performSelector:_selector withObject:self];
         [self invalidate];
     } else {
         dispatch_semaphore_signal(_lock);
-        [_target performSelector:_selector];
+        [_target performSelector:_selector withObject:self];
     }
 #pragma clang diagnostic pop
 }
