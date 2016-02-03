@@ -51,7 +51,7 @@
 @property (readonly) NSUInteger inlineThreshold;
 
 /**
- If this block in not nil, then the block will be used to archive object instead
+ If this block is not nil, then the block will be used to archive object instead
  of NSKeyedArchiver. You can use this block to support the objects which do not
  conform to the `NSCoding` protocol.
  
@@ -60,7 +60,7 @@
 @property (copy) NSData *(^customArchiveBlock)(id object);
 
 /**
- If this block in not nil, then the block will be used to unarchive object instead
+ If this block is not nil, then the block will be used to unarchive object instead
  of NSKeyedUnarchiver. You can use this block to support the objects which do not
  conform to the `NSCoding` protocol.
  
