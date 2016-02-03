@@ -1122,6 +1122,28 @@ fail:
     return RTL;
 }
 
+/**
+ Correct the range's edge.
+ */
+- (YYTextRange *)_correctedRangeWithEdge:(YYTextRange *)range {
+    NSRange visibleRange = self.visibleRange;
+    YYTextPosition *start = range.start;
+    YYTextPosition *end = range.end;
+    
+    if (start.offset == visibleRange.location && start.affinity == YYTextAffinityBackward) {
+        start = [YYTextPosition positionWithOffset:start.offset affinity:YYTextAffinityForward];
+    }
+    
+    if (end.offset == visibleRange.location + visibleRange.length && start.affinity == YYTextAffinityForward) {
+        end = [YYTextPosition positionWithOffset:end.offset affinity:YYTextAffinityBackward];
+    }
+    
+    if (start != range.start || end != range.end) {
+        range = [YYTextRange rangeWithStart:start end:end];
+    }
+    return range;
+}
+
 - (NSUInteger)lineIndexForRow:(NSUInteger)row {
     if (row >= _rowCount) return NSNotFound;
     return _lineRowsIndex[row];
@@ -1833,6 +1855,8 @@ fail:
 }
 
 - (CGRect)firstRectForRange:(YYTextRange *)range {
+    range = [self _correctedRangeWithEdge:range];
+    
     NSUInteger startLineIndex = [self lineIndexForPosition:range.start];
     NSUInteger endLineIndex = [self lineIndexForPosition:range.end];
     if (startLineIndex == NSNotFound || endLineIndex == NSNotFound) return CGRectNull;
@@ -1908,6 +1932,8 @@ fail:
 }
 
 - (NSArray *)selectionRectsForRange:(YYTextRange *)range {
+    range = [self _correctedRangeWithEdge:range];
+    
     BOOL isVertical = _container.verticalForm;
     NSMutableArray *rects = [NSMutableArray array];
     if (!range) return rects;
