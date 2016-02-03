@@ -2766,6 +2766,20 @@ static void YYTextDrawDecoration(YYTextLayout *layout, CGContextRef context, CGS
             if (glyphCount == 0) continue;
             
             NSDictionary *attrs = (id)CTRunGetAttributes(run);
+            
+            /*
+             Sometimes CoreText may convert CGColor to UIColor for `kCTForegroundColorAttributeName`
+             attribute in iOS7. This should be a bug of CoreText, and may cause crash. Here's a workaround.
+             */
+            NSObject *tmpColor = attrs[(id)kCTForegroundColorAttributeName];
+            if ([tmpColor respondsToSelector:@selector(CGColor)]) {
+                CGColorRef cgColor = ((UIColor *)tmpColor).CGColor;
+                if (!cgColor) cgColor = [UIColor blackColor].CGColor;
+                NSMutableDictionary *tmpAttrs = attrs.mutableCopy;
+                tmpAttrs[(id)kCTForegroundColorAttributeName] = (__bridge id)(cgColor);
+                attrs = tmpAttrs;
+            }
+            
             YYTextDecoration *underline = attrs[YYTextUnderlineAttributeName];
             YYTextDecoration *strikethrough = attrs[YYTextStrikethroughAttributeName];
             
