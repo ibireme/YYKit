@@ -125,7 +125,10 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     if (_highlight) {
         YYTextAction longPressAction = _highlight.longPressAction ? _highlight.longPressAction : _highlightLongPressAction;
         if (longPressAction) {
-            CGRect rect = [_innerLayout rectForRange:[YYTextRange rangeWithRange:_highlightRange]];
+            YYTextPosition *start = [YYTextPosition positionWithOffset:_highlightRange.location];
+            YYTextPosition *end = [YYTextPosition positionWithOffset:_highlightRange.location + _highlightRange.length affinity:YYTextAffinityBackward];
+            YYTextRange *range = [YYTextRange rangeWithStart:start end:end];
+            CGRect rect = [_innerLayout rectForRange:range];
             rect = [self _convertRectFromLayout:rect];
             longPressAction(self, _innerText, _highlightRange, rect);
             [self _removeHighlightAnimated:YES];
@@ -506,7 +509,10 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         if (!_state.touchMoved || [self _getHighlightAtPoint:point range:NULL] == _highlight) {
             YYTextAction tapAction = _highlight.tapAction ? _highlight.tapAction : _highlightTapAction;
             if (tapAction) {
-                CGRect rect = [_innerLayout rectForRange:[YYTextRange rangeWithRange:_highlightRange]];
+                YYTextPosition *start = [YYTextPosition positionWithOffset:_highlightRange.location];
+                YYTextPosition *end = [YYTextPosition positionWithOffset:_highlightRange.location + _highlightRange.length affinity:YYTextAffinityBackward];
+                YYTextRange *range = [YYTextRange rangeWithStart:start end:end];
+                CGRect rect = [_innerLayout rectForRange:range];
                 rect = [self _convertRectFromLayout:rect];
                 tapAction(self, _innerText, _highlightRange, rect);
             }
