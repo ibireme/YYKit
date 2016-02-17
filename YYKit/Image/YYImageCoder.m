@@ -2714,7 +2714,7 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
 }
 
 + (NSData *)encodeImageWithDecoder:(YYImageDecoder *)decoder type:(YYImageType)type quality:(CGFloat)quality {
-    if (!decoder || !decoder.frameCount == 0) return nil;
+    if (!decoder || decoder.frameCount == 0) return nil;
     YYImageEncoder *encoder = [[YYImageEncoder alloc] initWithType:type];
     encoder.quality = quality;
     for (int i = 0; i < decoder.frameCount; i++) {
