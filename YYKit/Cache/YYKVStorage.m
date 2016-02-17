@@ -75,7 +75,7 @@ static NSString *const kTrashDirectoryName = @"trash";
     
     int result = sqlite3_open(_dbPath.UTF8String, &_db);
     if (result == SQLITE_OK) {
-        CFDictionaryKeyCallBacks keyCallbacks = kCFTypeDictionaryKeyCallBacks;
+        CFDictionaryKeyCallBacks keyCallbacks = kCFCopyStringDictionaryKeyCallBacks;
         CFDictionaryValueCallBacks valueCallbacks = {0};
         _dbStmtCache = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 0, &keyCallbacks, &valueCallbacks);
         return YES;
@@ -156,7 +156,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (sqlite3_stmt *)_dbPrepareStmt:(NSString *)sql {
-    if (![self _dbIsReady]) return NULL;
+    if (![self _dbIsReady] || sql.length == 0 || !_dbStmtCache) return NULL;
     sqlite3_stmt *stmt = (sqlite3_stmt *)CFDictionaryGetValue(_dbStmtCache, (__bridge const void *)(sql));
     if (!stmt) {
         int result = sqlite3_prepare_v2(_db, sql.UTF8String, -1, &stmt, NULL);
