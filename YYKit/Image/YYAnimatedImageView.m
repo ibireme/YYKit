@@ -56,7 +56,7 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
     NSMutableDictionary *_buffer; ///< frame buffer
     BOOL _bufferMiss; ///< whether miss frame on last opportunity
     NSUInteger _maxBufferCount; ///< maximum buffer count
-    NSUInteger _incrBufferCount; ///< current allowed buffer count (will increase by step)
+    NSInteger _incrBufferCount; ///< current allowed buffer count (will increase by step)
     
     CGRect _curContentsRect;
     BOOL _curImageHasContentsRect; ///< image has implementated "animatedImageContentsRectAtIndex:"
@@ -79,7 +79,7 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
     if ([self isCancelled]) return;
     view->_incrBufferCount++;
     if (view->_incrBufferCount == 0) [view calcMaxBufferCount];
-    if (view->_incrBufferCount > view->_maxBufferCount) {
+    if ((long)view->_incrBufferCount > (long)view->_maxBufferCount) {
         view->_incrBufferCount = view->_maxBufferCount;
     }
     NSUInteger idx = _nextIndex;
