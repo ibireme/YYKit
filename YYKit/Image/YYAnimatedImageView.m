@@ -78,6 +78,7 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
     if (!view) return;
     if ([self isCancelled]) return;
     view->_incrBufferCount++;
+    if (view->_incrBufferCount < 0) return;
     if (view->_incrBufferCount == 0) [view calcMaxBufferCount];
     if ((long)view->_incrBufferCount > (long)view->_maxBufferCount) {
         view->_incrBufferCount = view->_maxBufferCount;
