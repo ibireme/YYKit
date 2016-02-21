@@ -49,6 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+#if !TARGET_INTERFACE_BUILDER
 
 /**
  The YYTextView class implements the behavior for a scrollable, multiline text region.
@@ -108,18 +109,18 @@ NS_ASSUME_NONNULL_BEGIN
  Set a new value to this property also causes the new alignment to be applied to the entire `attributedText`.
  Get the value returns the alignment at the head of `attributedText`.
  */
-@property (nonatomic, assign) NSTextAlignment textAlignment;
+@property (nonatomic) NSTextAlignment textAlignment;
 
 /**
  The text vertical aligmnent in container. Default is YYTextVerticalAlignmentTop.
  */
-@property (nonatomic, assign) YYTextVerticalAlignment textVerticalAlignment;
+@property (nonatomic) YYTextVerticalAlignment textVerticalAlignment;
 
 /**
  The types of data converted to clickable URLs in the text view. Default is UIDataDetectorTypeNone.
  The tap or long press action should be handled by delegate.
  */
-@property (nonatomic, assign) UIDataDetectorTypes dataDetectorTypes;
+@property (nonatomic) UIDataDetectorTypes dataDetectorTypes;
 
 /**
  The attributes to apply to links at normal state. Default is light blue color.
@@ -212,7 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The inset of the text container's layout area within the text view's content area.
  */
-@property (nonatomic, assign) UIEdgeInsets textContainerInset;
+@property (nonatomic) UIEdgeInsets textContainerInset;
 
 /**
  An array of UIBezierPath objects representing the exclusion paths inside the 
@@ -224,7 +225,7 @@ NS_ASSUME_NONNULL_BEGIN
  Whether the receiver's layout orientation is vertical form. Default is NO.
  It may used to edit/display CJK text.
  */
-@property (nonatomic, assign, getter=isVerticalForm) BOOL verticalForm;
+@property (nonatomic, getter=isVerticalForm) BOOL verticalForm;
 
 /**
  The text line position modifier used to modify the lines' position in layout.
@@ -252,13 +253,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The current selection range of the receiver.
  */
-@property (nonatomic, assign) NSRange selectedRange;
+@property (nonatomic) NSRange selectedRange;
 
 /**
  A Boolean value indicating whether inserting text replaces the previous contents.
  The default value is NO.
  */
-@property (nonatomic, assign) BOOL clearsOnInsertion;
+@property (nonatomic) BOOL clearsOnInsertion;
 
 /**
  A Boolean value indicating whether the receiver is selectable. Default is YES.
@@ -282,20 +283,20 @@ NS_ASSUME_NONNULL_BEGIN
  A Boolean value indicating whether the receiver can paste image from pasteboard. Default is NO.
  When the value of this property is YES, user can paste image from pasteboard via "paste" menu.
  */
-@property (nonatomic, assign) BOOL allowsPasteImage;
+@property (nonatomic) BOOL allowsPasteImage;
 
 /**
  A Boolean value indicating whether the receiver can paste attributed text from pasteboard. Default is NO.
  When the value of this property is YES, user can paste attributed text from pasteboard via "paste" menu.
  */
-@property (nonatomic, assign) BOOL allowsPasteAttributedString;
+@property (nonatomic) BOOL allowsPasteAttributedString;
 
 /**
  A Boolean value indicating whether the receiver can copy attributed text to pasteboard. Default is YES.
  When the value of this property is YES, user can copy attributed text (with attachment image)
  from text view to pasteboard via "copy" menu.
  */
-@property (nonatomic, assign) BOOL allowsCopyAttributedString;
+@property (nonatomic) BOOL allowsCopyAttributedString;
 
 
 #pragma mark - Manage the undo and redo
@@ -307,12 +308,12 @@ NS_ASSUME_NONNULL_BEGIN
  A Boolean value indicating whether the receiver can undo and redo typing with
  shake gesture. The default value is YES.
  */
-@property (nonatomic, assign) BOOL allowsUndoAndRedo;
+@property (nonatomic) BOOL allowsUndoAndRedo;
 
 /**
  The maximum undo/redo level. The default value is 20.
  */
-@property (nonatomic, assign) NSUInteger maximumUndoLevel;
+@property (nonatomic) NSUInteger maximumUndoLevel;
 
 
 #pragma mark - Replacing the System Input Views
@@ -327,7 +328,7 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion If set the value while first responder, it will not take effect until 
  'reloadInputViews' is called.
  */
-@property (nullable, readwrite, retain) UIView *inputView;
+@property (nullable, nonatomic, readwrite, strong) __kindof UIView *inputView;
 
 /**
  The custom accessory view to display when the text view becomes the first responder.
@@ -336,15 +337,69 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion If set the value while first responder, it will not take effect until
  'reloadInputViews' is called.
  */
-@property (nullable, readwrite, retain) UIView *inputAccessoryView;
+@property (nullable, nonatomic, readwrite, strong) __kindof UIView *inputAccessoryView;
 
 /**
  If you use an custom accessory view without "inputAccessoryView" property,
  you may set the accessory view's height. It may used by auto scroll calculation.
  */
-@property (nonatomic, assign) CGFloat extraAccessoryViewHeight;
+@property (nonatomic) CGFloat extraAccessoryViewHeight;
 
 @end
+
+
+#else // TARGET_INTERFACE_BUILDER
+IB_DESIGNABLE
+@interface YYTextView : UIScrollView <UITextInput>
+@property (null_resettable, nonatomic, copy) IBInspectable NSString *text;
+@property (nullable, nonatomic, strong) IBInspectable UIColor *textColor;
+@property (nullable, nonatomic, strong) IBInspectable NSString *fontName_;
+@property (nonatomic) IBInspectable CGFloat fontSize_;
+@property (nonatomic) IBInspectable BOOL fontIsBold_;
+@property (nonatomic) IBInspectable NSTextAlignment textAlignment;
+@property (nonatomic) IBInspectable YYTextVerticalAlignment textVerticalAlignment;
+@property (nullable, nonatomic, copy) IBInspectable NSString *placeholderText;
+@property (nullable, nonatomic, strong) IBInspectable UIColor *placeholderTextColor;
+@property (nullable, nonatomic, strong) IBInspectable NSString *placeholderFontName_;
+@property (nonatomic) IBInspectable CGFloat placeholderFontSize_;
+@property (nonatomic) IBInspectable BOOL placeholderFontIsBold_;
+@property (nonatomic, getter=isVerticalForm) IBInspectable BOOL verticalForm;
+@property (nonatomic) IBInspectable BOOL clearsOnInsertion;
+@property (nonatomic, getter=isSelectable) IBInspectable BOOL selectable;
+@property (nonatomic, getter=isHighlightable) IBInspectable BOOL highlightable;
+@property (nonatomic, getter=isEditable) IBInspectable BOOL editable;
+@property (nonatomic) IBInspectable BOOL allowsPasteImage;
+@property (nonatomic) IBInspectable BOOL allowsPasteAttributedString;
+@property (nonatomic) IBInspectable BOOL allowsCopyAttributedString;
+@property (nonatomic) IBInspectable BOOL allowsUndoAndRedo;
+@property (nonatomic) IBInspectable NSUInteger maximumUndoLevel;
+@property (nonatomic) IBInspectable CGFloat insetTop_;
+@property (nonatomic) IBInspectable CGFloat insetBottom_;
+@property (nonatomic) IBInspectable CGFloat insetLeft_;
+@property (nonatomic) IBInspectable CGFloat insetRight_;
+@property (nonatomic) IBInspectable BOOL debugEnabled_;
+@property (nullable, nonatomic, weak) id<YYTextViewDelegate> delegate;
+@property (nullable, nonatomic, strong) UIFont *font;
+@property (nonatomic) UIDataDetectorTypes dataDetectorTypes;
+@property (nullable, nonatomic, copy) NSDictionary *linkTextAttributes;
+@property (nullable, nonatomic, copy) NSDictionary *highlightTextAttributes;
+@property (nullable, nonatomic, copy) NSDictionary *typingAttributes;
+@property (nullable, nonatomic, copy) NSAttributedString *attributedText;
+@property (nullable, nonatomic, strong) id<YYTextParser> textParser;
+@property (nullable, nonatomic, strong, readonly) YYTextLayout *textLayout;
+@property (nullable, nonatomic, strong) UIFont *placeholderFont;
+@property (nullable, nonatomic, copy) NSAttributedString *placeholderAttributedText;
+@property (nonatomic) UIEdgeInsets textContainerInset;
+@property (nullable, nonatomic, copy) NSArray *exclusionPaths;
+@property (nullable, nonatomic, copy) id<YYTextLinePositionModifier> linePositionModifier;
+@property (nullable, nonatomic, copy) YYTextDebugOption *debugOption;
+- (void)scrollRangeToVisible:(NSRange)range;
+@property (nonatomic) NSRange selectedRange;
+@property (nullable, nonatomic, readwrite, strong) __kindof UIView *inputView;
+@property (nullable, nonatomic, readwrite, strong) __kindof UIView *inputAccessoryView;
+@property (nonatomic) CGFloat extraAccessoryViewHeight;
+@end
+#endif // !TARGET_INTERFACE_BUILDER
 
 
 // Notifications, see UITextView's documentation for more information.

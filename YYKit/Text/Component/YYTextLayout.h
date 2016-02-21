@@ -223,8 +223,8 @@ extern const CGSize YYTextContainerMaxSize;
 @property (nonatomic, readonly) NSSet *attachmentContentsSet;  ///< Set of Attachment (UIImage/UIView/CALayer)
 @property (nonatomic, readonly) NSUInteger rowCount;           ///< Number of rows
 @property (nonatomic, readonly) NSRange visibleRange;          ///< Visible text range
-@property (nonatomic, readonly) CGRect textBoundingRect;       ///< Text bounding rect (only contains text glyph)
-@property (nonatomic, readonly) CGSize textBoundingSize;       ///< Text bounding size (encompasses all text and insets)
+@property (nonatomic, readonly) CGRect textBoundingRect;       ///< Bounding rect (glyphs)
+@property (nonatomic, readonly) CGSize textBoundingSize;       ///< Bounding size (glyphs and insets, ceil to pixel)
 @property (nonatomic, readonly) BOOL containsHighlight;        ///< Has highlight attribute
 @property (nonatomic, readonly) BOOL needDrawBlockBorder;      ///< Has block border attribute
 @property (nonatomic, readonly) BOOL needDrawBackgroundBorder; ///< Has background border attribute

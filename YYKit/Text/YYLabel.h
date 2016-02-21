@@ -21,6 +21,8 @@
 #import "YYTextAttribute.h"
 #endif
 
+#if !TARGET_INTERFACE_BUILDER
+
 /**
  The YYLabel class implements a read-only text view.
  
@@ -55,47 +57,47 @@
  Set a new value to this property also causes the new font to be applied to the entire `attributedText`.
  Get the value returns the font at the head of `attributedText`.
  */
-@property (null_resettable, nonatomic, retain) UIFont *font;
+@property (null_resettable, nonatomic, strong) UIFont *font;
 
 /**
  The color of the text. Default is black.
  Set a new value to this property also causes the new color to be applied to the entire `attributedText`.
  Get the value returns the color at the head of `attributedText`.
  */
-@property (null_resettable, nonatomic, retain) UIColor *textColor;
+@property (null_resettable, nonatomic, strong) UIColor *textColor;
 
 /**
  The shadow color of the text. Default is nil.
  Set a new value to this property also causes the shadow color to be applied to the entire `attributedText`.
  Get the value returns the shadow color at the head of `attributedText`.
  */
-@property (nullable, nonatomic, retain) UIColor *shadowColor;
+@property (nullable, nonatomic, strong) UIColor *shadowColor;
 
 /**
  The shadow offset of the text. Default is CGSizeZero.
  Set a new value to this property also causes the shadow offset to be applied to the entire `attributedText`.
  Get the value returns the shadow offset at the head of `attributedText`.
  */
-@property (nonatomic, assign) CGSize shadowOffset;
+@property (nonatomic) CGSize shadowOffset;
 
 /**
  The shadow blur of the text. Default is 0.
  Set a new value to this property also causes the shadow blur to be applied to the entire `attributedText`.
  Get the value returns the shadow blur at the head of `attributedText`.
  */
-@property (nonatomic, assign) CGFloat shadowBlurRadius;
+@property (nonatomic) CGFloat shadowBlurRadius;
 
 /**
  The technique to use for aligning the text. Default is NSLeftTextAlignment.
  Set a new value to this property also causes the new alignment to be applied to the entire `attributedText`.
  Get the value returns the alignment at the head of `attributedText`.
  */
-@property (nonatomic, assign) NSTextAlignment textAlignment;
+@property (nonatomic) NSTextAlignment textAlignment;
 
 /**
  The text vertical aligmnent in container. Default is YYTextVerticalAlignmentCenter.
  */
-@property (nonatomic, assign) YYTextVerticalAlignment textVerticalAlignment;
+@property (nonatomic) YYTextVerticalAlignment textVerticalAlignment;
 
 /**
  The styled text displayed by the label.
@@ -111,7 +113,7 @@
  The technique to use for wrapping and truncating the label's text.
  Default is NSLineBreakByTruncatingTail.
  */
-@property (nonatomic, assign) NSLineBreakMode lineBreakMode;
+@property (nonatomic) NSLineBreakMode lineBreakMode;
 
 /**
  The truncation token string used when text is truncated. Default is nil.
@@ -123,7 +125,7 @@
  The maximum number of lines to use for rendering text. Default value is 1.
  0 means no limit.
  */
-@property (nonatomic, assign) NSUInteger numberOfLines;
+@property (nonatomic) NSUInteger numberOfLines;
 
 /**
  When `text` or `attributedText` is changed, the parser will be called to modify the text.
@@ -162,13 +164,13 @@
  The inset of the text container's layout area within the text view's content area.
  Default value is UIEdgeInsetsZero.
  */
-@property (nonatomic, assign) UIEdgeInsets textContainerInset;
+@property (nonatomic) UIEdgeInsets textContainerInset;
 
 /**
  Whether the receiver's layout orientation is vertical form. Default is NO.
  It may used to display CJK text.
  */
-@property (nonatomic, assign, getter=isVerticalForm) BOOL verticalForm;
+@property (nonatomic, getter=isVerticalForm) BOOL verticalForm;
 
 /**
  The text line position modifier used to modify the lines' position in layout.
@@ -181,7 +183,24 @@
  The debug option to display CoreText layout result.
  The default value is [YYTextDebugOption sharedDebugOption].
  */
-@property (nonnull, nonatomic, copy) YYTextDebugOption *debugOption;
+@property (nullable, nonatomic, copy) YYTextDebugOption *debugOption;
+
+
+#pragma mark - Getting the Layout Constraints
+///=============================================================================
+/// @name Getting the Layout Constraints
+///=============================================================================
+
+/**
+ The preferred maximum width (in points) for a multiline label.
+ 
+ @discussion This property affects the size of the label when layout constraints 
+     are applied to it. During layout, if the text extends beyond the width 
+     specified by this property, the additional text is flowed to one or more new 
+     lines, thereby increasing the height of the label. If the text is vertical 
+     form, this value will match to text height.
+ */
+@property (nonatomic) CGFloat preferredMaxLayoutWidth;
 
 
 #pragma mark - Interacting with Text Data
@@ -213,7 +232,7 @@
  
  The default value is `NO`.
  */
-@property (nonatomic, assign) BOOL displaysAsynchronously;
+@property (nonatomic) BOOL displaysAsynchronously;
 
 /**
  If the value is YES, and the layer is rendered asynchronously, then it will
@@ -227,7 +246,7 @@
  for display. You may manually clear the content by set the layer.contents to nil 
  after you update the label's properties, or you can just set this property to YES.
  */
-@property (nonatomic, assign) BOOL clearContentsBeforeAsynchronouslyDisplay;
+@property (nonatomic) BOOL clearContentsBeforeAsynchronouslyDisplay;
 
 /**
  If the value is YES, and the layer is rendered asynchronously, then it will add 
@@ -235,7 +254,7 @@
  
  The default value is `YES`.
  */
-@property (nonatomic, assign) BOOL fadeOnAsynchronouslyDisplay;
+@property (nonatomic) BOOL fadeOnAsynchronouslyDisplay;
 
 /**
  If the value is YES, then it will add a fade animation on layer when some range
@@ -243,7 +262,7 @@
  
  The default value is `YES`.
  */
-@property (nonatomic, assign) BOOL fadeOnHighlight;
+@property (nonatomic) BOOL fadeOnHighlight;
 
 /**
  Ignore common properties (such as text, font, textColor, attributedText...) and
@@ -254,7 +273,7 @@
  @discussion If you control the label content only through "textLayout", then
  you may set this value to YES for higher performance.
  */
-@property (nonatomic, assign) BOOL ignoreCommonProperties;
+@property (nonatomic) BOOL ignoreCommonProperties;
 
 /*
  Tips:
@@ -297,3 +316,47 @@
  */
 
 @end
+
+
+#else // TARGET_INTERFACE_BUILDER
+IB_DESIGNABLE
+@interface YYLabel : UIView <NSCoding>
+@property (nullable, nonatomic, copy) IBInspectable NSString *text;
+@property (null_resettable, nonatomic, strong) IBInspectable UIColor *textColor;
+@property (nullable, nonatomic, strong) IBInspectable NSString *fontName_;
+@property (nonatomic) IBInspectable CGFloat fontSize_;
+@property (nonatomic) IBInspectable BOOL fontIsBold_;
+@property (nonatomic) IBInspectable NSUInteger numberOfLines;
+@property (nonatomic) IBInspectable NSInteger lineBreakMode;
+@property (nonatomic) IBInspectable CGFloat preferredMaxLayoutWidth;
+@property (nonatomic, getter=isVerticalForm) IBInspectable BOOL verticalForm;
+@property (nonatomic) IBInspectable NSInteger textAlignment;
+@property (nonatomic) IBInspectable NSInteger textVerticalAlignment;
+@property (nullable, nonatomic, strong) IBInspectable UIColor *shadowColor;
+@property (nonatomic) IBInspectable CGPoint shadowOffset;
+@property (nonatomic) IBInspectable CGFloat shadowBlurRadius;
+@property (nullable, nonatomic, copy) IBInspectable NSAttributedString *attributedText;
+@property (nonatomic) IBInspectable CGFloat insetTop_;
+@property (nonatomic) IBInspectable CGFloat insetBottom_;
+@property (nonatomic) IBInspectable CGFloat insetLeft_;
+@property (nonatomic) IBInspectable CGFloat insetRight_;
+@property (nonatomic) IBInspectable BOOL debugEnabled_;
+
+@property (null_resettable, nonatomic, strong) UIFont *font;
+@property (nullable, nonatomic, copy) NSAttributedString *truncationToken;
+@property (nullable, nonatomic, strong) id<YYTextParser> textParser;
+@property (nullable, nonatomic, strong) YYTextLayout *textLayout;
+@property (nullable, nonatomic, copy) UIBezierPath *textContainerPath;
+@property (nullable, nonatomic, copy) NSArray *exclusionPaths;
+@property (nonatomic) UIEdgeInsets textContainerInset;
+@property (nullable, nonatomic, copy) id<YYTextLinePositionModifier> linePositionModifier;
+@property (nonnull, nonatomic, copy) YYTextDebugOption *debugOption;
+@property (nullable, nonatomic, copy) YYTextAction highlightTapAction;
+@property (nullable, nonatomic, copy) YYTextAction highlightLongPressAction;
+@property (nonatomic) BOOL displaysAsynchronously;
+@property (nonatomic) BOOL clearContentsBeforeAsynchronouslyDisplay;
+@property (nonatomic) BOOL fadeOnAsynchronouslyDisplay;
+@property (nonatomic) BOOL fadeOnHighlight;
+@property (nonatomic) BOOL ignoreCommonProperties;
+@end
+#endif // !TARGET_INTERFACE_BUILDER

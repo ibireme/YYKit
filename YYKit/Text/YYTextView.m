@@ -185,8 +185,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Update layout and selection before runloop sleep/end.
 - (void)_commitUpdate {
+#if !TARGET_INTERFACE_BUILDER
     _state.needUpdate = YES;
     [[YYTransaction transactionWithTarget:self selector:@selector(_updateIfNeeded)] commit];
+#else
+    [self _update];
+#endif
 }
 
 /// Update layout and selection view if needed.
@@ -328,8 +332,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Update placeholder before runloop sleep/end.
 - (void)_commitPlaceholderUpdate {
+#if !TARGET_INTERFACE_BUILDER
     _state.placeholderNeedUpdate = YES;
     [[YYTransaction transactionWithTarget:self selector:@selector(_updatePlaceholderIfNeeded)] commit];
+#else
+    [self _updatePlaceholder];
+#endif
 }
 
 /// Update placeholder if needed.
@@ -350,7 +358,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         container.size = self.bounds.size;
         container.truncationType = YYTextTruncationTypeEnd;
         container.truncationToken = nil;
-        YYTextLayout *layout = [YYTextLayout layoutWithContainer:_innerContainer text:_placeholderAttributedText];
+        YYTextLayout *layout = [YYTextLayout layoutWithContainer:container text:_placeholderAttributedText];
         CGSize size = [layout textBoundingSize];
         BOOL needDraw = size.width > 1 && size.height > 1;
         if (needDraw) {
@@ -363,7 +371,6 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             frame.size = image.size;
             if (container.isVerticalForm) {
                 frame.origin.x = self.bounds.size.width - image.size.width;
-                frame.origin.y = self.bounds.size.height - image.size.height;
             } else {
                 frame.origin = CGPointZero;
             }
@@ -1912,6 +1919,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     self.delaysContentTouches = NO;
     self.canCancelContentTouches = YES;
     self.multipleTouchEnabled = NO;
+    self.clipsToBounds = YES;
     [super setDelegate:self];
     
     _text = @"";
@@ -3624,6 +3632,147 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 - (NSInteger)characterOffsetOfPosition:(YYTextPosition *)position withinRange:(YYTextRange *)range {
     return position ? position.offset : NSNotFound;
+}
+
+@end
+
+
+
+@interface YYTextView(IBInspectableProperties)
+@end
+
+@implementation YYTextView(IBInspectableProperties)
+
+- (BOOL)fontIsBold_:(UIFont *)font {
+    if (![font respondsToSelector:@selector(fontDescriptor)]) return NO;
+    return (font.fontDescriptor.symbolicTraits & UIFontDescriptorTraitBold) > 0;
+}
+
+- (UIFont *)boldFont_:(UIFont *)font {
+    if (![font respondsToSelector:@selector(fontDescriptor)]) return font;
+    return [UIFont fontWithDescriptor:[font.fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold] size:font.pointSize];
+}
+
+- (UIFont *)normalFont_:(UIFont *)font {
+    if (![font respondsToSelector:@selector(fontDescriptor)]) return font;
+    return [UIFont fontWithDescriptor:[font.fontDescriptor fontDescriptorWithSymbolicTraits:0] size:font.pointSize];
+}
+
+- (void)setFontName_:(NSString *)fontName {
+    if (!fontName) return;
+    UIFont *font = self.font;
+    if (!font) font = [self _defaultFont];
+    if ((fontName.length == 0 || [fontName.lowercaseString isEqualToString:@"system"]) && ![self fontIsBold_:font]) {
+        font = [UIFont systemFontOfSize:font.pointSize];
+    } else if ([fontName.lowercaseString isEqualToString:@"system bold"]) {
+        font = [UIFont boldSystemFontOfSize:font.pointSize];
+    } else {
+        if ([self fontIsBold_:font] && ![fontName.lowercaseString containsString:@"bold"]) {
+            font = [UIFont fontWithName:fontName size:font.pointSize];
+            font = [self boldFont_:font];
+        } else {
+            font = [UIFont fontWithName:fontName size:font.pointSize];
+        }
+        if (font) self.font = font;
+    }
+}
+
+- (void)setFontSize_:(CGFloat)fontSize {
+    if (fontSize <= 0) return;
+    UIFont *font = self.font;
+    if (!font) font = [self _defaultFont];
+    if (!font) font = [self _defaultFont];
+    font = [font fontWithSize:fontSize];
+    if (font) self.font = font;
+}
+
+- (void)setFontIsBold_:(BOOL)fontBold {
+    UIFont *font = self.font;
+    if (!font) font = [self _defaultFont];
+    if ([self fontIsBold_:font] == fontBold) return;
+    if (fontBold) {
+        font = [self boldFont_:font];
+    } else {
+        font = [self normalFont_:font];
+    }
+    if (font) self.font = font;
+}
+
+- (void)setPlaceholderFontName_:(NSString *)fontName {
+    if (!fontName) return;
+    UIFont *font = self.placeholderFont;
+    if (!font) font = [self _defaultFont];
+    if ((fontName.length == 0 || [fontName.lowercaseString isEqualToString:@"system"]) && ![self fontIsBold_:font]) {
+        font = [UIFont systemFontOfSize:font.pointSize];
+    } else if ([fontName.lowercaseString isEqualToString:@"system bold"]) {
+        font = [UIFont boldSystemFontOfSize:font.pointSize];
+    } else {
+        if ([self fontIsBold_:font] && ![fontName.lowercaseString containsString:@"bold"]) {
+            font = [UIFont fontWithName:fontName size:font.pointSize];
+            font = [self boldFont_:font];
+        } else {
+            font = [UIFont fontWithName:fontName size:font.pointSize];
+        }
+        if (font) self.placeholderFont = font;
+    }
+}
+
+- (void)setPlaceholderFontSize_:(CGFloat)fontSize {
+    if (fontSize <= 0) return;
+    UIFont *font = self.placeholderFont;
+    if (!font) font = [self _defaultFont];
+    font = [font fontWithSize:fontSize];
+    if (font) self.placeholderFont = font;
+}
+
+- (void)setPlaceholderFontIsBold_:(BOOL)fontBold {
+    UIFont *font = self.placeholderFont;
+    if (!font) font = [self _defaultFont];
+    if ([self fontIsBold_:font] == fontBold) return;
+    if (fontBold) {
+        font = [self boldFont_:font];
+    } else {
+        font = [self normalFont_:font];
+    }
+    if (font) self.placeholderFont = font;
+}
+
+- (void)setInsetTop_:(CGFloat)textInsetTop {
+    UIEdgeInsets insets = self.textContainerInset;
+    insets.top = textInsetTop;
+    self.textContainerInset = insets;
+}
+
+- (void)setInsetBottom_:(CGFloat)textInsetBottom {
+    UIEdgeInsets insets = self.textContainerInset;
+    insets.bottom = textInsetBottom;
+    self.textContainerInset = insets;
+}
+
+- (void)setInsetLeft_:(CGFloat)textInsetLeft {
+    UIEdgeInsets insets = self.textContainerInset;
+    insets.left = textInsetLeft;
+    self.textContainerInset = insets;
+    
+}
+
+- (void)setInsetRight_:(CGFloat)textInsetRight {
+    UIEdgeInsets insets = self.textContainerInset;
+    insets.right = textInsetRight;
+    self.textContainerInset = insets;
+}
+
+- (void)setDebugEnabled_:(BOOL)enabled {
+    if (!enabled) {
+        self.debugOption = nil;
+    } else {
+        YYTextDebugOption *debugOption = [YYTextDebugOption new];
+        debugOption.baselineColor = [UIColor redColor];
+        debugOption.CTFrameBorderColor = [UIColor redColor];
+        debugOption.CTLineFillColor = [UIColor colorWithRed:0.000 green:0.463 blue:1.000 alpha:0.180];
+        debugOption.CGGlyphBorderColor = [UIColor colorWithRed:1.000 green:0.524 blue:0.000 alpha:0.200];
+        self.debugOption = debugOption;
+    }
 }
 
 @end

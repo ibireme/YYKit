@@ -90,8 +90,6 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self setDotDirection:_dotDirection];
-    CGFloat minWidth = MIN(self.bounds.size.width, self.bounds.size.height);
-    self.layer.cornerRadius = minWidth / 2;
 }
 
 - (CGRect)touchRect {
