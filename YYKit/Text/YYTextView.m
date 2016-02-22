@@ -2442,24 +2442,31 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
-    YYTextLayout *textLayout = self.textLayout;
-    CGSize currentSize = CGSizePixelCeil(textLayout.textBoundingSize);
-    if (_verticalForm) {
-        if (currentSize.height == size.height) return currentSize;
-    } else {
-        if (currentSize.width == size.width) return currentSize;
+    if ((!_verticalForm && size.width == self.bounds.size.width) ||
+        (_verticalForm && size.height == self.bounds.size.height)) {
+        [self _updateIfNeeded];
+        if (!_verticalForm) {
+            if (_containerView.bounds.size.height <= size.height) {
+                return _containerView.bounds.size;
+            }
+        } else {
+            if (_containerView.bounds.size.width <= size.width) {
+                return _containerView.bounds.size;
+            }
+        }
     }
     
-    if (_verticalForm) {
-        size.width = CGFLOAT_MAX;
+    if (!_verticalForm) {
+        size.height = YYTextContainerMaxSize.height;
     } else {
-        size.height = CGFLOAT_MAX;
+        size.width = YYTextContainerMaxSize.width;
     }
-    YYTextContainer *newContainer = _innerContainer.copy;
-    newContainer.size = size;
-    YYTextLayout *newLayout = [YYTextLayout layoutWithContainer:newContainer text:textLayout.text];
-    CGSize newSize = newLayout.textBoundingSize;
-    return CGSizePixelCeil(newSize);
+    
+    YYTextContainer *container = [_innerContainer copy];
+    container.size = size;
+    
+    YYTextLayout *layout = [YYTextLayout layoutWithContainer:container text:_innerText];
+    return layout.textBoundingSize;
 }
 
 #pragma mark - Override UIResponder

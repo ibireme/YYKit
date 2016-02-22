@@ -448,9 +448,40 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
-    [self _updateIfNeeded];
-    if (!self._innerLayout) return size;
-    return [self._innerLayout textBoundingSize];
+    if (_ignoreCommonProperties) {
+        return _innerLayout.textBoundingSize;
+    }
+    
+    if ((!_verticalForm && size.width == self.bounds.size.width) ||
+        (_verticalForm && size.height == self.bounds.size.height)) {
+        [self _updateIfNeeded];
+        YYTextLayout *layout = self._innerLayout;
+        BOOL contains = NO;
+        if (layout.container.maximumNumberOfRows == 0) {
+            if (layout.truncatedLine == nil) {
+                contains = YES;
+            }
+        } else {
+            if (layout.rowCount <= layout.container.maximumNumberOfRows) {
+                contains = YES;
+            }
+        }
+        if (contains) {
+            return layout.textBoundingSize;
+        }
+    }
+    
+    if (!_verticalForm) {
+        size.height = YYTextContainerMaxSize.height;
+    } else {
+        size.width = YYTextContainerMaxSize.width;
+    }
+    
+    YYTextContainer *container = [_innerContainer copy];
+    container.size = size;
+    
+    YYTextLayout *layout = [YYTextLayout layoutWithContainer:container text:_innerText];
+    return layout.textBoundingSize;
 }
 
 - (NSString *)accessibilityLabel {
