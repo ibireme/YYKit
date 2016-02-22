@@ -1213,8 +1213,8 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         } else {
             font = [UIFont fontWithName:fontName size:font.pointSize];
         }
-        if (font) self.font = font;
     }
+    if (font) self.font = font;
 }
 
 - (void)setFontSize_:(CGFloat)fontSize {
