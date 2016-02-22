@@ -408,11 +408,11 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
     @package
     /// Key:mapped key and key path, Value:_YYModelPropertyInfo.
     NSDictionary *_mapper;
-    /// Array<_YYModelPropertyInfo>, all property meta of this model.
+    /// Array<_YYModelPropertyMeta>, all property meta of this model.
     NSArray *_allPropertyMetas;
-    /// Array<_YYModelPropertyInfo>, property meta which is mapped to a key path.
+    /// Array<_YYModelPropertyMeta>, property meta which is mapped to a key path.
     NSArray *_keyPathPropertyMetas;
-    /// Array<_YYModelPropertyInfo>, property meta which is mapped to multi keys.
+    /// Array<_YYModelPropertyMeta>, property meta which is mapped to multi keys.
     NSArray *_multiKeysPropertyMetas;
     /// The number of mapped key (and key path), same to _mapper.count.
     NSUInteger _keyMappedCount;
@@ -484,7 +484,7 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
                                                                     propertyInfo:propertyInfo
                                                                          generic:genericMapper[propertyInfo.name]];
             if (!meta || !meta->_name) continue;
-            if (!meta->_getter && !meta->_setter) continue;
+            if (!meta->_getter || !meta->_setter) continue;
             if (allPropertyMetas[meta->_name]) continue;
             allPropertyMetas[meta->_name] = meta;
         }
@@ -708,7 +708,7 @@ static force_inline void ModelSetNumberToProperty(__unsafe_unretained id model,
             long double d = num.doubleValue;
             if (isnan(d) || isinf(d)) d = 0;
             ((void (*)(id, SEL, long double))(void *) objc_msgSend)((id)model, meta->_setter, (long double)d);
-        } break;
+        } // break; commented for code coverage in next line
         default: break;
     }
 }
@@ -939,7 +939,7 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                                                                            ((NSSet *)valueSet).mutableCopy);
                         }
                     }
-                } break;
+                } // break; commented for code coverage in next line
                     
                 default: break;
             }
@@ -1034,7 +1034,7 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                         ((void (*)(id, SEL, void *))(void *) objc_msgSend)((id)model, meta->_setter, nsValue.pointerValue);
                     }
                 }
-            } break;
+            } // break; commented for code coverage in next line
                 
             default: break;
         }
@@ -1197,10 +1197,8 @@ static id ModelToJSONObjectRecursive(NSObject *model) {
                 subDic = superDic[key];
                 if (subDic) {
                     if ([subDic isKindOfClass:[NSDictionary class]]) {
-                        if (![subDic isKindOfClass:[NSMutableDictionary class]]) {
-                            subDic = subDic.mutableCopy;
-                            superDic[key] = subDic;
-                        }
+                        subDic = subDic.mutableCopy;
+                        superDic[key] = subDic;
                     } else {
                         break;
                     }
@@ -1253,7 +1251,7 @@ static NSString *ModelDescription(NSObject *model) {
         case YYEncodingTypeNSString: case YYEncodingTypeNSMutableString: {
             return [NSString stringWithFormat:@"\"%@\"",model];
         }
-            
+        
         case YYEncodingTypeNSValue:
         case YYEncodingTypeNSData: case YYEncodingTypeNSMutableData: {
             NSString *tmp = model.description;
@@ -1312,7 +1310,7 @@ static NSString *ModelDescription(NSObject *model) {
             }
             return desc;
         }
-            
+        
         default: {
             NSMutableString *desc = [NSMutableString new];
             [desc appendFormat:@"<%@: %p>", model.class, model];
@@ -1530,7 +1528,7 @@ static NSString *ModelDescription(NSObject *model) {
                 case YYEncodingTypeLongDouble: {
                     long double num = ((long double (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
                     ((void (*)(id, SEL, long double))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
-                } break;
+                } // break; commented for code coverage in next line
                 default: break;
             }
         } else {
@@ -1554,11 +1552,8 @@ static NSString *ModelDescription(NSObject *model) {
                         if (value) {
                             [one setValue:value forKey:propertyMeta->_name];
                         }
-                    }
-                    @catch (NSException *exception) {
-                        // do nothing...
-                    }
-                } break;
+                    } @catch (NSException *exception) {}
+                } // break; commented for code coverage in next line
                 default: break;
             }
         }
@@ -1612,10 +1607,7 @@ static NSString *ModelDescription(NSObject *model) {
                         @try {
                             NSValue *value = [self valueForKey:NSStringFromSelector(propertyMeta->_getter)];
                             [aCoder encodeObject:value forKey:propertyMeta->_name];
-                        }
-                        @catch (NSException *exception) {
-                            // do nothing...
-                        }
+                        } @catch (NSException *exception) {}
                     }
                 } break;
                     
@@ -1661,10 +1653,7 @@ static NSString *ModelDescription(NSObject *model) {
                         @try {
                             NSValue *value = [aDecoder decodeObjectForKey:propertyMeta->_name];
                             if (value) [self setValue:value forKey:propertyMeta->_name];
-                        }
-                        @catch (NSException *exception) {
-                            // do nothing...
-                        }
+                        } @catch (NSException *exception) {}
                     }
                 } break;
                     
