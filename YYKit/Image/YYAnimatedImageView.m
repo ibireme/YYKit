@@ -78,8 +78,9 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
     if (!view) return;
     if ([self isCancelled]) return;
     view->_incrBufferCount++;
+    if (view->_incrBufferCount < 0) return;
     if (view->_incrBufferCount == 0) [view calcMaxBufferCount];
-    if ((int)view->_incrBufferCount > (int)view->_maxBufferCount) {
+    if ((long)view->_incrBufferCount > (long)view->_maxBufferCount) {
         view->_incrBufferCount = view->_maxBufferCount;
     }
     NSUInteger idx = _nextIndex;
@@ -408,7 +409,6 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
                  _curContentsRect = [image animatedImageContentsRectAtIndex:_curIndex];
                  [self setContentsRect:_curContentsRect forImage:_curFrame];
              }
-             nextIndex = (_curIndex + 1) % _totalFrameCount;
              _bufferMiss = NO;
              if (buffer.count == _totalFrameCount) {
                  bufferIsFull = YES;
