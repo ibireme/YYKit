@@ -239,7 +239,7 @@
  */
 - (BOOL)containsEmoji;
 
-- (BOOL)containsEmojiForSystemVersion:(float)systemVersion;
+- (BOOL)containsEmojiForSystemVersion:(double)systemVersion;
 
 #pragma mark - NSNumber Compatible
 ///=============================================================================

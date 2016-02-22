@@ -23,7 +23,7 @@
 ///=============================================================================
 
 /// Device system version (e.g. 8.1)
-+ (float)systemVersion;
++ (double)systemVersion;
 
 /// Whether the device is iPad/iPad mini.
 @property (nonatomic, readonly) BOOL isPad;

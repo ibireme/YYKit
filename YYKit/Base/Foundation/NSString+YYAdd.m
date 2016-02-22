@@ -261,7 +261,7 @@ YYSYNTH_DUMMY_CLASS(NSString_YYAdd)
     return [self containsEmojiForSystemVersion:kSystemVersion];
 }
 
-- (BOOL)containsEmojiForSystemVersion:(float)systemVersion {
+- (BOOL)containsEmojiForSystemVersion:(double)systemVersion {
     // If detected, it MUST contains emoji; otherwise it MAY not contains emoji.
     static NSMutableCharacterSet *minSet8_3, *minSetOld;
     // If detected, it may contains emoji; otherwise it MUST NOT contains emoji.

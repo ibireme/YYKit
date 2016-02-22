@@ -25,11 +25,11 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
 
 @implementation UIDevice (YYAdd)
 
-+ (float)systemVersion {
-    static float version;
++ (double)systemVersion {
+    static double version;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        version = [UIDevice currentDevice].systemVersion.floatValue;
+        version = [UIDevice currentDevice].systemVersion.doubleValue;
     });
     return version;
 }
