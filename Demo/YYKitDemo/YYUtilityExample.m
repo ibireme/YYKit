@@ -1,48 +1,28 @@
 //
-//  YERootViewController.m
-//  YYKitExample
+//  YYUtilityExample.m
+//  YYKitDemo
 //
-//  Created by ibireme on 14-10-13.
-//  Copyright (c) 2014 ibireme. All rights reserved.
+//  Created by ibireme on 16/2/24.
+//  Copyright  2016 ibireme. All rights reserved.
 //
 
-#import "YYRootViewController.h"
+#import "YYUtilityExample.h"
 #import "YYKit.h"
 
-@interface YYRootViewController ()
+@interface YYUtilityExample()
 @property (nonatomic, strong) NSMutableArray *titles;
 @property (nonatomic, strong) NSMutableArray *classNames;
 @end
 
-@implementation YYRootViewController
+@implementation YYUtilityExample
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"YYKit Example";
     self.titles = @[].mutableCopy;
     self.classNames = @[].mutableCopy;
-    [self addCell:@"Model" class:@"YYModelExample"];
-    [self addCell:@"Image" class:@"YYImageExample"];
-    [self addCell:@"Text" class:@"YYTextExample"];
-//    [self addCell:@"Utility" class:@"YYUtilityExample"];
-    [self addCell:@"Feed List Demo" class:@"YYFeedListExample"];
-    [self.tableView reloadData];
+    [self addCell:@"Keychain" class:@"YYKeychainExample"];
     
-    //[self log];
-}
-
-- (void)log {
-    printf("all:%.2f MB   used:%.2f MB   free:%.2f MB   active:%.2f MB  inactive:%.2f MB  wird:%.2f MB  purgable:%.2f MB\n",
-           [UIDevice currentDevice].memoryTotal / 1024.0 / 1024.0,
-           [UIDevice currentDevice].memoryUsed / 1024.0 / 1024.0,
-           [UIDevice currentDevice].memoryFree / 1024.0 / 1024.0,
-           [UIDevice currentDevice].memoryActive / 1024.0 / 1024.0,
-           [UIDevice currentDevice].memoryInactive / 1024.0 / 1024.0,
-           [UIDevice currentDevice].memoryWired / 1024.0 / 1024.0,
-           [UIDevice currentDevice].memoryPurgable / 1024.0 / 1024.0);
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self log];
-    });
+    [self.tableView reloadData];
 }
 
 - (void)addCell:(NSString *)title class:(NSString *)className {
