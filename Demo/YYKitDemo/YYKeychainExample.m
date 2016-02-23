@@ -14,6 +14,11 @@ static NSString *const kAccountName = @"ibireme";
 static NSString *const kPassword = @"123456";
 static NSString *const kLabel = @"Example";
 
+
+/*
+ Some testcase copy from SSKeychain:
+ https://github.com/soffes/sskeychain/blob/master/Tests/SSKeychainTests.m
+ */
 @implementation YYKeychainExample
 
 
@@ -34,7 +39,7 @@ static NSString *const kLabel = @"Example";
     [self testPasswordObject];
     [self testMissingInformation];
     [self testDeleteWithMissingInformation];
-    [self testSSKeychain];
+    [self testKeychain];
 }
 
 
@@ -174,8 +179,7 @@ static NSString *const kLabel = @"Example";
 }
 
 
-// Test Class Methods of SSKeychain
-- (void)testSSKeychain {
+- (void)testKeychain {
     NSError *error = nil;
     
     // create a new keychain item
