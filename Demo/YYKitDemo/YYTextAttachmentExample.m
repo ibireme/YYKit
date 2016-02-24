@@ -86,9 +86,11 @@
     _label = [YYLabel new];
     _label.userInteractionEnabled = YES;
     _label.numberOfLines = 0;
+    _label.textVerticalAlignment = YYTextVerticalAlignmentTop;
     _label.size = CGSizeMake(260, 260);
     _label.center = CGPointMake(self.view.width / 2, self.view.height / 2 - (kiOS7Later ? 0 : 32));
     _label.attributedText = text;
+    [self addSeeMoreButton];
     [self.view addSubview:_label];
     
     _label.layer.borderWidth = CGFloatFromPixel(1);
@@ -110,6 +112,29 @@
     };
     gesture.delegate = self;
     [_label addGestureRecognizer:gesture];
+}
+
+- (void)addSeeMoreButton {
+    __weak typeof(self) _self = self;
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"...more"];
+    
+    YYTextHighlight *hi = [YYTextHighlight new];
+    [hi setColor:[UIColor colorWithRed:0.578 green:0.790 blue:1.000 alpha:1.000]];
+    hi.tapAction = ^(UIView *containerView, NSAttributedString *text, NSRange range, CGRect rect) {
+        YYLabel *label = _self.label;
+        [label sizeToFit];
+    };
+    
+    [text setColor:[UIColor colorWithRed:0.000 green:0.449 blue:1.000 alpha:1.000] range:[text.string rangeOfString:@"more"]];
+    [text setTextHighlight:hi range:[text.string rangeOfString:@"more"]];
+    text.font = _label.font;
+    
+    YYLabel *seeMore = [YYLabel new];
+    seeMore.attributedText = text;
+    [seeMore sizeToFit];
+    
+    NSAttributedString *truncationToken = [NSAttributedString attachmentStringWithContent:seeMore contentMode:UIViewContentModeCenter attachmentSize:seeMore.size alignToFont:text.font alignment:YYTextVerticalAlignmentCenter];
+    _label.truncationToken = truncationToken;
 }
 
 - (UIView *)newDotView {

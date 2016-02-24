@@ -452,6 +452,9 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         return _innerLayout.textBoundingSize;
     }
     
+    if (!_verticalForm && size.width <= 0) size.width = YYTextContainerMaxSize.width;
+    if (_verticalForm && size.height <= 0) size.height = YYTextContainerMaxSize.height;
+    
     if ((!_verticalForm && size.width == self.bounds.size.width) ||
         (_verticalForm && size.height == self.bounds.size.height)) {
         [self _updateIfNeeded];
