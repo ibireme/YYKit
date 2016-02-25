@@ -177,7 +177,7 @@ static NSTimeInterval _yy_CGImageSourceGetGIFFrameDelayAtIndex(CGImageSourceRef 
 }
 
 + (UIImage *)imageWithEmoji:(NSString *)emoji size:(CGFloat)size {
-    if (emoji.length == 0 || ![emoji containsEmoji]) return nil;
+    if (emoji.length == 0) return nil;
     if (size < 1) return nil;
     
     CGFloat scale = [UIScreen mainScreen].scale;

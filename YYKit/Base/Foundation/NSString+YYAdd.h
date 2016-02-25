@@ -229,18 +229,6 @@
                           withString:(NSString *)replacement;
 
 
-#pragma mark - Emoji
-///=============================================================================
-/// @name Emoji
-///=============================================================================
-
-/**
- Whether the receiver contains Apple Emoji (displayed in current version of iOS).
- */
-- (BOOL)containsEmoji;
-
-- (BOOL)containsEmojiForSystemVersion:(double)systemVersion;
-
 #pragma mark - NSNumber Compatible
 ///=============================================================================
 /// @name NSNumber Compatible
