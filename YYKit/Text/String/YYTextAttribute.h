@@ -156,8 +156,8 @@ UIKIT_EXTERN NSString *const YYTextTruncationToken; ///< Horizontal ellipsis (U+
  
  @param containerView The text container view (such as YYLabel/YYTextView).
  @param text          The whole text.
- @param range         The text range in `text`.
- @param rect          The text frame in `containerView`.
+ @param range         The text range in `text` (if no range, the range.location is NSNotFound).
+ @param rect          The text frame in `containerView` (if no data, the rect is CGRectNull).
  */
 typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSRange range, CGRect rect);
 
@@ -330,13 +330,13 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
 
 /**
  Tap action when user tap the highlight, default is nil.
- If the value is nil, YYTextView or YYLabel will ask it's delegate to deal with tap action.
+ If the value is nil, YYTextView or YYLabel will ask it's delegate to handle the tap action.
  */
 @property (nonatomic, copy) YYTextAction tapAction;
 
 /**
  Long press action when user long press the highlight, default is nil.
- If the value is nil, YYTextView or YYLabel will ask it's delegate to deal with long press action.
+ If the value is nil, YYTextView or YYLabel will ask it's delegate to handle the long press action.
  */
 @property (nonatomic, copy) YYTextAction longPressAction;
 

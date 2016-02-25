@@ -121,7 +121,6 @@
     {
         NSMutableAttributedString *one = [[NSMutableAttributedString alloc] initWithString:@"Link"];
         one.font = [UIFont boldSystemFontOfSize:30];
-        one.underlineColor = one.color;
         one.underlineStyle = NSUnderlineStyleSingle;
         
         /// 1. you can set a highlight with these code

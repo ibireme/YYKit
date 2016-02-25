@@ -209,6 +209,18 @@
 ///=============================================================================
 
 /**
+ When user tap the label, this action will be called (similar to tap gesture).
+ The default value is nil.
+ */
+@property (nullable, nonatomic, copy) YYTextAction textTapAction;
+
+/**
+ When user long press the label, this action will be called (similar to long press gesture).
+ The default value is nil.
+ */
+@property (nullable, nonatomic, copy) YYTextAction textLongPressAction;
+
+/**
  When user tap the highlight range of text, this action will be called.
  The default value is nil.
  */
