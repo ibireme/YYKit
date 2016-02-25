@@ -205,13 +205,13 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
             case 'G': {
                 type |= YYEncodingTypePropertyCustomGetter;
                 if (attrs[i].value) {
-                    _getter = [NSString stringWithUTF8String:attrs[i].value];
+                    _getter = NSSelectorFromString([NSString stringWithUTF8String:attrs[i].value]);
                 }
             } break;
             case 'S': {
                 type |= YYEncodingTypePropertyCustomSetter;
                 if (attrs[i].value) {
-                    _setter = [NSString stringWithUTF8String:attrs[i].value];
+                    _setter = NSSelectorFromString([NSString stringWithUTF8String:attrs[i].value]);
                 }
             } break;
             default: break;
@@ -225,10 +225,10 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
     _type = type;
     if (_name.length) {
         if (!_getter) {
-            _getter = _name;
+            _getter = NSSelectorFromString(_name);
         }
         if (!_setter) {
-            _setter = [NSString stringWithFormat:@"set%@%@:", [_name substringToIndex:1].uppercaseString, [_name substringFromIndex:1]];
+            _setter = NSSelectorFromString([NSString stringWithFormat:@"set%@%@:", [_name substringToIndex:1].uppercaseString, [_name substringFromIndex:1]]);
         }
     }
     return self;

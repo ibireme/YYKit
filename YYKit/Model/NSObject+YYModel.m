@@ -357,15 +357,13 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
     }
     
     if (propertyInfo.getter) {
-        SEL sel = NSSelectorFromString(propertyInfo.getter);
-        if ([classInfo.cls instancesRespondToSelector:sel]) {
-            meta->_getter = sel;
+        if ([classInfo.cls instancesRespondToSelector:propertyInfo.getter]) {
+            meta->_getter = propertyInfo.getter;
         }
     }
     if (propertyInfo.setter) {
-        SEL sel = NSSelectorFromString(propertyInfo.setter);
-        if ([classInfo.cls instancesRespondToSelector:sel]) {
-            meta->_setter = sel;
+        if ([classInfo.cls instancesRespondToSelector:propertyInfo.setter]) {
+            meta->_setter = propertyInfo.setter;
         }
     }
     

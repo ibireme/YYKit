@@ -110,8 +110,8 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding);
 @property (nonatomic, strong, readonly) NSString *typeEncoding; ///< property's encoding value
 @property (nonatomic, strong, readonly) NSString *ivarName; ///< property's ivar name
 @property (nonatomic, assign, readonly) Class cls; ///< may be nil
-@property (nonatomic, strong, readonly) NSString *getter; ///< getter (nonnull)
-@property (nonatomic, strong, readonly) NSString *setter; ///< setter (nonnull)
+@property (nonatomic, assign, readonly) SEL getter; ///< getter (nonnull)
+@property (nonatomic, assign, readonly) SEL setter; ///< setter (nonnull)
 - (instancetype)initWithProperty:(objc_property_t)property;
 @end
 
