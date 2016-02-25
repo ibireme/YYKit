@@ -91,14 +91,13 @@ typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
         @autoreleasepool {
             if (idx >= total) idx = 0;
             if ([self isCancelled]) break;
-            view = _view;
+            __strong YYAnimatedImageView *view = _view;
+            if (!view) break;
             LOCK_VIEW(BOOL miss = (view->_buffer[@(idx)] == nil));
-            view = nil;
             if (miss) {
                 UIImage *img = [_curImage animatedImageFrameAtIndex:idx];
                 img = img.imageByDecoded;
                 if ([self isCancelled]) break;
-                view = _view;
                 LOCK_VIEW(view->_buffer[@(idx)] = img ? img : [NSNull null]);
                 view = nil;
             }
