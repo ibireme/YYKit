@@ -2407,27 +2407,38 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
     }
     
     for (int i = 0; i < count; i++) {
-        id imageSrc = _images[i];
-        NSDictionary *frameProperty = NULL;
-        if (_type == YYImageTypeGIF && count > 1) {
-            frameProperty = @{(NSString *)kCGImagePropertyGIFDictionary : @{(NSString *) kCGImagePropertyGIFDelayTime:_durations[i]}};
-        } else {
-            frameProperty = @{(id)kCGImageDestinationLossyCompressionQuality : @(_quality)};
-        }
-        
-        if ([imageSrc isKindOfClass:[UIImage class]]) {
-            CGImageDestinationAddImage(destination, ((UIImage *)imageSrc).CGImage, (CFDictionaryRef)frameProperty);
-        } else if ([imageSrc isKindOfClass:[NSURL class]]) {
-            CGImageSourceRef source = CGImageSourceCreateWithURL((CFURLRef)imageSrc, NULL);
-            if (source) {
-                CGImageDestinationAddImageFromSource(destination, source, i, (CFDictionaryRef)frameProperty);
-                CFRelease(source);
+        @autoreleasepool {
+            id imageSrc = _images[i];
+            NSDictionary *frameProperty = NULL;
+            if (_type == YYImageTypeGIF && count > 1) {
+                frameProperty = @{(NSString *)kCGImagePropertyGIFDictionary : @{(NSString *) kCGImagePropertyGIFDelayTime:_durations[i]}};
+            } else {
+                frameProperty = @{(id)kCGImageDestinationLossyCompressionQuality : @(_quality)};
             }
-        } else if ([imageSrc isKindOfClass:[NSData class]]) {
-            CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)imageSrc, NULL);
-            if (source) {
-                CGImageDestinationAddImageFromSource(destination, source, i, (CFDictionaryRef)frameProperty);
-                CFRelease(source);
+            
+            if ([imageSrc isKindOfClass:[UIImage class]]) {
+                UIImage *image = imageSrc;
+                if (image.imageOrientation != UIImageOrientationUp && image.CGImage) {
+                    CGBitmapInfo info = CGImageGetBitmapInfo(image.CGImage) | CGImageGetAlphaInfo(image.CGImage);
+                    CGImageRef rotated = YYCGImageCreateCopyWithOrientation(image.CGImage, image.imageOrientation, info);
+                    if (rotated) {
+                        image = [UIImage imageWithCGImage:rotated];
+                        CFRelease(rotated);
+                    }
+                }
+                if (image.CGImage) CGImageDestinationAddImage(destination, ((UIImage *)imageSrc).CGImage, (CFDictionaryRef)frameProperty);
+            } else if ([imageSrc isKindOfClass:[NSURL class]]) {
+                CGImageSourceRef source = CGImageSourceCreateWithURL((CFURLRef)imageSrc, NULL);
+                if (source) {
+                    CGImageDestinationAddImageFromSource(destination, source, i, (CFDictionaryRef)frameProperty);
+                    CFRelease(source);
+                }
+            } else if ([imageSrc isKindOfClass:[NSData class]]) {
+                CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)imageSrc, NULL);
+                if (source) {
+                    CGImageDestinationAddImageFromSource(destination, source, i, (CFDictionaryRef)frameProperty);
+                    CFRelease(source);
+                }
             }
         }
     }
