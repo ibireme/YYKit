@@ -296,6 +296,11 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
         }
         free(ivars);
     }
+    
+    if (!_ivarInfos) _ivarInfos = @{};
+    if (!_methodInfos) _methodInfos = @{};
+    if (!_propertyInfos) _propertyInfos = @{};
+    
     _needUpdate = NO;
 }
 

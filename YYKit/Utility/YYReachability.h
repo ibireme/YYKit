@@ -13,6 +13,8 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <netinet/in.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, YYReachabilityStatus) {
     YYReachabilityStatusNone  = 0, ///< Not Reachable
     YYReachabilityStatusWWAN  = 1, ///< Reachable via WWAN (2G/3G/4G)
@@ -32,17 +34,19 @@ typedef NS_ENUM(NSUInteger, YYReachabilityWWANStatus) {
  */
 @interface YYReachability : NSObject
 
-@property (nonatomic, assign, readonly) SCNetworkReachabilityFlags flags;                           ///< Current flags.
-@property (nonatomic, assign, readonly) YYReachabilityStatus status;                                ///< Current status.
-@property (nonatomic, assign, readonly) YYReachabilityWWANStatus wwanStatus NS_AVAILABLE_IOS(7_0);  ///< Current WWAN status.
-@property (nonatomic, assign, readonly, getter=isReachable) BOOL reachable;
+@property (nonatomic, readonly) SCNetworkReachabilityFlags flags;                           ///< Current flags.
+@property (nonatomic, readonly) YYReachabilityStatus status;                                ///< Current status.
+@property (nonatomic, readonly) YYReachabilityWWANStatus wwanStatus NS_AVAILABLE_IOS(7_0);  ///< Current WWAN status.
+@property (nonatomic, readonly, getter=isReachable) BOOL reachable;
 
 /// Notify block which will be called on main thread when network changed.
-@property (nonatomic, copy) void (^notifyBlock)(YYReachability *reachability);
+@property (nullable, nonatomic, copy) void (^notifyBlock)(YYReachability *reachability);
 
 + (instancetype)reachability;
 + (instancetype)reachabilityForLocalWifi;
-+ (instancetype)reachabilityWithHostname:(NSString *)hostname;
-+ (instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress;
++ (nullable instancetype)reachabilityWithHostname:(NSString *)hostname;
++ (nullable instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress;
 
 @end
+
+NS_ASSUME_NONNULL_END

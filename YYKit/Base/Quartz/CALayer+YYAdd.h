@@ -12,6 +12,8 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provides extensions for `CALayer`.
  */
@@ -70,12 +72,12 @@
  Shortcut for transform.m34, -1/1000 is a good value.
  It should be set before other transform shortcut.
  */
-@property (nonatomic, assign) CGFloat transformDepth;
+@property (nonatomic) CGFloat transformDepth;
 
 /**
  Wrapper for `contentsGravity` property.
  */
-@property (nonatomic, assign) UIViewContentMode contentMode;
+@property (nonatomic) UIViewContentMode contentMode;
 
 /**
  Add a fade animation to layer's contents when the contents is changed.
@@ -91,3 +93,5 @@
 - (void)removePreviousFadeAnimation;
 
 @end
+
+NS_ASSUME_NONNULL_END

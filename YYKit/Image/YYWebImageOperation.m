@@ -53,6 +53,7 @@ static NSData *JPEGSOSMarker() {
     return marker;
 }
 
+
 static NSMutableSet *URLBlacklist;
 static dispatch_semaphore_t URLBlacklistLock;
 
@@ -169,7 +170,7 @@ static void URLInBlackListAdd(NSURL *url) {
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:@"YYWebImageOperation init error" reason:@"YYWebImageOperation must be initialized with a request. Use the designated initializer to init." userInfo:nil];
-    return [self initWithRequest:nil options:0 cache:nil cacheKey:nil progress:nil transform:nil completion:nil];
+    return [self initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@""]] options:0 cache:nil cacheKey:nil progress:nil transform:nil completion:nil];
 }
 
 - (instancetype)initWithRequest:(NSURLRequest *)request

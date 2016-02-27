@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  YYDiskCache is a thread-safe cache that stores key-value pairs backed by SQLite
  and file system (similar to NSURLCache's disk cache).
@@ -34,7 +36,7 @@
 ///=============================================================================
 
 /** The name of the cache. Default is nil. */
-@property (copy) NSString *name;
+@property (nullable, copy) NSString *name;
 
 /** The path of the cache (read-only). */
 @property (readonly) NSString *path;
@@ -57,7 +59,7 @@
  
  The default value is nil.
  */
-@property (copy) NSData *(^customArchiveBlock)(id object);
+@property (nullable, copy) NSData *(^customArchiveBlock)(id object);
 
 /**
  If this block is not nil, then the block will be used to unarchive object instead
@@ -66,7 +68,7 @@
  
  The default value is nil.
  */
-@property (copy) id (^customUnarchiveBlock)(NSData *data);
+@property (nullable, copy) id (^customUnarchiveBlock)(NSData *data);
 
 /**
  When an object needs to be saved as a file, this block will be invoked to generate
@@ -75,7 +77,7 @@
  
  The default value is nil.
  */
-@property (copy) NSString *(^customFilenameBlock)(NSString *key);
+@property (nullable, copy) NSString *(^customFileNameBlock)(NSString *key);
 
 
 
@@ -91,7 +93,7 @@
  This is not a strict limit — if the cache goes over the limit, some objects in the
  cache could be evicted later in background queue.
  */
-@property (assign) NSUInteger countLimit;
+@property NSUInteger countLimit;
 
 /**
  The maximum total cost that the cache can hold before it starts evicting objects.
@@ -100,7 +102,7 @@
  This is not a strict limit — if the cache goes over the limit, some objects in the
  cache could be evicted later in background queue.
  */
-@property (assign) NSUInteger costLimit;
+@property NSUInteger costLimit;
 
 /**
  The maximum expiry time of objects in cache.
@@ -109,7 +111,7 @@
  This is not a strict limit — if an object goes over the limit, the objects could
  be evicted later in background queue.
  */
-@property (assign) NSTimeInterval ageLimit;
+@property NSTimeInterval ageLimit;
 
 /**
  The minimum free disk space (in bytes) which the cache should kept.
@@ -119,7 +121,7 @@
  to free some disk space. This is not a strict limit—if the free disk space goes
  over the limit, the objects could be evicted later in background queue.
  */
-@property (assign) NSUInteger freeDiskSpaceLimit;
+@property NSUInteger freeDiskSpaceLimit;
 
 /**
  The auto trim check time interval in seconds. Default is 60 (1 minute).
@@ -127,7 +129,7 @@
  @discussion The cache holds an internal timer to check whether the cache reaches
  its limits, and if the limit is reached, it begins to evict objects.
  */
-@property (assign) NSTimeInterval autoTrimInterval;
+@property NSTimeInterval autoTrimInterval;
 
 
 #pragma mark - Initializer
@@ -148,7 +150,7 @@
  @warning If the cache instance for the specified path already exists in memory,
      this method will return it directly, instead of creating a new instance.
  */
-- (instancetype)initWithPath:(NSString *)path;
+- (nullable instancetype)initWithPath:(NSString *)path;
 
 /**
  The designated initializer.
@@ -168,8 +170,8 @@
  @warning If the cache instance for the specified path already exists in memory,
      this method will return it directly, instead of creating a new instance.
  */
-- (instancetype)initWithPath:(NSString *)path
-             inlineThreshold:(NSUInteger)threshold NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithPath:(NSString *)path
+                      inlineThreshold:(NSUInteger)threshold NS_DESIGNATED_INITIALIZER;
 
 
 #pragma mark - Access Methods
@@ -203,7 +205,7 @@
  @param key A string identifying the value. If nil, just return nil.
  @return The value associated with key, or nil if no value is associated with key.
  */
-- (id<NSCoding>)objectForKey:(NSString *)key;
+- (nullable id<NSCoding>)objectForKey:(NSString *)key;
 
 /**
  Returns the value associated with a given key.
@@ -213,7 +215,7 @@
  @param key A string identifying the value. If nil, just return nil.
  @param block A block which will be invoked in background queue when finished.
  */
-- (void)objectForKey:(NSString *)key withBlock:(void(^)(NSString *key, id<NSCoding> object))block;
+- (void)objectForKey:(NSString *)key withBlock:(void(^)(NSString *key, id<NSCoding> _Nullable object))block;
 
 /**
  Sets the value of the specified key in the cache.
@@ -222,7 +224,7 @@
  @param object The object to be stored in the cache. If nil, it calls `removeObjectForKey:`.
  @param key    The key with which to associate the value. If nil, this method has no effect.
  */
-- (void)setObject:(id<NSCoding>)object forKey:(NSString *)key;
+- (void)setObject:(nullable id<NSCoding>)object forKey:(NSString *)key;
 
 /**
  Sets the value of the specified key in the cache.
@@ -232,7 +234,7 @@
  @param object The object to be stored in the cache. If nil, it calls `removeObjectForKey:`.
  @param block  A block which will be invoked in background queue when finished.
  */
-- (void)setObject:(id<NSCoding>)object forKey:(NSString *)key withBlock:(void(^)(void))block;
+- (void)setObject:(nullable id<NSCoding>)object forKey:(NSString *)key withBlock:(void(^)(void))block;
 
 /**
  Removes the value of the specified key in the cache.
@@ -275,8 +277,8 @@
  @param progress This block will be invoked during removing, pass nil to ignore.
  @param end      This block will be invoked at the end, pass nil to ignore.
  */
-- (void)removeAllObjectsWithProgressBlock:(void(^)(int removedCount, int totalCount))progress
-                                 endBlock:(void(^)(BOOL error))end;
+- (void)removeAllObjectsWithProgressBlock:(nullable void(^)(int removedCount, int totalCount))progress
+                                 endBlock:(nullable void(^)(BOOL error))end;
 
 
 /**
@@ -387,7 +389,7 @@
  @param object An object.
  @return The extended data.
  */
-+ (NSData *)getExtendedDataFromObject:(id)object;
++ (nullable NSData *)getExtendedDataFromObject:(id)object;
 
 /**
  Set extended data to an object.
@@ -399,6 +401,8 @@
  @param extendedData The extended data (pass nil to remove).
  @param object       The object.
  */
-+ (void)setExtendedData:(NSData *)extendedData toObject:(id)object;
++ (void)setExtendedData:(nullable NSData *)extendedData toObject:(id)object;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -649,7 +649,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:@"YYKVStorage init error" reason:@"Please use the designated initializer and pass the 'path' and 'type'." userInfo:nil];
-    return [self initWithPath:nil type:YYKVStorageTypeFile];
+    return [self initWithPath:@"" type:YYKVStorageTypeFile];
 }
 
 - (instancetype)initWithPath:(NSString *)path type:(YYKVStorageType)type {

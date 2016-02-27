@@ -19,15 +19,16 @@
 #endif
 
 YY_EXTERN_C_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 /// Create an `ARGB` Bitmap context. Returns NULL if an error occurs.
 ///
 /// @discussion The function is same as UIGraphicsBeginImageContextWithOptions(),
 /// but it doesn't push the context to UIGraphic, so you can retain the context for reuse.
-CGContextRef YYCGContextCreateARGBBitmapContext(CGSize size, BOOL opaque, CGFloat scale);
+CGContextRef _Nullable YYCGContextCreateARGBBitmapContext(CGSize size, BOOL opaque, CGFloat scale);
 
 /// Create a `DeviceGray` Bitmap context. Returns NULL if an error occurs.
-CGContextRef YYCGContextCreateGrayBitmapContext(CGSize size, CGFloat scale);
+CGContextRef _Nullable YYCGContextCreateGrayBitmapContext(CGSize size, CGFloat scale);
 
 
 
@@ -333,4 +334,5 @@ static inline UIEdgeInsets UIEdgeInsetPixelCeil(UIEdgeInsets insets) {
 #define kScreenHeight YYScreenSize().height
 #endif
 
+NS_ASSUME_NONNULL_END
 YY_EXTERN_C_END

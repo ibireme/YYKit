@@ -131,7 +131,7 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
 
 - (NSString *)_filenameForKey:(NSString *)key {
     NSString *filename = nil;
-    if (_customFilenameBlock) filename = _customFilenameBlock(key);
+    if (_customFileNameBlock) filename = _customFileNameBlock(key);
     if (!filename) filename = key.md5String;
     return filename;
 }
@@ -140,7 +140,7 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:@"YYDiskCache init error" reason:@"YYDiskCache must be initialized with a path. Use 'initWithPath:' or 'initWithPath:inlineThreshold:' instead." userInfo:nil];
-    return [self initWithPath:nil inlineThreshold:0];
+    return [self initWithPath:@"" inlineThreshold:0];
 }
 
 - (instancetype)initWithPath:(NSString *)path {

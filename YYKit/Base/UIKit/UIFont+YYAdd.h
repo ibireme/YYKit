@@ -13,6 +13,8 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreText/CoreText.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provides extensions for `UIFont`.
  */
@@ -33,25 +35,25 @@
  Create a bold font from receiver.
  @return A bold font, or nil if failed.
  */
-- (UIFont *)fontWithBold NS_AVAILABLE_IOS(7_0);
+- (nullable UIFont *)fontWithBold NS_AVAILABLE_IOS(7_0);
 
 /**
  Create a italic font from receiver.
  @return A italic font, or nil if failed.
  */
-- (UIFont *)fontWithItalic NS_AVAILABLE_IOS(7_0);
+- (nullable UIFont *)fontWithItalic NS_AVAILABLE_IOS(7_0);
 
 /**
  Create a bold and italic font from receiver.
  @return A bold and italic font, or nil if failed.
  */
-- (UIFont *)fontWithBoldItalic NS_AVAILABLE_IOS(7_0);
+- (nullable UIFont *)fontWithBoldItalic NS_AVAILABLE_IOS(7_0);
 
 /**
  Create a normal (no bold/italic/...) font from receiver.
  @return A normal font, or nil if failed.
  */
-- (UIFont *)fontWithNormal NS_AVAILABLE_IOS(7_0);
+- (nullable UIFont *)fontWithNormal NS_AVAILABLE_IOS(7_0);
 
 #pragma mark - Create font
 ///=============================================================================
@@ -63,7 +65,7 @@
  
  @param CTFont  CoreText font.
  */
-+ (UIFont *)fontWithCTFont:(CTFontRef)CTFont;
++ (nullable UIFont *)fontWithCTFont:(CTFontRef)CTFont;
 
 /**
  Creates and returns a font object for the specified CGFontRef and size.
@@ -71,17 +73,17 @@
  @param CGFont  CoreGraphic font.
  @param size    Font size.
  */
-+ (UIFont *)fontWithCGFont:(CGFontRef)CGFont size:(CGFloat)size;
++ (nullable UIFont *)fontWithCGFont:(CGFontRef)CGFont size:(CGFloat)size;
 
 /**
  Creates and returns the CTFontRef object. (need call CFRelease() after used)
  */
-- (CTFontRef)CTFontRef CF_RETURNS_RETAINED;
+- (nullable CTFontRef)CTFontRef CF_RETURNS_RETAINED;
 
 /**
  Creates and returns the CGFontRef object. (need call CFRelease() after used)
  */
-- (CGFontRef)CGFontRef CF_RETURNS_RETAINED;
+- (nullable CGFontRef)CGFontRef CF_RETURNS_RETAINED;
 
 
 #pragma mark - Load and unload font
@@ -111,7 +113,7 @@
  
  @return UIFont object if load succeed, otherwise nil.
  */
-+ (UIFont *)loadFontFromData:(NSData *)data;
++ (nullable UIFont *)loadFontFromData:(NSData *)data;
 
 /**
  Unload font which is loaded by loadFontFromData: function.
@@ -135,7 +137,7 @@
  
  @return data in TTF, or nil if an error occurs.
  */
-+ (NSData *)dataFromFont:(UIFont *)font;
++ (nullable NSData *)dataFromFont:(UIFont *)font;
 
 /**
  Serialize and return the font data.
@@ -144,6 +146,8 @@
  
  @return data in TTF, or nil if an error occurs.
  */
-+ (NSData *)dataFromCGFont:(CGFontRef)cgFont;
++ (nullable NSData *)dataFromCGFont:(CGFontRef)cgFont;
 
 @end
+
+NS_ASSUME_NONNULL_END

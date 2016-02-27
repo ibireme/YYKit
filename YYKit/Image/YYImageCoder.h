@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Image file type.
  */
@@ -76,15 +78,15 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  An image frame object.
  */
 @interface YYImageFrame : NSObject <NSCopying>
-@property (nonatomic, assign) NSUInteger index;    ///< Frame index (zero based)
-@property (nonatomic, assign) NSUInteger width;    ///< Frame width
-@property (nonatomic, assign) NSUInteger height;   ///< Frame height
-@property (nonatomic, assign) NSUInteger offsetX;  ///< Frame origin.x in canvas (left-bottom based)
-@property (nonatomic, assign) NSUInteger offsetY;  ///< Frame origin.y in canvas (left-bottom based)
-@property (nonatomic, assign) NSTimeInterval duration;      ///< Frame duration in seconds
-@property (nonatomic, assign) YYImageDisposeMethod dispose; ///< Frame dispose method.
-@property (nonatomic, assign) YYImageBlendOperation blend;  ///< Frame blend operation.
-@property (nonatomic, strong) UIImage *image; ///< The image.
+@property (nonatomic) NSUInteger index;    ///< Frame index (zero based)
+@property (nonatomic) NSUInteger width;    ///< Frame width
+@property (nonatomic) NSUInteger height;   ///< Frame height
+@property (nonatomic) NSUInteger offsetX;  ///< Frame origin.x in canvas (left-bottom based)
+@property (nonatomic) NSUInteger offsetY;  ///< Frame origin.y in canvas (left-bottom based)
+@property (nonatomic) NSTimeInterval duration;          ///< Frame duration in seconds
+@property (nonatomic) YYImageDisposeMethod dispose;     ///< Frame dispose method.
+@property (nonatomic) YYImageBlendOperation blend;      ///< Frame blend operation.
+@property (nullable, nonatomic, strong) UIImage *image; ///< The image.
 + (instancetype)frameWithImage:(UIImage *)image;
 @end
 
@@ -124,9 +126,9 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  */
 @interface YYImageDecoder : NSObject
 
-@property (nonatomic, readonly) NSData *data;       ///< Image data.
-@property (nonatomic, readonly) YYImageType type;   ///< Image data type.
-@property (nonatomic, readonly) CGFloat scale;      ///< Image scale.
+@property (nullable, nonatomic, readonly) NSData *data;    ///< Image data.
+@property (nonatomic, readonly) YYImageType type;          ///< Image data type.
+@property (nonatomic, readonly) CGFloat scale;             ///< Image scale.
 @property (nonatomic, readonly) NSUInteger frameCount;     ///< Image frame count.
 @property (nonatomic, readonly) NSUInteger loopCount;      ///< Image loop count, 0 means infinite.
 @property (nonatomic, readonly) NSUInteger width;          ///< Image canvas width.
@@ -158,7 +160,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  
  @return Whether succeed.
  */
-- (BOOL)updateData:(NSData *)data final:(BOOL)final;
+- (BOOL)updateData:(nullable NSData *)data final:(BOOL)final;
 
 /**
  Convenience method to create a decoder with specified data.
@@ -166,7 +168,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  @param scale Image's scale.
  @return A new decoder, or nil if an error occurs.
  */
-+ (instancetype)decoderWithData:(NSData *)data scale:(CGFloat)scale;
++ (nullable instancetype)decoderWithData:(NSData *)data scale:(CGFloat)scale;
 
 /**
  Decodes and returns a frame from a specified index.
@@ -175,7 +177,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
     If NO, it will try to returns the original frame data without blend.
  @return A new frame with image, or nil if an error occurs.
  */
-- (YYImageFrame *)frameAtIndex:(NSUInteger)index decodeForDisplay:(BOOL)decodeForDisplay;
+- (nullable YYImageFrame *)frameAtIndex:(NSUInteger)index decodeForDisplay:(BOOL)decodeForDisplay;
 
 /**
  Returns the frame duration from a specified index.
@@ -191,13 +193,13 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  @param index  Frame image index (zero-based).
  @return The ImageIO frame property.
  */
-- (NSDictionary *)framePropertiesAtIndex:(NSUInteger)index;
+- (nullable NSDictionary *)framePropertiesAtIndex:(NSUInteger)index;
 
 /**
  Returns the image's properties. See "CGImageProperties.h" in ImageIO.framework
  for more information.
  */
-- (NSDictionary *)imageProperties;
+- (nullable NSDictionary *)imageProperties;
 
 @end
 
@@ -231,10 +233,10 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  */
 @interface YYImageEncoder : NSObject
 
-@property (nonatomic, readonly) YYImageType type;   ///< Image type.
-@property (nonatomic, assign) NSUInteger loopCount; ///< Loop count, 0 means infinit, only available for GIF/APNG/WebP.
-@property (nonatomic, assign) BOOL lossless;        ///< Lossless, only available for WebP.
-@property (nonatomic, assign) CGFloat quality;      ///< Compress quality, 0.0~1.0, only available for JPG/JP2/WebP.
+@property (nonatomic, readonly) YYImageType type; ///< Image type.
+@property (nonatomic) NSUInteger loopCount;       ///< Loop count, 0 means infinit, only available for GIF/APNG/WebP.
+@property (nonatomic) BOOL lossless;              ///< Lossless, only available for WebP.
+@property (nonatomic) CGFloat quality;            ///< Compress quality, 0.0~1.0, only available for JPG/JP2/WebP.
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
@@ -244,7 +246,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  @param type Image type.
  @return A new encoder, or nil if an error occurs.
  */
-- (instancetype)initWithType:(YYImageType)type NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithType:(YYImageType)type NS_DESIGNATED_INITIALIZER;
 
 /**
  Add an image to encoder.
@@ -271,7 +273,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  Encodes the image and returns the image data.
  @return The image data, or nil if an error occurs.
  */
-- (NSData *)encode;
+- (nullable NSData *)encode;
 
 /**
  Encodes the image to a file.
@@ -287,7 +289,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  @param quality Image quality, 0.0~1.0.
  @return The image data, or nil if an error occurs.
  */
-+ (NSData *)encodeImage:(UIImage *)image type:(YYImageType)type quality:(CGFloat)quality;
++ (nullable NSData *)encodeImage:(UIImage *)image type:(YYImageType)type quality:(CGFloat)quality;
 
 /**
  Convenience method to encode image from a decoder.
@@ -296,7 +298,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  @param quality Image quality, 0.0~1.0.
  @return The image data, or nil if an error occurs.
  */
-+ (NSData *)encodeImageWithDecoder:(YYImageDecoder *)decoder type:(YYImageType)type quality:(CGFloat)quality;
++ (nullable NSData *)encodeImageWithDecoder:(YYImageDecoder *)decoder type:(YYImageType)type quality:(CGFloat)quality;
 
 @end
 
@@ -319,7 +321,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  Wherher the image can be display on screen without additional decoding.
  @warning It just a hint for your code, change it has no other effect.
  */
-@property (nonatomic, assign) BOOL isDecodedForDisplay;
+@property (nonatomic) BOOL isDecodedForDisplay;
 
 /**
  Saves this image to iOS Photos Album. 
@@ -332,7 +334,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
     assetURL: An URL that identifies the saved image file. If the image is not saved, assetURL is nil.
     error: If the image is not saved, an error object that describes the reason for failure, otherwise nil.
  */
-- (void)saveToAlbumWithCompletionBlock:(void(^)(NSURL *assetURL, NSError *error))completionBlock;
+- (void)saveToAlbumWithCompletionBlock:(nullable void(^)(NSURL * _Nullable assetURL, NSError * _Nullable error))completionBlock;
 
 /**
  Return a 'best' data representation for this image.
@@ -343,7 +345,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
  
  @return Image data, or nil if an error occurs.
  */
-- (NSData *)dataRepresentation;
+- (nullable NSData *)imageDataRepresentation;
 
 @end
 
@@ -355,13 +357,13 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
 CG_EXTERN YYImageType YYImageDetectType(CFDataRef data);
 
 /// Convert YYImageType to UTI (such as kUTTypeJPEG).
-CG_EXTERN CFStringRef YYImageTypeToUTType(YYImageType type);
+CG_EXTERN CFStringRef _Nullable YYImageTypeToUTType(YYImageType type);
 
 /// Convert UTI (such as kUTTypeJPEG) to YYImageType.
 CG_EXTERN YYImageType YYImageTypeFromUTType(CFStringRef uti);
 
 /// Get image type's file extension (such as @"jpg").
-CG_EXTERN NSString *YYImageTypeGetExtension(YYImageType type);
+CG_EXTERN NSString *_Nullable YYImageTypeGetExtension(YYImageType type);
 
 
 
@@ -402,7 +404,7 @@ CG_EXTERN NSInteger YYUIImageOrientationToEXIFValue(UIImageOrientation orientati
  
  @return A decoded image, or NULL if an error occurs.
  */
-CG_EXTERN CGImageRef YYCGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay);
+CG_EXTERN CGImageRef _Nullable YYCGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay);
 
 /**
  Create an image copy with an orientation.
@@ -412,9 +414,9 @@ CG_EXTERN CGImageRef YYCGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decode
  @param destBitmapInfo Destimation image bitmap, only support 32bit format (such as ARGB8888).
  @return A new image, or NULL if an error occurs.
  */
-CG_EXTERN CGImageRef YYCGImageCreateCopyWithOrientation(CGImageRef imageRef,
-                                              UIImageOrientation orientation,
-                                              CGBitmapInfo destBitmapInfo);
+CG_EXTERN CGImageRef _Nullable YYCGImageCreateCopyWithOrientation(CGImageRef imageRef,
+                                                                  UIImageOrientation orientation,
+                                                                  CGBitmapInfo destBitmapInfo);
 
 /**
  Create an image copy with CGAffineTransform.
@@ -425,10 +427,10 @@ CG_EXTERN CGImageRef YYCGImageCreateCopyWithOrientation(CGImageRef imageRef,
  @param destBitmapInfo Destimation image bitmap, only support 32bit format (such as ARGB8888).
  @return A new image, or NULL if an error occurs.
  */
-CG_EXTERN CGImageRef YYCGImageCreateAffineTransformCopy(CGImageRef imageRef,
-                                              CGAffineTransform transform,
-                                              CGSize destSize,
-                                              CGBitmapInfo destBitmapInfo);
+CG_EXTERN CGImageRef _Nullable YYCGImageCreateAffineTransformCopy(CGImageRef imageRef,
+                                                                  CGAffineTransform transform,
+                                                                  CGSize destSize,
+                                                                  CGBitmapInfo destBitmapInfo);
 
 /**
  Encode an image to data with CGImageDestination.
@@ -438,7 +440,7 @@ CG_EXTERN CGImageRef YYCGImageCreateAffineTransformCopy(CGImageRef imageRef,
  @param quality   The quality (0.0~1.0)
  @return A new image data, or nil if an error occurs.
  */
-CG_EXTERN CFDataRef YYCGImageCreateEncodedData(CGImageRef imageRef, YYImageType type, CGFloat quality);
+CG_EXTERN CFDataRef _Nullable YYCGImageCreateEncodedData(CGImageRef imageRef, YYImageType type, CGFloat quality);
 
 
 /**
@@ -468,12 +470,11 @@ CG_EXTERN NSUInteger YYImageGetWebPFrameCount(CFDataRef webpData);
                             (speed down, and may lose some details).
  @return The decoded image, or NULL if an error occurs.
  */
-CG_EXTERN CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
-                                       BOOL decodeForDisplay,
-                                       BOOL useThreads,
-                                       BOOL bypassFiltering,
-                                       BOOL noFancyUpsampling);
-
+CG_EXTERN CGImageRef _Nullable YYCGImageCreateWithWebPData(CFDataRef webpData,
+                                                           BOOL decodeForDisplay,
+                                                           BOOL useThreads,
+                                                           BOOL bypassFiltering,
+                                                           BOOL noFancyUpsampling);
 
 typedef NS_ENUM(NSUInteger, YYImagePreset) {
     YYImagePresetDefault = 0,  ///< default preset.
@@ -495,8 +496,10 @@ typedef NS_ENUM(NSUInteger, YYImagePreset) {
  @param preset        Preset for different image type, default is YYImagePresetDefault.
  @return WebP data, or nil if an error occurs.
  */
-CG_EXTERN CFDataRef YYCGImageCreateEncodedWebPData(CGImageRef imageRef,
-                                         BOOL lossless,
-                                         CGFloat quality,
-                                         int compressLevel,
-                                         YYImagePreset preset);
+CG_EXTERN CFDataRef _Nullable YYCGImageCreateEncodedWebPData(CGImageRef imageRef,
+                                                             BOOL lossless,
+                                                             CGFloat quality,
+                                                             int compressLevel,
+                                                             YYImagePreset preset);
+
+NS_ASSUME_NONNULL_END

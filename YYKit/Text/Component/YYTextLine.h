@@ -18,6 +18,10 @@
 #import "YYTextAttribute.h"
 #endif
 
+@class YYTextRunGlyphRange;
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A text line object wrapped `CTLineRef`, see `YYTextLayout` for more.
  */
@@ -25,9 +29,9 @@
 
 + (instancetype)lineWithCTLine:(CTLineRef)CTLine position:(CGPoint)position vertical:(BOOL)isVertical;
 
-@property (nonatomic, assign) NSUInteger index;     ///< line index
-@property (nonatomic, assign) NSUInteger row;       ///< line row
-@property (nonatomic, strong) NSArray *verticalRotateRange; ///< Run rotate range Array<Array<YYTextRunGlyphRange>>
+@property (nonatomic) NSUInteger index;     ///< line index
+@property (nonatomic) NSUInteger row;       ///< line row
+@property (nullable, nonatomic, strong) NSArray<NSArray<YYTextRunGlyphRange *> *> *verticalRotateRange; ///< Run rotate range
 
 @property (nonatomic, readonly) CTLineRef CTLine;   ///< CoreText line
 @property (nonatomic, readonly) NSRange range;      ///< string range
@@ -42,16 +46,16 @@
 @property (nonatomic, readonly) CGFloat left;       ///< bounds.origin.x
 @property (nonatomic, readonly) CGFloat right;      ///< bounds.origin.x + bounds.size.width
 
-@property (nonatomic, assign)   CGPoint position;   ///< baseline position
+@property (nonatomic)   CGPoint position;   ///< baseline position
 @property (nonatomic, readonly) CGFloat ascent;     ///< line ascent
 @property (nonatomic, readonly) CGFloat descent;    ///< line descent
 @property (nonatomic, readonly) CGFloat leading;    ///< line leading
 @property (nonatomic, readonly) CGFloat lineWidth;  ///< line width
 @property (nonatomic, readonly) CGFloat trailingWhitespaceWidth;
 
-@property (nonatomic, readonly) NSArray *attachments;      ///< YYTextAttachment
-@property (nonatomic, readonly) NSArray *attachmentRanges; ///< NSRange(NSValue)
-@property (nonatomic, readonly) NSArray *attachmentRects;  ///< CGRect(NSValue)
+@property (nonatomic, readonly) NSArray<YYTextAttachment *> *attachments; ///< YYTextAttachment
+@property (nonatomic, readonly) NSArray<NSValue *> *attachmentRanges;     ///< NSRange(NSValue)
+@property (nonatomic, readonly) NSArray<NSValue *> *attachmentRects;      ///< CGRect(NSValue)
 
 @end
 
@@ -72,9 +76,9 @@ typedef NS_ENUM(NSUInteger, YYTextRunGlyphDrawMode) {
  A range in CTRun, used for vertical form.
  */
 @interface YYTextRunGlyphRange : NSObject
-@property (nonatomic, assign) NSRange glyphRangeInRun;
-@property (nonatomic, assign) YYTextRunGlyphDrawMode drawMode;
+@property (nonatomic) NSRange glyphRangeInRun;
+@property (nonatomic) YYTextRunGlyphDrawMode drawMode;
 + (instancetype)rangeWithRange:(NSRange)range drawMode:(YYTextRunGlyphDrawMode)mode;
 @end
 
-
+NS_ASSUME_NONNULL_END

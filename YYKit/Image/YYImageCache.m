@@ -91,7 +91,7 @@ static inline dispatch_queue_t YYImageCacheDecodeQueue() {
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:@"YYImageCache init error" reason:@"YYImageCache must be initialized with a path. Use 'initWithPath:' instead." userInfo:nil];
-    return [self initWithPath:nil];
+    return [self initWithPath:@""];
 }
 
 - (instancetype)initWithPath:(NSString *)path {
@@ -153,7 +153,7 @@ static inline dispatch_queue_t YYImageCacheDecodeQueue() {
             dispatch_async(YYImageCacheIOQueue(), ^{
                 __strong typeof(_self) self = _self;
                 if (!self) return;
-                NSData *data = [image dataRepresentation];
+                NSData *data = [image imageDataRepresentation];
                 [YYDiskCache setExtendedData:[NSKeyedArchiver archivedDataWithRootObject:@(image.scale)] toObject:data];
                 [self.diskCache setObject:data forKey:key];
             });

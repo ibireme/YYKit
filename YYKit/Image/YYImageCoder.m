@@ -43,6 +43,9 @@ __has_include("webp/demux.h")  && __has_include("webp/mux.h")
 #endif
 
 
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark - Utility (for little endian platform)
 
@@ -2767,7 +2770,7 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
 
 - (void)saveToAlbumWithCompletionBlock:(void(^)(NSURL *assetURL, NSError *error))completionBlock {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *data = [self _dataRepresentationForSystem:YES];
+        NSData *data = [self _imageDataRepresentationForSystem:YES];
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         [library writeImageDataToSavedPhotosAlbum:data metadata:nil completionBlock:^(NSURL *assetURL, NSError *error){
             if (!completionBlock) return;
@@ -2782,12 +2785,12 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
     });
 }
 
-- (NSData *)dataRepresentation {
-    return [self _dataRepresentationForSystem:NO];
+- (NSData *)imageDataRepresentation {
+    return [self _imageDataRepresentationForSystem:NO];
 }
 
 /// @param forSystem YES: used for system album (PNG/JPEG/GIF), NO: used for YYImage (PNG/JPEG/GIF/WebP)
-- (NSData *)_dataRepresentationForSystem:(BOOL)forSystem {
+- (NSData *)_imageDataRepresentationForSystem:(BOOL)forSystem {
     NSData *data = nil;
     if ([self isKindOfClass:[YYImage class]]) {
         YYImage *image = (id)self;

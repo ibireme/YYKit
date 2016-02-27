@@ -130,8 +130,8 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
 }
 
 @interface YYKeychainItem ()
-@property (nonatomic, readwrite, copy) NSDate *modificationDate;
-@property (nonatomic, readwrite, copy) NSDate *creationDate;
+@property (nonatomic, readwrite, strong) NSDate *modificationDate;
+@property (nonatomic, readwrite, strong) NSDate *creationDate;
 @end
 
 @implementation YYKeychainItem
@@ -292,7 +292,7 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
 
 + (NSString *)getPasswordForService:(NSString *)serviceName
                             account:(NSString *)account
-                              error:(__autoreleasing NSError **)error {
+                              error:(NSError **)error {
     if (!serviceName || !account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return nil;
@@ -305,9 +305,14 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return result.password;
 }
 
++ (nullable NSString *)getPasswordForService:(NSString *)serviceName
+                                     account:(NSString *)account {
+    return [self getPasswordForService:serviceName account:account error:NULL];
+}
+
 + (BOOL)deletePasswordForService:(NSString *)serviceName
                          account:(NSString *)account
-                           error:(__autoreleasing NSError **)error {
+                           error:(NSError **)error {
     if (!serviceName || !account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return NO;
@@ -319,10 +324,14 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return [self deleteItem:item error:error];
 }
 
++ (BOOL)deletePasswordForService:(NSString *)serviceName account:(NSString *)account {
+    return [self deletePasswordForService:serviceName account:account error:NULL];
+}
+
 + (BOOL)setPassword:(NSString *)password
          forService:(NSString *)serviceName
             account:(NSString *)account
-              error:(__autoreleasing NSError **)error {
+              error:(NSError **)error {
     if (!password || !serviceName || !account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return NO;
@@ -340,7 +349,13 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     }
 }
 
-+ (BOOL)insertItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)setPassword:(NSString *)password
+         forService:(NSString *)serviceName
+            account:(NSString *)account {
+    return [self setPassword:password forService:serviceName account:account error:NULL];
+}
+
++ (BOOL)insertItem:(YYKeychainItem *)item error:(NSError **)error {
     if (!item.service || !item.account || !item.passwordData) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return NO;
@@ -356,7 +371,11 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return YES;
 }
 
-+ (BOOL)updateItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)insertItem:(YYKeychainItem *)item {
+    return [self insertItem:item error:NULL];
+}
+
++ (BOOL)updateItem:(YYKeychainItem *)item error:(NSError **)error {
     if (!item.service || !item.account || !item.passwordData) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return NO;
@@ -375,7 +394,11 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return YES;
 }
 
-+ (BOOL)deleteItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)updateItem:(YYKeychainItem *)item {
+    return [self updateItem:item error:NULL];
+}
+
++ (BOOL)deleteItem:(YYKeychainItem *)item error:(NSError **)error {
     if (!item.service || !item.account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return NO;
@@ -391,7 +414,11 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return YES;
 }
 
-+ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)deleteItem:(YYKeychainItem *)item {
+    return [self deleteItem:item error:NULL];
+}
+
++ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item error:(NSError **)error {
     if (!item.service || !item.account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return nil;
@@ -422,7 +449,11 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return [[YYKeychainItem alloc] initWithDic:dic];
 }
 
-+ (NSArray *)selectItems:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item {
+    return [self selectOneItem:item error:NULL];
+}
+
++ (NSArray *)selectItems:(YYKeychainItem *)item error:(NSError **)error {
     NSMutableDictionary *query = [item dic];
     query[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitAll;
     query[(__bridge id)kSecReturnAttributes] = @YES;
@@ -450,6 +481,10 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     }
     
     return res;
+}
+
++ (NSArray *)selectItems:(YYKeychainItem *)item {
+    return [self selectItems:item error:NULL];
 }
 
 + (NSError *)errorWithCode:(OSStatus)osCode {

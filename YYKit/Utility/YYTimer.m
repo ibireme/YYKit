@@ -36,7 +36,7 @@ dispatch_semaphore_signal(_lock);
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:@"YYTimer init error" reason:@"Use the designated initializer to init." userInfo:nil];
-    return [self initWithFireTime:0 interval:0 target:nil selector:NULL repeats:NO];
+    return [self initWithFireTime:0 interval:0 target:self selector:@selector(invalidate) repeats:NO];
 }
 
 - (instancetype)initWithFireTime:(NSTimeInterval)start

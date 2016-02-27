@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// State of the gesture
 typedef NS_ENUM(NSUInteger, YYGestureRecognizerState) {
     YYGestureRecognizerStateBegan, ///< gesture start
@@ -29,9 +31,11 @@ typedef NS_ENUM(NSUInteger, YYGestureRecognizerState) {
 @property (nonatomic, readonly) CGPoint currentPoint; ///< current move point.
 
 /// The action block invoked by every gesture event.
-@property (nonatomic, copy) void (^action)(YYGestureRecognizer *gesture, YYGestureRecognizerState state);
+@property (nullable, nonatomic, copy) void (^action)(YYGestureRecognizer *gesture, YYGestureRecognizerState state);
 
 /// Cancel the gesture for current touch.
 - (void)cancel;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  The YYTextParser protocol declares the required method for YYTextView and YYLabel
  to modify the text during editing.
@@ -32,7 +34,7 @@
  
  @return If the 'text' is modified in this method, returns `YES`, otherwise returns `NO`.
  */
-- (BOOL)parseText:(NSMutableAttributedString *)text selectedRange:(NSRangePointer)selectedRange;
+- (BOOL)parseText:(nullable NSMutableAttributedString *)text selectedRange:(nullable NSRangePointer)selectedRange;
 @end
 
 
@@ -52,15 +54,15 @@
  Or you can use lex/yacc to generate your custom parser.
  */
 @interface YYTextSimpleMarkdownParser : NSObject <YYTextParser>
-@property (nonatomic, assign) CGFloat fontSize;         ///< default is 14
-@property (nonatomic, assign) CGFloat headerFontSize;   ///< default is 20
+@property (nonatomic) CGFloat fontSize;         ///< default is 14
+@property (nonatomic) CGFloat headerFontSize;   ///< default is 20
 
-@property (nonatomic, strong) UIColor *textColor;
-@property (nonatomic, strong) UIColor *controlTextColor;
-@property (nonatomic, strong) UIColor *headerTextColor;
-@property (nonatomic, strong) UIColor *inlineTextColor;
-@property (nonatomic, strong) UIColor *codeTextColor;
-@property (nonatomic, strong) UIColor *linkTextColor;
+@property (nullable, nonatomic, strong) UIColor *textColor;
+@property (nullable, nonatomic, strong) UIColor *controlTextColor;
+@property (nullable, nonatomic, strong) UIColor *headerTextColor;
+@property (nullable, nonatomic, strong) UIColor *inlineTextColor;
+@property (nullable, nonatomic, strong) UIColor *codeTextColor;
+@property (nullable, nonatomic, strong) UIColor *linkTextColor;
 
 - (void)setColorWithBrightTheme; ///< reset the color properties to pre-defined value.
 - (void)setColorWithDarkTheme;   ///< reset the color properties to pre-defined value.
@@ -83,5 +85,7 @@
  The key is a specified plain string, such as @":smile:".
  The value is a UIImage which will replace the specified plain string in text.
  */
-@property (copy) NSDictionary *emoticonMapper;
+@property (nullable, copy) NSDictionary<NSString *, __kindof UIImage *> *emoticonMapper;
 @end
+
+NS_ASSUME_NONNULL_END

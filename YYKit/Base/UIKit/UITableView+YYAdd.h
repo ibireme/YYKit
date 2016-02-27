@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provides extensions for `UITableView`.
  */
@@ -182,3 +184,5 @@
 - (void)clearSelectedRowsAnimated:(BOOL)animated;
 
 @end
+
+NS_ASSUME_NONNULL_END

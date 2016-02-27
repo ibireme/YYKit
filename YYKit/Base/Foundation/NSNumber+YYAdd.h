@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provide a method to parse `NSString` for `NSNumber`.
  */
@@ -24,6 +26,8 @@
  
  @return an NSNumber when parse succeed, or nil if an error occurs.
  */
-+ (NSNumber *)numberWithString:(NSString *)string;
++ (nullable NSNumber *)numberWithString:(NSString *)string;
 
 @end
+
+NS_ASSUME_NONNULL_END

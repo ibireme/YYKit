@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provide some method for `NSNotificationCenter`
  to post notification in different thread.
@@ -52,7 +54,7 @@
  @param object  The object posting the notification.
  */
 - (void)postNotificationOnMainThreadWithName:(NSString *)name
-                                      object:(id)object;
+                                      object:(nullable id)object;
 
 /**
  Creates a notification with a given name and sender and posts it to the
@@ -66,8 +68,8 @@
  @param userInfo  Information about the the notification. May be nil.
  */
 - (void)postNotificationOnMainThreadWithName:(NSString *)name
-                                      object:(id)object
-                                    userInfo:(NSDictionary *)userInfo;
+                                      object:(nullable id)object
+                                    userInfo:(nullable NSDictionary *)userInfo;
 
 /**
  Creates a notification with a given name and sender and posts it to the
@@ -86,8 +88,10 @@
                  immediately.
  */
 - (void)postNotificationOnMainThreadWithName:(NSString *)name
-                                      object:(id)object
-                                    userInfo:(NSDictionary *)userInfo
+                                      object:(nullable id)object
+                                    userInfo:(nullable NSDictionary *)userInfo
                                waitUntilDone:(BOOL)wait;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -21,9 +21,9 @@
 #import "YYTextAttribute.h"
 #endif
 
-NS_ASSUME_NONNULL_BEGIN
-
 @class YYTextView;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  The YYTextViewDelegate protocol defines a set of optional methods you can use
@@ -127,20 +127,20 @@ NS_ASSUME_NONNULL_BEGIN
  When a range of text is detected by the `dataDetectorTypes`, this value would be
  used to modify the original attributes in the range.
  */
-@property (nullable, nonatomic, copy) NSDictionary *linkTextAttributes;
+@property (nullable, nonatomic, copy) NSDictionary<NSString *, id> *linkTextAttributes;
 
 /**
  The attributes to apply to links at highlight state. Default is a gray border.
  When a range of text is detected by the `dataDetectorTypes` and the range was touched by user,
  this value would be used to modify the original attributes in the range.
  */
-@property (nullable, nonatomic, copy) NSDictionary *highlightTextAttributes;
+@property (nullable, nonatomic, copy) NSDictionary<NSString *, id> *highlightTextAttributes;
 
 /**
  The attributes to apply to new text being entered by the user.
  When the text view's selection changes, this value is reset automatically.
  */
-@property (nullable, nonatomic, copy) NSDictionary *typingAttributes;
+@property (nullable, nonatomic, copy) NSDictionary<NSString *, id> *typingAttributes;
 
 /**
  The styled text displayed by the text view.
@@ -219,7 +219,7 @@ NS_ASSUME_NONNULL_BEGIN
  An array of UIBezierPath objects representing the exclusion paths inside the 
  receiver's bounding rectangle. Default value is nil.
  */
-@property (nullable, nonatomic, copy) NSArray *exclusionPaths;
+@property (nullable, nonatomic, copy) NSArray<UIBezierPath *> *exclusionPaths;
 
 /**
  Whether the receiver's layout orientation is vertical form. Default is NO.

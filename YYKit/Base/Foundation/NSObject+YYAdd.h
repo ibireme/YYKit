@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Common tasks for NSObject.
  */
@@ -57,7 +59,7 @@
      NSValue *frameValue = [view performSelectorWithArgs:@selector(frame)];
      CGRect frame = frameValue.CGRectValue;
  */
-- (id)performSelectorWithArgs:(SEL)sel, ...;
+- (nullable id)performSelectorWithArgs:(SEL)sel, ...;
 
 /**
  Invokes a method of the receiver on the current thread using the default mode after a delay.
@@ -116,7 +118,7 @@
      // variable arg is not object
      [view performSelectorWithArgsOnMainThread:@selector(setCenter:), waitUntilDone:NO, CGPointMake(0, 0)];
  */
-- (id)performSelectorWithArgsOnMainThread:(SEL)sel waitUntilDone:(BOOL)wait, ...;
+- (nullable id)performSelectorWithArgsOnMainThread:(SEL)sel waitUntilDone:(BOOL)wait, ...;
 
 /**
  Invokes a method of the receiver on the specified thread using the default mode.
@@ -152,7 +154,7 @@
          return [num2 compare:num2];
      }];
  */
-- (id)performSelectorWithArgs:(SEL)sel onThread:(NSThread *)thread waitUntilDone:(BOOL)wait, ...;
+- (nullable id)performSelectorWithArgs:(SEL)sel onThread:(NSThread *)thread waitUntilDone:(BOOL)wait, ...;
 
 /**
  Invokes a method of the receiver on a new background thread.
@@ -239,7 +241,7 @@
  @param value   The object to associate.
  @param key     The pointer to get value from `self`.
  */
-- (void)setAssociateValue:(id)value withKey:(void *)key;
+- (void)setAssociateValue:(nullable id)value withKey:(void *)key;
 
 /**
  Associate one object to `self`, as if it was a weak property (week, nonatomic).
@@ -247,14 +249,14 @@
  @param value  The object to associate.
  @param key    The pointer to get value from `self`.
  */
-- (void)setAssociateWeakValue:(id)value withKey:(void *)key;
+- (void)setAssociateWeakValue:(nullable id)value withKey:(void *)key;
 
 /**
  Get the associated value from `self`.
  
  @param key The pointer to get value from `self`.
  */
-- (id)getAssociatedValueForKey:(void *)key;
+- (nullable id)getAssociatedValueForKey:(void *)key;
 
 /**
  Remove all associated values.
@@ -284,7 +286,7 @@
  Returns a copy of the instance with `NSKeyedArchiver` and ``NSKeyedUnarchiver``.
  Returns nil if an error occurs.
  */
-- (id)deepCopy;
+- (nullable id)deepCopy;
 
 /**
  Returns a copy of the instance use archiver and unarchiver.
@@ -293,6 +295,8 @@
  @param archiver   NSKeyedArchiver class or any class inherited.
  @param unarchiver NSKeyedUnarchiver clsas or any class inherited.
  */
-- (id)deepCopyWithArchiver:(Class)archiver unarchiver:(Class)unarchiver;
+- (nullable id)deepCopyWithArchiver:(Class)archiver unarchiver:(Class)unarchiver;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provides extensions for `NSBundle` to get resource by @2x or @3x...
  
@@ -23,7 +25,7 @@
  An array of NSNumber objects, shows the best order for path scale search.
  e.g. iPhone3GS:@[@1,@2,@3] iPhone5:@[@2,@3,@1]  iPhone6 Plus:@[@3,@2,@1]
  */
-+ (NSArray *)preferredScales;
++ (NSArray<NSNumber *> *)preferredScales;
 
 /**
  Returns the full pathname for the resource file identified by the specified 
@@ -45,7 +47,9 @@
  located. This method also returns nil if the bundle specified by the bundlePath 
  parameter does not exist or is not a readable directory.
  */
-+ (NSString *)pathForScaledResource:(NSString *)name ofType:(NSString *)ext inDirectory:(NSString *)bundlePath;
++ (nullable NSString *)pathForScaledResource:(NSString *)name
+                                      ofType:(nullable NSString *)ext
+                                 inDirectory:(NSString *)bundlePath;
 
 /**
  Returns the full pathname for the resource identified by the specified name and 
@@ -61,7 +65,7 @@
  
  @return The full pathname for the resource file or nil if the file could not be located.
  */
-- (NSString *)pathForScaledResource:(NSString *)name ofType:(NSString *)ext;
+- (nullable NSString *)pathForScaledResource:(NSString *)name ofType:(nullable NSString *)ext;
 
 /**
  Returns the full pathname for the resource identified by the specified name and 
@@ -79,6 +83,10 @@
  
  @return The full pathname for the resource file or nil if the file could not be located.
  */
-- (NSString *)pathForScaledResource:(NSString *)name ofType:(NSString *)ext inDirectory:(NSString *)subpath;
+- (nullable NSString *)pathForScaledResource:(NSString *)name
+                                      ofType:(nullable NSString *)ext
+                                 inDirectory:(nullable NSString *)subpath;
 
 @end
+
+NS_ASSUME_NONNULL_END

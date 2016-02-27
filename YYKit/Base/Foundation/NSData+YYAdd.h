@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provide hash, encrypt, encode and some common method for `NSData`.
  */
@@ -199,7 +201,7 @@
  
  @return      An NSData encrypted, or nil if an error occurs.
  */
-- (NSData *)aes256EncryptWithKey:(NSData *)key iv:(NSData *)iv;
+- (nullable NSData *)aes256EncryptWithKey:(NSData *)key iv:(nullable NSData *)iv;
 
 /**
  Returns an decrypted NSData using AES.
@@ -211,7 +213,7 @@
  
  @return      An NSData decrypted, or nil if an error occurs.
  */
-- (NSData *)aes256DecryptWithkey:(NSData *)key iv:(NSData *)iv;
+- (nullable NSData *)aes256DecryptWithkey:(NSData *)key iv:(nullable NSData *)iv;
 
 
 #pragma mark - Encode and decode
@@ -222,12 +224,12 @@
 /**
  Returns string decoded in UTF8.
  */
-- (NSString *)utf8String;
+- (nullable NSString *)utf8String;
 
 /**
  Returns a uppercase NSString in HEX.
  */
-- (NSString *)hexString;
+- (nullable NSString *)hexString;
 
 /**
  Returns an NSData from hex string.
@@ -236,12 +238,12 @@
  
  @return a new NSData, or nil if an error occurs.
  */
-+ (NSData *)dataWithHexString:(NSString *)hexString;
++ (nullable NSData *)dataWithHexString:(NSString *)hexString;
 
 /**
  Returns an NSString for base64 encoded.
  */
-- (NSString *)base64EncodedString;
+- (nullable NSString *)base64EncodedString;
 
 /**
  Returns an NSData from base64 encoded string.
@@ -250,13 +252,13 @@
  
  @param base64EncodedString  The encoded string.
  */
-+ (NSData *)dataWithBase64EncodedString:(NSString *)base64EncodedString;
++ (nullable NSData *)dataWithBase64EncodedString:(NSString *)base64EncodedString;
 
 /**
  Returns an NSDictionary or NSArray for decoded self.
  Returns nil if an error occurs.
  */
-- (id)jsonValueDecoded;
+- (nullable id)jsonValueDecoded;
 
 
 #pragma mark - Inflate and deflate
@@ -268,25 +270,25 @@
  Decompress data from gzip data.
  @return Inflated data.
  */
-- (NSData *)gzipInflate;
+- (nullable NSData *)gzipInflate;
 
 /**
  Comperss data to gzip in default compresssion level.
  @return Deflated data.
  */
-- (NSData *)gzipDeflate;
+- (nullable NSData *)gzipDeflate;
 
 /**
  Decompress data from zlib-compressed data.
  @return Inflated data.
  */
-- (NSData *)zlibInflate;
+- (nullable NSData *)zlibInflate;
 
 /**
  Comperss data to zlib-compressed in default compresssion level.
  @return Deflated data.
  */
-- (NSData *)zlibDeflate;
+- (nullable NSData *)zlibDeflate;
 
 
 #pragma mark - Others
@@ -301,6 +303,8 @@
  
  @return A new data create from the file.
  */
-+ (NSData *)dataNamed:(NSString *)name;
++ (nullable NSData *)dataNamed:(NSString *)name;
 
 @end
+
+NS_ASSUME_NONNULL_END

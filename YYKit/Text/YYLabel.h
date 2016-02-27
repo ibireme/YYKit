@@ -21,6 +21,8 @@
 #import "YYTextAttribute.h"
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 #if !TARGET_INTERFACE_BUILDER
 
 /**
@@ -158,7 +160,7 @@
  An array of UIBezierPath objects representing the exclusion paths inside the
  receiver's bounding rectangle. Default value is nil.
  */
-@property (nullable, nonatomic, copy) NSArray *exclusionPaths;
+@property (nullable, nonatomic, copy) NSArray<UIBezierPath *> *exclusionPaths;
 
 /**
  The inset of the text container's layout area within the text view's content area.
@@ -359,7 +361,7 @@ IB_DESIGNABLE
 @property (nullable, nonatomic, strong) id<YYTextParser> textParser;
 @property (nullable, nonatomic, strong) YYTextLayout *textLayout;
 @property (nullable, nonatomic, copy) UIBezierPath *textContainerPath;
-@property (nullable, nonatomic, copy) NSArray *exclusionPaths;
+@property (nullable, nonatomic, copy) NSArray<UIBezierPath *> *exclusionPaths;
 @property (nonatomic) UIEdgeInsets textContainerInset;
 @property (nullable, nonatomic, copy) id<YYTextLinePositionModifier> linePositionModifier;
 @property (nonnull, nonatomic, copy) YYTextDebugOption *debugOption;
@@ -372,3 +374,5 @@ IB_DESIGNABLE
 @property (nonatomic) BOOL ignoreCommonProperties;
 @end
 #endif // !TARGET_INTERFACE_BUILDER
+
+NS_ASSUME_NONNULL_END

@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provides extensions for `UIApplication`.
  */
@@ -29,16 +31,16 @@
 @property (nonatomic, readonly) NSString *libraryPath;
 
 /// Application's Bundle Name (show in SpringBoard).
-@property (nonatomic, readonly) NSString *appBundleName;
+@property (nullable, nonatomic, readonly) NSString *appBundleName;
 
 /// Application's Bundle ID.  e.g. "com.ibireme.MyApp"
-@property (nonatomic, readonly) NSString *appBundleID;
+@property (nullable, nonatomic, readonly) NSString *appBundleID;
 
 /// Application's Version.  e.g. "1.2.0"
-@property (nonatomic, readonly) NSString *appVersion;
+@property (nullable, nonatomic, readonly) NSString *appVersion;
 
 /// Application's Build number. e.g. "123"
-@property (nonatomic, readonly) NSString *appBuildVersion;
+@property (nullable, nonatomic, readonly) NSString *appBuildVersion;
 
 /// Whether this app is pirated (not install from appstore).
 @property (nonatomic, readonly) BOOL isPirated;
@@ -80,6 +82,8 @@
 + (BOOL)isAppExtension;
 
 /// Same as sharedApplication, but returns nil in App Extension.
-+ (UIApplication *)sharedExtensionApplication;
++ (nullable UIApplication *)sharedExtensionApplication;
 
 @end
+
+NS_ASSUME_NONNULL_END
