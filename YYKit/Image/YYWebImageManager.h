@@ -232,12 +232,12 @@ typedef void (^YYWebImageCompletionBlock)(UIImage * _Nullable image,
 /**
  The username used by NSURLCredential, default is nil.
  */
-@property (nullable, nonatomic) NSString *username;
+@property (nullable, nonatomic, copy) NSString *username;
 
 /**
  The password used by NSURLCredential, default is nil.
  */
-@property (nullable, nonatomic) NSString *password;
+@property (nullable, nonatomic, copy) NSString *password;
 
 /**
  The image HTTP request header. Default is "Accept:image/webp,image/\*;q=0.8".
