@@ -84,8 +84,8 @@ This library requires `iOS 6.0+` and `Xcode 7.0+`.
 
 Notice
 ==============
-I want to use the APIs as if it was provided by system, so I don't add prefix in
-these categories. So I don't recommend using the `YYKit` directly, you should try the separated components first.
+I want to use the APIs as if it was provided by system, and I don't add prefix in
+these categories. I do not recommend using the `YYKit` directly, you should try the separated components first.
 
 License
 ==============
