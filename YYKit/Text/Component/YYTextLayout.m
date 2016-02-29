@@ -3282,6 +3282,14 @@ static void YYTextDrawDebug(YYTextLayout *layout, CGContextRef context, CGSize s
 }
 
 
+static void YYTextBackgroundColor(UIColor *color, CGContextRef context, CGSize size, CGPoint point, BOOL (^cancel)(void)) {
+    CGContextSaveGState(context); {
+        CGContextSetFillColorWithColor(context, color.CGColor);
+        CGContextFillRect(context, CGRectMake(point.x, point.y, size.width, size.height));
+    } CGContextRestoreGState(context);
+}
+
+
 - (void)drawInContext:(CGContextRef)context
                  size:(CGSize)size
                 point:(CGPoint)point
@@ -3290,6 +3298,10 @@ static void YYTextDrawDebug(YYTextLayout *layout, CGContextRef context, CGSize s
                 debug:(YYTextDebugOption *)debug
                 cancel:(BOOL (^)(void))cancel{
     @autoreleasepool {
+        if (self.opaqueBackgroundColor && context) {
+            if (cancel && cancel()) return;
+            YYTextBackgroundColor(self.opaqueBackgroundColor, context, size, point, cancel);
+        }
         if (self.needDrawBlockBorder && context) {
             if (cancel && cancel()) return;
             YYTextDrawBlockBorder(self, context, size, point, cancel);
