@@ -141,6 +141,14 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding);
 - (void)setNeedUpdate;
 
 /**
+ If this method returns `YES`, you should stop using this instance and call
+ `classInfoWithClass` or `classInfoWithClassName` to get the updated class info.
+ 
+ @return Whether this class info need update.
+ */
+- (BOOL)needUpdate;
+
+/**
  Get the class info of a specified Class.
  
  @discussion This method will cache the class info and super-class info

@@ -308,6 +308,10 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
     _needUpdate = YES;
 }
 
+- (BOOL)needUpdate {
+    return _needUpdate;
+}
+
 + (instancetype)classInfoWithClass:(Class)cls {
     if (!cls) return nil;
     static CFMutableDictionaryRef classCache;
