@@ -275,7 +275,7 @@ extern const CGSize YYTextContainerMaxSize;
 @property (nonatomic, readonly) BOOL needDrawBorder;
 
 ///< Draw background with color when YYLabel.layer.opaque equal to YES
-@property (nullable, nonatomic, readonly) UIColor* opaqueBackgroundColor;
+@property (nullable, nonatomic) UIColor* opaqueBackgroundColor;
 
 #pragma mark - Query information from text layout
 ///=============================================================================
