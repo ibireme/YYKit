@@ -3300,7 +3300,7 @@ static void YYTextBackgroundColor(UIColor *color, CGContextRef context, CGSize s
     @autoreleasepool {
         if (self.opaqueBackgroundColor && context) {
             if (cancel && cancel()) return;
-            YYTextBackgroundColor(self.opaqueBackgroundColor, context, size, point, cancel);
+             YYTextBackgroundColor(self.opaqueBackgroundColor, context, self.container.size, CGPointZero, cancel);
         }
         if (self.needDrawBlockBorder && context) {
             if (cancel && cancel()) return;
