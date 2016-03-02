@@ -1529,6 +1529,7 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
     if (_webpSource) WebPDemuxDelete(_webpSource);
 #endif
     if (_blendCanvas) CFRelease(_blendCanvas);
+    pthread_mutex_destroy(&_lock);
 }
 
 + (instancetype)decoderWithData:(NSData *)data scale:(CGFloat)scale {
