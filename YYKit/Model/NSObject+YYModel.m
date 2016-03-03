@@ -132,7 +132,7 @@ static force_inline NSNumber *YYNSNumberCreateFromID(__unsafe_unretained id valu
 }
 
 /// Parse string to date.
-static NSDate *YYNSDateFromString(__unsafe_unretained NSString *string) {
+static force_inline NSDate *YYNSDateFromString(__unsafe_unretained NSString *string) {
     typedef NSDate* (^YYNSDateParseBlock)(NSString *string);
     #define kParserNum 32
     static YYNSDateParseBlock blocks[kParserNum + 1] = {0};
