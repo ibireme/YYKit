@@ -21,6 +21,16 @@
 
 + (instancetype)sharedWindow {
     static YYTextEffectWindow *one = nil;
+    if (one == nil) {
+        // iOS 9 compatible
+        NSString *mode = [NSRunLoop currentRunLoop].currentMode;
+        if (mode.length == 27 &&
+            [mode hasPrefix:@"UI"] &&
+            [mode hasSuffix:@"InitializationRunLoopMode"]) {
+            return nil;
+        }
+    }
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (![UIApplication isAppExtension]) {
