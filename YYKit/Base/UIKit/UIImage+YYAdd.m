@@ -125,7 +125,7 @@ static NSTimeInterval _yy_CGImageSourceGetGIFFrameDelayAtIndex(CGImageSourceRef 
             CFRelease(imageRef);
             return nil;
         }
-        UIImage *image = image = [UIImage imageWithCGImage:decoded scale:scale orientation:UIImageOrientationUp];
+        UIImage *image = [UIImage imageWithCGImage:decoded scale:scale orientation:UIImageOrientationUp];
         CGImageRelease(imageRef);
         CGImageRelease(decoded);
         if (!image) {
