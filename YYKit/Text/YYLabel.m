@@ -640,6 +640,21 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     if (!_state.swallowTouch) [super touchesCancelled:touches withEvent:event];
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *hitResult = [super hitTest:point withEvent:event];
+    
+    if (hitResult != self) {
+        return hitResult;
+    }
+    
+    YYTextHighlight *highlight = [self _getHighlightAtPoint:point range:NULL];
+    if (!highlight) {
+        return nil;
+    }
+    
+    return hitResult;
+}
+
 #pragma mark - Properties
 
 - (void)setText:(NSString *)text {
