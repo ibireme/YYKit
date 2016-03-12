@@ -74,28 +74,23 @@ static void YYRunLoopAutoreleasePoolObserverCallBack(CFRunLoopObserverRef observ
 }
 
 static void YYRunloopAutoreleasePoolSetup() {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        CFRunLoopRef runloop = CFRunLoopGetCurrent();
+    CFRunLoopRef runloop = CFRunLoopGetCurrent();
 
-        CFRunLoopObserverRef pushObserver;
-        pushObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
-                                               kCFRunLoopEntry,
-                                               true,         // repeat
-                                               -0x7FFFFFFF,  // before other observers
-                                               YYRunLoopAutoreleasePoolObserverCallBack, NULL);
-        CFRunLoopAddObserver(runloop, pushObserver, kCFRunLoopCommonModes);
-        CFRelease(pushObserver);
-
-        CFRunLoopObserverRef popObserver;
-        popObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
-                                              kCFRunLoopBeforeWaiting | kCFRunLoopExit,
-                                              true,        // repeat
-                                              0x7FFFFFFF,  // after other observers
-                                              YYRunLoopAutoreleasePoolObserverCallBack, NULL);
-        CFRunLoopAddObserver(runloop, popObserver, kCFRunLoopCommonModes);
-        CFRelease(popObserver);
-    });
+    CFRunLoopObserverRef pushObserver;
+    pushObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(), kCFRunLoopEntry,
+                                           true,         // repeat
+                                           -0x7FFFFFFF,  // before other observers
+                                           YYRunLoopAutoreleasePoolObserverCallBack, NULL);
+    CFRunLoopAddObserver(runloop, pushObserver, kCFRunLoopCommonModes);
+    CFRelease(pushObserver);
+    
+    CFRunLoopObserverRef popObserver;
+    popObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(), kCFRunLoopBeforeWaiting | kCFRunLoopExit,
+                                          true,        // repeat
+                                          0x7FFFFFFF,  // after other observers
+                                          YYRunLoopAutoreleasePoolObserverCallBack, NULL);
+    CFRunLoopAddObserver(runloop, popObserver, kCFRunLoopCommonModes);
+    CFRelease(popObserver);
 }
 
 @implementation NSThread (YYAdd)

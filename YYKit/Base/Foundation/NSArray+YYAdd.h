@@ -75,9 +75,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NSString *)jsonPrettyStringEncoded;
 
-
-
-
 @end
 
 
