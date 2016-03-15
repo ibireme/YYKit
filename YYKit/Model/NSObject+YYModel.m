@@ -1298,7 +1298,7 @@ static NSString *ModelDescription(NSObject *model) {
             } else {
                 NSArray *keys = dic.allKeys;
                 
-                [desc appendFormat:@"[\n"];
+                [desc appendFormat:@"{\n"];
                 for (NSUInteger i = 0, max = keys.count; i < max; i++) {
                     NSString *key = keys[i];
                     NSObject *value = dic[key];
@@ -1306,7 +1306,7 @@ static NSString *ModelDescription(NSObject *model) {
                     [desc appendFormat:@"%@ = %@",key, ModelDescriptionAddIndent(ModelDescription(value).mutableCopy, 1)];
                     [desc appendString:(i + 1 == max) ? @"\n" : @";\n"];
                 }
-                [desc appendString:@"]"];
+                [desc appendString:@"}"];
             }
             return desc;
         }
