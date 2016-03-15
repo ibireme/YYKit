@@ -382,6 +382,20 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSArray<NSString *> *)modelPropertyWhitelist;
 
 /**
+ This method's behavior is similar to `- (BOOL)modelCustomTransformFromDictionary:(NSDictionary *)dic;`, 
+ but be called before the model transform.
+ 
+ @discussion If the model implements this method, it will be called before
+ `+modelWithJSON:`, `+modelWithDictionary:`, `-modelSetWithJSON:` and `-modelSetWithDictionary:`.
+ If this method returns nil, the transform process will ignore this model.
+ 
+ @param dic  The json/kv dictionary.
+ 
+ @return Returns the modified dictionary, or nil to ignore this model.
+ */
+- (NSDictionary *)modelCustomWillTransformFromDictionary:(NSDictionary *)dic;
+
+/**
  If the default json-to-model transform does not fit to your model object, implement
  this method to do additional process. You can also use this method to validate the 
  model's properties.

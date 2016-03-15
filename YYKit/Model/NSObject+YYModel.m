@@ -418,6 +418,7 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
     /// Model class type.
     YYEncodingNSType _nsType;
     
+    BOOL _hasCustomWillTransformFromDictionary;
     BOOL _hasCustomTransformFromDictionary;
     BOOL _hasCustomTransformToDictionary;
     BOOL _hasCustomClassFromDictionary;
@@ -558,6 +559,7 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
     _classInfo = classInfo;
     _keyMappedCount = _allPropertyMetas.count;
     _nsType = YYClassGetNSType(cls);
+    _hasCustomWillTransformFromDictionary = ([cls instancesRespondToSelector:@selector(modelCustomWillTransformFromDictionary:)]);
     _hasCustomTransformFromDictionary = ([cls instancesRespondToSelector:@selector(modelCustomTransformFromDictionary:)]);
     _hasCustomTransformToDictionary = ([cls instancesRespondToSelector:@selector(modelCustomTransformToDictionary:)]);
     _hasCustomClassFromDictionary = ([cls respondsToSelector:@selector(modelCustomClassForDictionary:)]);
@@ -1422,6 +1424,12 @@ static NSString *ModelDescription(NSObject *model) {
     
     _YYModelMeta *modelMeta = [_YYModelMeta metaWithClass:object_getClass(self)];
     if (modelMeta->_keyMappedCount == 0) return NO;
+    
+    if (modelMeta->_hasCustomWillTransformFromDictionary) {
+        dic = [((id<YYModel>)self) modelCustomWillTransformFromDictionary:dic];
+        if (![dic isKindOfClass:[NSDictionary class]]) return NO;
+    }
+    
     ModelSetContext context = {0};
     context.modelMeta = (__bridge void *)(modelMeta);
     context.model = (__bridge void *)(self);
