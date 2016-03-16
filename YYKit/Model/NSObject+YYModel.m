@@ -1716,7 +1716,7 @@ static NSString *ModelDescription(NSObject *model) {
 @implementation NSArray (YYModel)
 
 + (NSArray *)modelArrayWithClass:(Class)cls json:(id)json {
-    if (!json) return nil;
+    if (!cls || !json) return nil;
     NSArray *arr = nil;
     NSData *jsonData = nil;
     if ([json isKindOfClass:[NSArray class]]) {
