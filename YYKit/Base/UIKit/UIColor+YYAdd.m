@@ -197,6 +197,8 @@ void YY_HSL2HSB(CGFloat h, CGFloat s, CGFloat l,
     }
 }
 
+#undef CLAMP_COLOR_VALUE
+
 @implementation UIColor (YYAdd)
 
 + (UIColor *)colorWithHue:(CGFloat)hue
