@@ -30,9 +30,7 @@
     if (!CGSizeEqualToSize(self.bounds.size, _previousSize)) {
         _previousSize = self.bounds.size;
         [self.layer removeAllAnimations];
-        [self.layer.sublayers enumerateObjectsUsingBlock:^(CALayer *layer, NSUInteger idx, BOOL *stop) {
-            [layer removeAllAnimations];
-        }];
+        [self.layer.sublayers makeObjectsPerformSelector:@selector(removeAllAnimations)];
     }
 }
 
