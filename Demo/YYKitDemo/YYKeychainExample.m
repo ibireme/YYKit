@@ -91,7 +91,7 @@ static NSString *const kLabel = @"Example";
     NSDictionary *dictionary = @{@"number": @42, @"string": @"Hello World"};
     item.passwordObject = dictionary;
     
-    NSError *error = nil;
+    __unused NSError *error = nil;
     NSAssert([YYKeychain insertItem:item error:&error], @"Unable to save item: %@", error);
     
     item = [[YYKeychainItem alloc] init];
@@ -108,7 +108,7 @@ static NSString *const kLabel = @"Example";
     item.service = kServiceName;
     item.account = kAccountName;
     
-    NSError *error = nil;
+    __unused NSError *error = nil;
     NSAssert([YYKeychain insertItem:item error:&error] == NO, @"Function should return NO as not all needed information is provided: %@", error);
     
     item = [[YYKeychainItem alloc] init];
@@ -126,7 +126,7 @@ static NSString *const kLabel = @"Example";
     YYKeychainItem *item = [[YYKeychainItem alloc] init];
     item.account = kAccountName;
     
-    NSError *error;
+    __unused NSError *error;
     NSAssert([YYKeychain deleteItem:item error:&error] == NO, @"Function deleteItem should return NO if not all needed information is provided: %@", error);
     
     item = [[YYKeychainItem alloc] init];
@@ -155,7 +155,7 @@ static NSString *const kLabel = @"Example";
     item.password = kPassword;
     item.synchronizable = YYKeychainQuerySynchronizationModeYes;
     
-    NSError *error;
+    __unused NSError *error;
     NSAssert([YYKeychain insertItem:item error:&error], @"Unable to save item: %@", error);
     
     item = [[YYKeychainItem alloc] init];
@@ -180,7 +180,7 @@ static NSString *const kLabel = @"Example";
 
 
 - (void)testKeychain {
-    NSError *error = nil;
+    __unused NSError *error = nil;
     
     // create a new keychain item
     NSAssert([YYKeychain setPassword:kPassword forService:kServiceName account:kAccountName error:&error], @"Unable to save item: %@", error);
