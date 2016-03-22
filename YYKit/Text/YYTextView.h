@@ -105,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, strong) UIColor *textColor;
 
 /**
- The technique to use for aligning the text. Default is NSLeftTextAlignment.
+ The technique to use for aligning the text. Default is NSTextAlignmentNatural.
  Set a new value to this property also causes the new alignment to be applied to the entire `attributedText`.
  Get the value returns the alignment at the head of `attributedText`.
  */

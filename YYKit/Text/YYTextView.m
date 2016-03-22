@@ -1945,6 +1945,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _selectable = YES;
     _highlightable = YES;
     _allowsCopyAttributedString = YES;
+    _textAlignment = NSTextAlignmentNatural;
     
     _innerText = [NSMutableAttributedString new];
     _innerContainer = [YYTextContainer new];

@@ -398,6 +398,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     _textColor = [UIColor blackColor];
     _textVerticalAlignment = YYTextVerticalAlignmentCenter;
     _numberOfLines = 1;
+    _textAlignment = NSTextAlignmentNatural;
     _lineBreakMode = NSLineBreakByTruncatingTail;
     _innerText = [NSMutableAttributedString new];
     _innerContainer = [YYTextContainer new];
