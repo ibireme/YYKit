@@ -62,18 +62,26 @@ YYSYNTH_DUMMY_CLASS(UIScreen_YYAdd);
             else if ([model hasPrefix:@"iPhone6"]) size = CGSizeMake(640, 1136);
             else if ([model hasPrefix:@"iPhone7,1"]) size = CGSizeMake(1080, 1920);
             else if ([model hasPrefix:@"iPhone7,2"]) size = CGSizeMake(750, 1334);
+            else if ([model hasPrefix:@"iPhone8,1"]) size = CGSizeMake(1080, 1920);
+            else if ([model hasPrefix:@"iPhone8,2"]) size = CGSizeMake(750, 1334);
+            else if ([model hasPrefix:@"iPhone8,4"]) size = CGSizeMake(640, 1136);
         } else if ([model hasPrefix:@"iPod"]) {
             if ([model hasPrefix:@"iPod1"]) size = CGSizeMake(320, 480);
             else if ([model hasPrefix:@"iPod2"]) size = CGSizeMake(320, 480);
             else if ([model hasPrefix:@"iPod3"]) size = CGSizeMake(320, 480);
             else if ([model hasPrefix:@"iPod4"]) size = CGSizeMake(640, 960);
             else if ([model hasPrefix:@"iPod5"]) size = CGSizeMake(640, 1136);
+            else if ([model hasPrefix:@"iPod7"]) size = CGSizeMake(640, 1136);
         } else if ([model hasPrefix:@"iPad"]) {
             if ([model hasPrefix:@"iPad1"]) size = CGSizeMake(768, 1024);
             else if ([model hasPrefix:@"iPad2"]) size = CGSizeMake(768, 1024);
             else if ([model hasPrefix:@"iPad3"]) size = CGSizeMake(1536, 2048);
             else if ([model hasPrefix:@"iPad4"]) size = CGSizeMake(1536, 2048);
             else if ([model hasPrefix:@"iPad5"]) size = CGSizeMake(1536, 2048);
+            else if ([model hasPrefix:@"iPad6,3"]) size = CGSizeMake(1536, 2048);
+            else if ([model hasPrefix:@"iPad6,4"]) size = CGSizeMake(1536, 2048);
+            else if ([model hasPrefix:@"iPad6,7"]) size = CGSizeMake(2048, 2732);
+            else if ([model hasPrefix:@"iPad6,8"]) size = CGSizeMake(2048, 2732);
         }
     }
     
@@ -108,12 +116,16 @@ YYSYNTH_DUMMY_CLASS(UIScreen_YYAdd);
             else if ([model hasPrefix:@"iPhone6"]) ppi = 326;
             else if ([model hasPrefix:@"iPhone7,1"]) ppi = 401;
             else if ([model hasPrefix:@"iPhone7,2"]) ppi = 326;
+            else if ([model hasPrefix:@"iPhone8,1"]) ppi = 401;
+            else if ([model hasPrefix:@"iPhone8,2"]) ppi = 326;
+            else if ([model hasPrefix:@"iPhone8,4"]) ppi = 326;
         } else if ([model hasPrefix:@"iPod"]) {
             if ([model hasPrefix:@"iPod1"]) ppi = 163;
             else if ([model hasPrefix:@"iPod2"]) ppi = 163;
             else if ([model hasPrefix:@"iPod3"]) ppi = 163;
             else if ([model hasPrefix:@"iPod4"]) ppi = 326;
             else if ([model hasPrefix:@"iPod5"]) ppi = 326;
+            else if ([model hasPrefix:@"iPod7"]) ppi = 326;
         } else if ([model hasPrefix:@"iPad"]) {
             if ([model hasPrefix:@"iPad1"]) ppi = 132;
             else if ([model hasPrefix:@"iPad2,1"]) ppi = 132;
@@ -135,6 +147,10 @@ YYSYNTH_DUMMY_CLASS(UIScreen_YYAdd);
             else if ([model hasPrefix:@"iPad4,9"]) ppi = 324;
             else if ([model hasPrefix:@"iPad5,3"]) ppi = 264;
             else if ([model hasPrefix:@"iPad5,4"]) ppi = 324;
+            else if ([model hasPrefix:@"iPad6,3"]) ppi = 264;
+            else if ([model hasPrefix:@"iPad6,4"]) ppi = 264;
+            else if ([model hasPrefix:@"iPad6,7"]) ppi = 264;
+            else if ([model hasPrefix:@"iPad6,8"]) ppi = 264;
         }
     }
     
