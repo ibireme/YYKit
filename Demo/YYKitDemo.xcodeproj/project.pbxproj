@@ -1484,6 +1484,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = YYKitDemo;
 				PROVISIONING_PROFILE = "";
+				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1516,6 +1517,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = YYKitDemo;
 				PROVISIONING_PROFILE = "";
+				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
