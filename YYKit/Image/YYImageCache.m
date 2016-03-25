@@ -139,7 +139,7 @@ static inline dispatch_queue_t YYImageCacheDecodeQueue() {
                 __strong typeof(_self) self = _self;
                 if (!self) return;
                 UIImage *newImage = [self imageFromData:imageData];
-                [self.memoryCache setObject:[self imageFromData:imageData] forKey:key withCost:[self imageCost:newImage]];
+                [self.memoryCache setObject:newImage forKey:key withCost:[self imageCost:newImage]];
             });
         }
     }
