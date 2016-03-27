@@ -43,16 +43,16 @@ const NSTimeInterval _YYWebImageProgressiveFadeTime = 0.4;
     [_operation cancel];
 }
 
-- (void)setOperationWithSentinel:(int32_t)sentinel
-                             url:(NSURL *)imageURL
-                         options:(YYWebImageOptions)options
-                         manager:(YYWebImageManager *)manager
-                        progress:(YYWebImageProgressBlock)progress
-                       transform:(YYWebImageTransformBlock)transform
-                      completion:(YYWebImageCompletionBlock)completion {
+- (int32_t)setOperationWithSentinel:(int32_t)sentinel
+                                url:(NSURL *)imageURL
+                            options:(YYWebImageOptions)options
+                            manager:(YYWebImageManager *)manager
+                           progress:(YYWebImageProgressBlock)progress
+                          transform:(YYWebImageTransformBlock)transform
+                         completion:(YYWebImageCompletionBlock)completion {
     if (sentinel != _sentinel) {
         if (completion) completion(nil, imageURL, YYWebImageFromNone, YYWebImageStageCancelled, nil);
-        return;
+        return _sentinel;
     }
     
     NSOperation *operation = [manager requestImageWithURL:imageURL options:options progress:progress transform:transform completion:completion];
@@ -65,11 +65,12 @@ const NSTimeInterval _YYWebImageProgressiveFadeTime = 0.4;
     if (sentinel == _sentinel) {
         if (_operation) [_operation cancel];
         _operation = operation;
-        OSAtomicIncrement32(&_sentinel);
+        sentinel = OSAtomicIncrement32(&_sentinel);
     } else {
         [operation cancel];
     }
     dispatch_semaphore_signal(_lock);
+    return sentinel;
 }
 
 - (int32_t)cancel {

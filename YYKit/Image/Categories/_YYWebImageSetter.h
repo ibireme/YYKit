@@ -28,15 +28,17 @@ extern const NSTimeInterval _YYWebImageProgressiveFadeTime;
 @interface _YYWebImageSetter : NSObject
 /// Current image url.
 @property (nullable, nonatomic, readonly) NSURL *imageURL;
+/// Current sentinel.
+@property (nonatomic, readonly) int32_t sentinel;
 
-/// Create new operation for web image.
-- (void)setOperationWithSentinel:(int32_t)sentinel
-                             url:(nullable NSURL *)imageURL
-                         options:(YYWebImageOptions)options
-                         manager:(YYWebImageManager *)manager
-                        progress:(nullable YYWebImageProgressBlock)progress
-                       transform:(nullable YYWebImageTransformBlock)transform
-                      completion:(nullable YYWebImageCompletionBlock)completion;
+/// Create new operation for web image and return a sentinel value.
+- (int32_t)setOperationWithSentinel:(int32_t)sentinel
+                                url:(nullable NSURL *)imageURL
+                            options:(YYWebImageOptions)options
+                            manager:(YYWebImageManager *)manager
+                           progress:(nullable YYWebImageProgressBlock)progress
+                          transform:(nullable YYWebImageTransformBlock)transform
+                         completion:(nullable YYWebImageCompletionBlock)completion;
 
 /// Cancel and return a sentinel value. The imageURL will be set to nil.
 - (int32_t)cancel;
