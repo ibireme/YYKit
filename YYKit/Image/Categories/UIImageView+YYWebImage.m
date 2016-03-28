@@ -153,7 +153,7 @@ static int _YYWebImageHighlightedSetterKey;
             };
             
             __block int32_t newSentinel = 0;
-            __weak typeof(setter) weakSetter = nil;
+            __block __weak typeof(setter) weakSetter = nil;
             YYWebImageCompletionBlock _completion = ^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
                 __strong typeof(_self) self = _self;
                 BOOL setImage = (stage == YYWebImageStageFinished || stage == YYWebImageStageProgress) && image && !(options & YYWebImageOptionAvoidSetImage);
@@ -317,7 +317,7 @@ static int _YYWebImageHighlightedSetterKey;
             };
             
             __block int32_t newSentinel = 0;
-            __weak typeof(setter) weakSetter = nil;
+            __block __weak typeof(setter) weakSetter = nil;
             YYWebImageCompletionBlock _completion = ^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
                 __strong typeof(_self) self = _self;
                 BOOL setImage = (stage == YYWebImageStageFinished || stage == YYWebImageStageProgress) && image && !(options & YYWebImageOptionAvoidSetImage);
