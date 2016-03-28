@@ -510,8 +510,8 @@ static NSString *const kTrashDirectoryName = @"trash";
     return filenames;
 }
 
-- (NSMutableArray *)_dbGetItemSizeInfoOrderByTimeDescWithLimit:(int)count {
-    NSString *sql = @"select key, filename, size from manifest order by last_access_time desc limit ?1;";
+- (NSMutableArray *)_dbGetItemSizeInfoOrderByTimeAscWithLimit:(int)count {
+    NSString *sql = @"select key, filename, size from manifest order by last_access_time asc limit ?1;";
     sqlite3_stmt *stmt = [self _dbPrepareStmt:sql];
     if (!stmt) return nil;
     sqlite3_bind_int(stmt, 1, count);
@@ -841,7 +841,7 @@ static NSString *const kTrashDirectoryName = @"trash";
     BOOL suc = NO;
     do {
         int perCount = 16;
-        items = [self _dbGetItemSizeInfoOrderByTimeDescWithLimit:perCount];
+        items = [self _dbGetItemSizeInfoOrderByTimeAscWithLimit:perCount];
         for (YYKVStorageItem *item in items) {
             if (total > maxSize) {
                 if (item.filename) {
@@ -871,7 +871,7 @@ static NSString *const kTrashDirectoryName = @"trash";
     BOOL suc = NO;
     do {
         int perCount = 16;
-        items = [self _dbGetItemSizeInfoOrderByTimeDescWithLimit:perCount];
+        items = [self _dbGetItemSizeInfoOrderByTimeAscWithLimit:perCount];
         for (YYKVStorageItem *item in items) {
             if (total > maxCount) {
                 if (item.filename) {
@@ -909,7 +909,7 @@ static NSString *const kTrashDirectoryName = @"trash";
         NSArray *items = nil;
         BOOL suc = NO;
         do {
-            items = [self _dbGetItemSizeInfoOrderByTimeDescWithLimit:perCount];
+            items = [self _dbGetItemSizeInfoOrderByTimeAscWithLimit:perCount];
             for (YYKVStorageItem *item in items) {
                 if (left > 0) {
                     if (item.filename) {
