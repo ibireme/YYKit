@@ -2557,7 +2557,6 @@ static void YYTextDrawText(YYTextLayout *layout, CGContextRef context, CGSize si
         CGContextTranslateCTM(context, point.x, point.y);
         CGContextTranslateCTM(context, 0, size.height);
         CGContextScaleCTM(context, 1, -1);
-        CGContextSetShadow(context, CGSizeZero, 0);
         
         BOOL isVertical = layout.container.verticalForm;
         CGFloat verticalOffset = isVertical ? (size.width - layout.container.size.width) : 0;
