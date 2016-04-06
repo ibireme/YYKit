@@ -20,6 +20,9 @@
 #import "sqlite3.h"
 #endif
 
+
+static const NSUInteger kMaxErrorRetryCount = 8;
+static const NSTimeInterval kMinRetryTimeInterval = 2.0;
 static const int kPathLengthMax = PATH_MAX - 64;
 static NSString *const kDBFileName = @"manifest.sqlite";
 static NSString *const kDBShmFileName = @"manifest.sqlite-shm";
@@ -66,6 +69,8 @@ static NSString *const kTrashDirectoryName = @"trash";
     
     sqlite3 *_db;
     CFMutableDictionaryRef _dbStmtCache;
+    NSTimeInterval _dbLastOpenErrorTime;
+    NSUInteger _dbOpenErrorCount;
 }
 
 
@@ -79,13 +84,19 @@ static NSString *const kTrashDirectoryName = @"trash";
         CFDictionaryKeyCallBacks keyCallbacks = kCFCopyStringDictionaryKeyCallBacks;
         CFDictionaryValueCallBacks valueCallbacks = {0};
         _dbStmtCache = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 0, &keyCallbacks, &valueCallbacks);
+        _dbLastOpenErrorTime = 0;
+        _dbOpenErrorCount = 0;
         return YES;
     } else {
         _db = NULL;
         if (_dbStmtCache) CFRelease(_dbStmtCache);
         _dbStmtCache = NULL;
+        _dbLastOpenErrorTime = CACurrentMediaTime();
+        _dbOpenErrorCount++;
         
-        NSLog(@"%s line:%d sqlite open failed (%d).", __FUNCTION__, __LINE__, result);
+        if (_errorLogsEnabled) {
+            NSLog(@"%s line:%d sqlite open failed (%d).", __FUNCTION__, __LINE__, result);
+        }
         return NO;
     }
 }
@@ -113,15 +124,25 @@ static NSString *const kTrashDirectoryName = @"trash";
                 }
             }
         } else if (result != SQLITE_OK) {
-            NSLog(@"%s line:%d sqlite close failed (%d).", __FUNCTION__, __LINE__, result);
+            if (_errorLogsEnabled) {
+                NSLog(@"%s line:%d sqlite close failed (%d).", __FUNCTION__, __LINE__, result);
+            }
         }
     } while (retry);
     _db = NULL;
     return YES;
 }
 
-- (BOOL)_dbIsReady {
-    return (_db);
+- (BOOL)_dbCheck {
+    if (!_db) {
+        if (_dbOpenErrorCount < kMaxErrorRetryCount &&
+            CACurrentMediaTime() - _dbLastOpenErrorTime > kMinRetryTimeInterval) {
+            return [self _dbOpen] && [self _dbInitialize];
+        } else {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (BOOL)_dbInitialize {
@@ -130,14 +151,14 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (void)_dbCheckpoint {
-    if (![self _dbIsReady]) return;
+    if (![self _dbCheck]) return;
     // Cause a checkpoint to occur, merge `sqlite-wal` file to `sqlite` file.
     sqlite3_wal_checkpoint(_db, NULL);
 }
 
 - (BOOL)_dbExecute:(NSString *)sql {
     if (sql.length == 0) return NO;
-    if (![self _dbIsReady]) return NO;
+    if (![self _dbCheck]) return NO;
     
     char *error = NULL;
     int result = sqlite3_exec(_db, sql.UTF8String, NULL, NULL, &error);
@@ -150,7 +171,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (sqlite3_stmt *)_dbPrepareStmt:(NSString *)sql {
-    if (![self _dbIsReady] || sql.length == 0 || !_dbStmtCache) return NULL;
+    if (![self _dbCheck] || sql.length == 0 || !_dbStmtCache) return NULL;
     sqlite3_stmt *stmt = (sqlite3_stmt *)CFDictionaryGetValue(_dbStmtCache, (__bridge const void *)(sql));
     if (!stmt) {
         int result = sqlite3_prepare_v2(_db, sql.UTF8String, -1, &stmt, NULL);
@@ -224,7 +245,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (BOOL)_dbUpdateAccessTimeWithKeys:(NSArray *)keys {
-    if (![self _dbIsReady]) return NO;
+    if (![self _dbCheck]) return NO;
     int t = (int)time(NULL);
      NSString *sql = [NSString stringWithFormat:@"update manifest set last_access_time = %d where key in (%@);", t, [self _dbJoinedKeys:keys]];
     
@@ -260,7 +281,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (BOOL)_dbDeleteItemWithKeys:(NSArray *)keys {
-    if (![self _dbIsReady]) return NO;
+    if (![self _dbCheck]) return NO;
     NSString *sql =  [NSString stringWithFormat:@"delete from manifest where key in (%@);", [self _dbJoinedKeys:keys]];
     sqlite3_stmt *stmt = NULL;
     int result = sqlite3_prepare_v2(_db, sql.UTF8String, -1, &stmt, NULL);
@@ -347,7 +368,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (NSMutableArray *)_dbGetItemWithKeys:(NSArray *)keys excludeInlineData:(BOOL)excludeInlineData {
-    if (![self _dbIsReady]) return nil;
+    if (![self _dbCheck]) return nil;
     NSString *sql;
     if (excludeInlineData) {
         sql = [NSString stringWithFormat:@"select key, filename, size, modification_time, last_access_time, extended_data from manifest where key in (%@);", [self _dbJoinedKeys:keys]];
@@ -421,7 +442,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (NSMutableArray *)_dbGetFilenameWithKeys:(NSArray *)keys {
-    if (![self _dbIsReady]) return nil;
+    if (![self _dbCheck]) return nil;
     NSString *sql = [NSString stringWithFormat:@"select filename from manifest where key in (%@);", [self _dbJoinedKeys:keys]];
     sqlite3_stmt *stmt = NULL;
     int result = sqlite3_prepare_v2(_db, sql.UTF8String, -1, &stmt, NULL);
