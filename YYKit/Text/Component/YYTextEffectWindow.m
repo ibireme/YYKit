@@ -50,8 +50,7 @@
 }
 
 // stop self from becoming the KeyWindow
-- (void)becomeKeyWindow
-{
+- (void)becomeKeyWindow {
     [[[UIApplication sharedExtensionApplication].delegate window] makeKeyWindow];
 }
 
