@@ -664,8 +664,8 @@ dispatch_semaphore_signal(_lock);
                 if (runCount > 0) {
                     CTRunRef run = CFArrayGetValueAtIndex(runs, runCount - 1);
                     attrs = (id)CTRunGetAttributes(run);
-                    attrs = attrs.mutableCopy;
-                    [attrs removeObjectForKey:YYTextAttachmentAttributeName];
+                    attrs = attrs ? attrs.mutableCopy : [NSMutableArray new];
+                    [attrs removeObjectsForKeys:[NSMutableAttributedString allDiscontinuousAttributeKeys]];
                     CTFontRef font = (__bridge CFTypeRef)attrs[(id)kCTFontAttributeName];
                     CGFloat fontSize = font ? CTFontGetSize(font) : 12.0;
                     UIFont *uiFont = [UIFont systemFontOfSize:fontSize * 0.9];
@@ -674,6 +674,11 @@ dispatch_semaphore_signal(_lock);
                         attrs[(id)kCTFontAttributeName] = (__bridge id)(font);
                         uiFont = nil;
                         CFRelease(font);
+                    }
+                    CGColorRef color = (__bridge CGColorRef)(attrs[(id)kCTForegroundColorAttributeName]);
+                    if (color && CFGetTypeID(color) == CGColorGetTypeID() && CGColorGetAlpha(color) == 0) {
+                        // ignore clear color
+                        [attrs removeObjectForKey:(id)kCTForegroundColorAttributeName];
                     }
                     if (!attrs) attrs = [NSMutableDictionary new];
                 }
