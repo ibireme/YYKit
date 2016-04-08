@@ -49,6 +49,12 @@
     return one;
 }
 
+// stop self from becoming the KeyWindow
+- (void)becomeKeyWindow
+{
+    [[[UIApplication sharedExtensionApplication].delegate window] makeKeyWindow];
+}
+
 - (UIViewController *)rootViewController {
     for (UIWindow *window in [[UIApplication sharedExtensionApplication] windows]) {
         if (self == window) continue;
