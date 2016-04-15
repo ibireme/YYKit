@@ -104,7 +104,6 @@ for PLATFORM in ${PLATFORMS}; do
     --disable-shared --enable-static \
     --enable-libwebpmux \
     --enable-libwebpdemux \
-    --enable-libwebpdecoder \
     --enable-swap-16bit-csp \
     CFLAGS="${CFLAGS}"
   set +x
@@ -119,7 +118,6 @@ for PLATFORM in ${PLATFORMS}; do
   ar x libwebp.a
   ar x libwebpmux.a
   ar x libwebpdemux.a
-  ar x libwebpdecoder.a
   ar q webp.a *.o
 
   LIBLIST+=" ${ROOTDIR}/lib/webp.a"
