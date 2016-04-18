@@ -2505,7 +2505,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if (_state.trackingTouch) {
         [self _startLongPressTimer];
         if (_highlight) {
-            [self _showHighlightAnimated:NO];
+            _state.showingHighlight = YES;
+//            [self _showHighlightAnimated:NO];
         } else {
             if ([_selectionView isGrabberContainsPoint:point]) { // track grabber
                 self.panGestureRecognizer.enabled = NO; // disable scroll view
@@ -2547,12 +2548,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         
         if (_highlight) {
             
-            YYTextHighlight *highlight = [self _getHighlightAtPoint:_trackingPoint range:NULL];
-            if (highlight == _highlight) {
-                [self _showHighlightAnimated:YES];
-            } else {
-                [self _hideHighlightAnimated:YES];
-            }
+//            YYTextHighlight *highlight = [self _getHighlightAtPoint:_trackingPoint range:NULL];
+//            if (highlight == _highlight) {
+//                [self _showHighlightAnimated:YES];
+//            } else {
+//                [self _hideHighlightAnimated:YES];
+//            }
             
         } else {
             _trackingRange = _selectedTextRange;
