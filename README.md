@@ -184,4 +184,6 @@ YYKit 使用 MIT 许可证，详情见 LICENSE 文件。
 [iOS 保持界面流畅的技巧
 ](http://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/) 
 
-
+修改内容
+=============
+该版本主要是删减了yytextview以适应项目需求。
