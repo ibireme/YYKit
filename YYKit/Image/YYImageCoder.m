@@ -1969,8 +1969,11 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
         if (_type == YYImageTypeGIF) { // get gif loop count
             CFDictionaryRef properties = CGImageSourceCopyProperties(_source, NULL);
             if (properties) {
-                CFTypeRef loop = CFDictionaryGetValue(properties, kCGImagePropertyGIFLoopCount);
-                if (loop) CFNumberGetValue(loop, kCFNumberNSIntegerType, &_loopCount);
+                CFDictionaryRef gif = CFDictionaryGetValue(properties, kCGImagePropertyGIFDictionary);
+                if (gif) {
+                    CFTypeRef loop = CFDictionaryGetValue(gif, kCGImagePropertyGIFLoopCount);
+                    if (loop) CFNumberGetValue(loop, kCFNumberNSIntegerType, &_loopCount);
+                }
                 CFRelease(properties);
             }
         }
