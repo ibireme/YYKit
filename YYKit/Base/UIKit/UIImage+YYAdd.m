@@ -211,7 +211,7 @@ static NSTimeInterval _yy_CGImageSourceGetGIFFrameDelayAtIndex(CGImageSourceRef 
         pdf = CGPDFDocumentCreateWithProvider(provider);
         CGDataProviderRelease(provider);
     } else if ([dataOrPath isKindOfClass:[NSString class]]) {
-        pdf = CGPDFDocumentCreateWithURL((__bridge CFURLRef)[NSURL URLWithString:dataOrPath]);
+        pdf = CGPDFDocumentCreateWithURL((__bridge CFURLRef)[NSURL fileURLWithPath:dataOrPath]);
     }
     if (!pdf) return nil;
     
