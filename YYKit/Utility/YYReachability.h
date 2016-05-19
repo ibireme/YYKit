@@ -37,15 +37,23 @@ typedef NS_ENUM(NSUInteger, YYReachabilityWWANStatus) {
 @property (nonatomic, readonly) SCNetworkReachabilityFlags flags;                           ///< Current flags.
 @property (nonatomic, readonly) YYReachabilityStatus status;                                ///< Current status.
 @property (nonatomic, readonly) YYReachabilityWWANStatus wwanStatus NS_AVAILABLE_IOS(7_0);  ///< Current WWAN status.
-@property (nonatomic, readonly, getter=isReachable) BOOL reachable;
+@property (nonatomic, readonly, getter=isReachable) BOOL reachable;                         ///< Current reachable status.
 
 /// Notify block which will be called on main thread when network changed.
 @property (nullable, nonatomic, copy) void (^notifyBlock)(YYReachability *reachability);
 
+/// Create an object to check the reachability of the default route.
 + (instancetype)reachability;
-+ (instancetype)reachabilityForLocalWifi;
+
+/// Create an object to check the reachability of the local WI-FI.
++ (instancetype)reachabilityForLocalWifi DEPRECATED_MSG_ATTRIBUTE("unnecessary and potentially harmful");
+
+/// Create an object to check the reachability of a given host name.
 + (nullable instancetype)reachabilityWithHostname:(NSString *)hostname;
-+ (nullable instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress;
+
+/// Create an object to check the reachability of a given IP address
+/// @param hostAddress You may pass `struct sockaddr_in` for IPv4 address or `struct sockaddr_in6` for IPv6 address.
++ (nullable instancetype)reachabilityWithAddress:(const struct sockaddr *)hostAddress;
 
 @end
 
