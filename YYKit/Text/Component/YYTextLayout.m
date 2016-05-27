@@ -2401,7 +2401,9 @@ static void YYTextDrawBorderRects(CGContextRef context, CGSize size, YYTextBorde
         //-------------------------- single line ------------------------------//
         CGContextSaveGState(context);
         for (UIBezierPath *path in paths) {
-            CGContextAddRect(context, CGRectMake(0, 0, size.width, size.height));
+            CGRect bounds = CGRectUnion(path.bounds, (CGRect){CGPointZero, size});
+            bounds = CGRectInset(bounds, -2 * border.strokeWidth, -2 * border.strokeWidth);
+            CGContextAddRect(context, bounds);
             CGContextAddPath(context, path.CGPath);
             CGContextEOClip(context);
         }
@@ -2442,7 +2444,10 @@ static void YYTextDrawBorderRects(CGContextRef context, CGSize size, YYTextBorde
                 rect = CGRectInset(rect, inset, inset);
                 UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:border.cornerRadius + 2 * border.strokeWidth];
                 [path closePath];
-                CGContextAddRect(context, CGRectMake(0, 0, size.width, size.height));
+                
+                CGRect bounds = CGRectUnion(path.bounds, (CGRect){CGPointZero, size});
+                bounds = CGRectInset(bounds, -2 * border.strokeWidth, -2 * border.strokeWidth);
+                CGContextAddRect(context, bounds);
                 CGContextAddPath(context, path.CGPath);
                 CGContextEOClip(context);
             }
