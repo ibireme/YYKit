@@ -821,7 +821,7 @@ static BOOL YYCGImageDecodeToBitmapBufferWith32BitFormat(CGImageRef srcImage, vI
     } else {
         contextBitmapInfo |= alphaFirst ? kCGImageAlphaPremultipliedFirst : kCGImageAlphaPremultipliedLast;
     }
-    CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 32, YYCGColorSpaceGetDeviceRGB(), contextBitmapInfo);
+    CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 0, YYCGColorSpaceGetDeviceRGB(), contextBitmapInfo);
     if (!context) goto fail;
     
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), srcImage); // decode and convert
