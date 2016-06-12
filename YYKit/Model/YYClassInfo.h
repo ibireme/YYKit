@@ -80,42 +80,67 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding);
  Instance variable information.
  */
 @interface YYClassIvarInfo : NSObject
-@property (nonatomic, assign, readonly) Ivar ivar; ///< ivar
-@property (nonatomic, strong, readonly) NSString *name; ///< Ivar's name
-@property (nonatomic, assign, readonly) ptrdiff_t offset; ///< Ivar's offset
+@property (nonatomic, assign, readonly) Ivar ivar;              ///< ivar opaque struct
+@property (nonatomic, strong, readonly) NSString *name;         ///< Ivar's name
+@property (nonatomic, assign, readonly) ptrdiff_t offset;       ///< Ivar's offset
 @property (nonatomic, strong, readonly) NSString *typeEncoding; ///< Ivar's type encoding
-@property (nonatomic, assign, readonly) YYEncodingType type; ///< Ivar's type
+@property (nonatomic, assign, readonly) YYEncodingType type;    ///< Ivar's type
+
+/**
+ Creates and returns an ivar info object.
+ 
+ @param ivar ivar opaque struct
+ @return A new object, or nil if an error occurs.
+ */
 - (instancetype)initWithIvar:(Ivar)ivar;
 @end
+
 
 /**
  Method information.
  */
 @interface YYClassMethodInfo : NSObject
-@property (nonatomic, assign, readonly) Method method; ///< method
-@property (nonatomic, strong, readonly) NSString *name; ///< method name
-@property (nonatomic, assign, readonly) SEL sel; ///< method's selector
-@property (nonatomic, assign, readonly) IMP imp; ///< method's implementation
-@property (nonatomic, strong, readonly) NSString *typeEncoding; ///< method's parameter and return types
-@property (nonatomic, strong, readonly) NSString *returnTypeEncoding; ///< return value's type
+@property (nonatomic, assign, readonly) Method method;                  ///< method opaque struct
+@property (nonatomic, strong, readonly) NSString *name;                 ///< method name
+@property (nonatomic, assign, readonly) SEL sel;                        ///< method's selector
+@property (nonatomic, assign, readonly) IMP imp;                        ///< method's implementation
+@property (nonatomic, strong, readonly) NSString *typeEncoding;         ///< method's parameter and return types
+@property (nonatomic, strong, readonly) NSString *returnTypeEncoding;   ///< return value's type
 @property (nullable, nonatomic, strong, readonly) NSArray<NSString *> *argumentTypeEncodings; ///< array of arguments' type
+
+/**
+ Creates and returns a method info object.
+ 
+ @param method method opaque struct
+ @return A new object, or nil if an error occurs.
+ */
 - (instancetype)initWithMethod:(Method)method;
 @end
+
 
 /**
  Property information.
  */
 @interface YYClassPropertyInfo : NSObject
-@property (nonatomic, assign, readonly) objc_property_t property; ///< property
-@property (nonatomic, strong, readonly) NSString *name; ///< property's name
-@property (nonatomic, assign, readonly) YYEncodingType type; ///< property's type
-@property (nonatomic, strong, readonly) NSString *typeEncoding; ///< property's encoding value
-@property (nonatomic, strong, readonly) NSString *ivarName; ///< property's ivar name
-@property (nullable, nonatomic, assign, readonly) Class cls; ///< may be nil
-@property (nonatomic, assign, readonly) SEL getter; ///< getter (nonnull)
-@property (nonatomic, assign, readonly) SEL setter; ///< setter (nonnull)
+@property (nonatomic, assign, readonly) objc_property_t property; ///< property's opaque struct
+@property (nonatomic, strong, readonly) NSString *name;           ///< property's name
+@property (nonatomic, assign, readonly) YYEncodingType type;      ///< property's type
+@property (nonatomic, strong, readonly) NSString *typeEncoding;   ///< property's encoding value
+@property (nonatomic, strong, readonly) NSString *ivarName;       ///< property's ivar name
+@property (nullable, nonatomic, assign, readonly) Class cls;      ///< may be nil
+@property (nullable, nonatomic, strong, readonly) NSArray<NSString *> *protocols; ///< may nil
+@property (nonatomic, assign, readonly) SEL getter;               ///< getter (nonnull)
+@property (nonatomic, assign, readonly) SEL setter;               ///< setter (nonnull)
+
+/**
+ Creates and returns a property info object.
+ 
+ @param property property opaque struct
+ @return A new object, or nil if an error occurs.
+ */
 - (instancetype)initWithProperty:(objc_property_t)property;
 @end
+
 
 /**
  Class information for a class.
@@ -135,8 +160,8 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding);
  If the class is changed (for example: you add a method to this class with
  'class_addMethod()'), you should call this method to refresh the class info cache.
  
- After called this method, you may call 'classInfoWithClass' or 
- 'classInfoWithClassName' to get the updated class info.
+ After called this method, `needUpdate` will returns `YES`, and you should call 
+ 'classInfoWithClass' or 'classInfoWithClassName' to get the updated class info.
  */
 - (void)setNeedUpdate;
 

@@ -248,7 +248,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param json  A json dictionary of `NSDictionary`, `NSString` or `NSData`.
               Example: {"user1":{"name","Mary"}, "user2": {name:"Joe"}}
  
- @return A array, or nil if an error occurs.
+ @return A dictionary, or nil if an error occurs.
  */
 + (nullable NSDictionary *)modelDictionaryWithClass:(Class)cls json:(id)json;
 @end
@@ -363,13 +363,13 @@ NS_ASSUME_NONNULL_BEGIN
  @return Class to create from this dictionary, `nil` to use current class.
 
  */
-+ (nullable Class)modelCustomClassForDictionary:(NSDictionary*)dictionary;
++ (nullable Class)modelCustomClassForDictionary:(NSDictionary *)dictionary;
 
 /**
  All the properties in blacklist will be ignored in model transform process.
  Returns nil to ignore this feature.
  
- @return An array of property's name (Array<NSString>).
+ @return An array of property's name.
  */
 + (nullable NSArray<NSString *> *)modelPropertyBlacklist;
 
@@ -377,7 +377,7 @@ NS_ASSUME_NONNULL_BEGIN
  If a property is not in the whitelist, it will be ignored in model transform process.
  Returns nil to ignore this feature.
  
- @return An array of property's name (Array<NSString>).
+ @return An array of property's name.
  */
 + (nullable NSArray<NSString *> *)modelPropertyWhitelist;
 
