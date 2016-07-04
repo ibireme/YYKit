@@ -483,7 +483,7 @@
 - (void)dismissAnimated:(BOOL)animated completion:(void (^)(void))completion {
     [UIView setAnimationsEnabled:YES];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:_fromNavigationBarHidden withAnimation:animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone];
+    [[UIApplication sharedApplication] setStatusBarHidden:_fromNavigationBarHidden withAnimation: UIStatusBarAnimationNone];
     NSInteger currentPage = self.currentPage;
     YYPhotoGroupCell *cell = [self cellForPage:currentPage];
     YYPhotoGroupItem *item = _groupItems[currentPage];
@@ -801,7 +801,7 @@
             if (fabs(v.y) > 1000 || fabs(deltaY) > 120) {
                 [self cancelAllImageLoad];
                 _isPresented = NO;
-                [[UIApplication sharedApplication] setStatusBarHidden:_fromNavigationBarHidden withAnimation:UIStatusBarAnimationFade];
+                [[UIApplication sharedApplication] setStatusBarHidden:_fromNavigationBarHidden withAnimation:UIStatusBarAnimationNone];
                 
                 BOOL moveToTop = (v.y < - 50 || (v.y < 50 && deltaY < 0));
                 CGFloat vy = fabs(v.y);
