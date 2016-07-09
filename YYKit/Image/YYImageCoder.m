@@ -1405,7 +1405,7 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
         void *tmp = calloc(1, destLength);
         if (tmp) {
             vImage_Buffer src = {destBytes, canvasHeight, canvasWidth, bytesPerRow};
-            vImage_Buffer dest = {destBytes, canvasHeight, canvasWidth, bytesPerRow};
+            vImage_Buffer dest = {tmp, canvasHeight, canvasWidth, bytesPerRow};
             vImage_CGAffineTransform transform = {1, 0, 0, 1, iter.x_offset, -iter.y_offset};
             uint8_t backColor[4] = {0};
             vImageAffineWarpCG_ARGB8888(&src, &dest, NULL, &transform, backColor, kvImageBackgroundColorFill);
