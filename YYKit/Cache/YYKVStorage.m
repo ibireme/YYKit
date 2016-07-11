@@ -830,7 +830,7 @@ static NSString *const kTrashDirectoryName = @"trash";
             }
             if ([self _dbDeleteItemsWithTimeEarlierThan:time]) {
                 [self _dbCheckpoint];
-                return NO;
+                return YES;
             }
         } break;
     }
