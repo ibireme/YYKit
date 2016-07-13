@@ -2450,13 +2450,13 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
             } else if ([imageSrc isKindOfClass:[NSURL class]]) {
                 CGImageSourceRef source = CGImageSourceCreateWithURL((CFURLRef)imageSrc, NULL);
                 if (source) {
-                    CGImageDestinationAddImageFromSource(destination, source, i, (CFDictionaryRef)frameProperty);
+                    CGImageDestinationAddImageFromSource(destination, source, 0, (CFDictionaryRef)frameProperty);
                     CFRelease(source);
                 }
             } else if ([imageSrc isKindOfClass:[NSData class]]) {
                 CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)imageSrc, NULL);
                 if (source) {
-                    CGImageDestinationAddImageFromSource(destination, source, i, (CFDictionaryRef)frameProperty);
+                    CGImageDestinationAddImageFromSource(destination, source, 0, (CFDictionaryRef)frameProperty);
                     CFRelease(source);
                 }
             }
