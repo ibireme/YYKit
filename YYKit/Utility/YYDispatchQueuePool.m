@@ -93,8 +93,7 @@ static void YYDispatchContextRelease(YYDispatchContext *context) {
 }
 
 static dispatch_queue_t YYDispatchContextGetQueue(YYDispatchContext *context) {
-    int32_t counter = OSAtomicIncrement32(&context->counter);
-    if (counter < 0) counter = -counter;
+    uint32_t counter = (uint32_t)OSAtomicIncrement32(&context->counter);
     void *queue = context->queues[counter % context->queueCount];
     return (__bridge dispatch_queue_t)(queue);
 }
