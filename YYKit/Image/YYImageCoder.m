@@ -2623,7 +2623,7 @@ CGImageRef YYCGImageCreateWithWebPData(CFDataRef webpData,
                 chunk_fcTL.sequence_number = apngSequenceIndex;
                 chunk_fcTL.width = frame->header.width;
                 chunk_fcTL.height = frame->header.height;
-                yy_png_delay_to_fraction([(NSNumber *)_durations[0] doubleValue], &chunk_fcTL.delay_num, &chunk_fcTL.delay_den);
+                yy_png_delay_to_fraction([(NSNumber *)_durations[i] doubleValue], &chunk_fcTL.delay_num, &chunk_fcTL.delay_den);
                 chunk_fcTL.delay_num = chunk_fcTL.delay_num;
                 chunk_fcTL.delay_den = chunk_fcTL.delay_den;
                 chunk_fcTL.dispose_op = YY_PNG_DISPOSE_OP_BACKGROUND;
