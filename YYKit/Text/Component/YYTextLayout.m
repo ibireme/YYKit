@@ -422,6 +422,7 @@ dispatch_semaphore_signal(_lock);
     
     // set cgPath and cgPathBox
     if (container.path == nil && container.exclusionPaths.count == 0) {
+        if (container.size.width <= 0 || container.size.height <= 0) goto fail;
         CGRect rect = (CGRect) {CGPointZero, container.size };
         rect = UIEdgeInsetsInsetRect(rect, container.insets);
         rect = CGRectStandardize(rect);
