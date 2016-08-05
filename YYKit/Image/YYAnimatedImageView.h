@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol YYAnimatedImage <NSObject>
 @required
 /// Total animated frame count.
-/// It the frame count is less than 1, then the methods below will be ignored.
+/// If the frame count is less than 1, then the methods below will be ignored.
 - (NSUInteger)animatedImageFrameCount;
 
 /// Animation loop count, 0 means infinite looping.
