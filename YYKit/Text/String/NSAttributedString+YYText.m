@@ -779,7 +779,7 @@ return style. _attr_;
 }
 
 - (void)setStrikethroughColor:(UIColor *)strikethroughColor {
-    [self setStrokeColor:strikethroughColor range:NSMakeRange(0, self.length)];
+    [self setStrikethroughColor:strikethroughColor range:NSMakeRange(0, self.length)];
 }
 
 - (void)setUnderlineStyle:(NSUnderlineStyle)underlineStyle {
