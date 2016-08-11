@@ -85,7 +85,12 @@
             block(key, object);
         });
     } else {
-        [_diskCache objectForKey:key withBlock:block];
+        [_diskCache objectForKey:key withBlock:^(NSString *key, id<NSCoding> object) {
+            if (object && ![_memoryCache objectForKey:key]) {
+                [_memoryCache setObject:object forKey:key];
+            }
+            block(key, object);
+        }];
     }
 }
 
