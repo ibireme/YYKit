@@ -246,8 +246,12 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
         NSString *model = [self machineModel];
         if (!model) return;
         NSDictionary *dic = @{
-            @"Watch1,1" : @"Apple Watch",
-            @"Watch1,2" : @"Apple Watch",
+            @"Watch1,1" : @"Apple Watch 38mm",
+            @"Watch1,2" : @"Apple Watch 43mm",
+            @"Watch2,3" : @"Apple Watch Series 2 38mm",
+            @"Watch2,4" : @"Apple Watch Series 2 42mm",
+            @"Watch2,6" : @"Apple Watch Series 1 38mm",
+            @"Watch1,7" : @"Apple Watch Series 1 42mm",
             
             @"iPod1,1" : @"iPod touch 1",
             @"iPod2,1" : @"iPod touch 2",
@@ -255,7 +259,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             @"iPod4,1" : @"iPod touch 4",
             @"iPod5,1" : @"iPod touch 5",
             @"iPod7,1" : @"iPod touch 6",
-
+            
             @"iPhone1,1" : @"iPhone 1G",
             @"iPhone1,2" : @"iPhone 3G",
             @"iPhone2,1" : @"iPhone 3GS",
@@ -274,6 +278,10 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             @"iPhone8,1" : @"iPhone 6s",
             @"iPhone8,2" : @"iPhone 6s Plus",
             @"iPhone8,4" : @"iPhone SE",
+            @"iPhone9,1" : @"iPhone 7",
+            @"iPhone9,2" : @"iPhone 7 Plus",
+            @"iPhone9,3" : @"iPhone 7",
+            @"iPhone9,4" : @"iPhone 7 Plus",
             
             @"iPad1,1" : @"iPad 1",
             @"iPad2,1" : @"iPad 2 (WiFi)",

@@ -53,35 +53,16 @@ YYSYNTH_DUMMY_CLASS(UIScreen_YYAdd);
     
     if ([[UIScreen mainScreen] isEqual:self]) {
         NSString *model = [UIDevice currentDevice].machineModel;
+        
         if ([model hasPrefix:@"iPhone"]) {
-            if ([model hasPrefix:@"iPhone1"]) size = CGSizeMake(320, 480);
-            else if ([model hasPrefix:@"iPhone2"]) size = CGSizeMake(320, 480);
-            else if ([model hasPrefix:@"iPhone3"]) size = CGSizeMake(640, 960);
-            else if ([model hasPrefix:@"iPhone4"]) size = CGSizeMake(640, 960);
-            else if ([model hasPrefix:@"iPhone5"]) size = CGSizeMake(640, 1136);
-            else if ([model hasPrefix:@"iPhone6"]) size = CGSizeMake(640, 1136);
-            else if ([model hasPrefix:@"iPhone7,1"]) size = CGSizeMake(1080, 1920);
-            else if ([model hasPrefix:@"iPhone7,2"]) size = CGSizeMake(750, 1334);
-            else if ([model hasPrefix:@"iPhone8,1"]) size = CGSizeMake(1080, 1920);
-            else if ([model hasPrefix:@"iPhone8,2"]) size = CGSizeMake(750, 1334);
-            else if ([model hasPrefix:@"iPhone8,4"]) size = CGSizeMake(640, 1136);
-        } else if ([model hasPrefix:@"iPod"]) {
-            if ([model hasPrefix:@"iPod1"]) size = CGSizeMake(320, 480);
-            else if ([model hasPrefix:@"iPod2"]) size = CGSizeMake(320, 480);
-            else if ([model hasPrefix:@"iPod3"]) size = CGSizeMake(320, 480);
-            else if ([model hasPrefix:@"iPod4"]) size = CGSizeMake(640, 960);
-            else if ([model hasPrefix:@"iPod5"]) size = CGSizeMake(640, 1136);
-            else if ([model hasPrefix:@"iPod7"]) size = CGSizeMake(640, 1136);
-        } else if ([model hasPrefix:@"iPad"]) {
-            if ([model hasPrefix:@"iPad1"]) size = CGSizeMake(768, 1024);
-            else if ([model hasPrefix:@"iPad2"]) size = CGSizeMake(768, 1024);
-            else if ([model hasPrefix:@"iPad3"]) size = CGSizeMake(1536, 2048);
-            else if ([model hasPrefix:@"iPad4"]) size = CGSizeMake(1536, 2048);
-            else if ([model hasPrefix:@"iPad5"]) size = CGSizeMake(1536, 2048);
-            else if ([model hasPrefix:@"iPad6,3"]) size = CGSizeMake(1536, 2048);
-            else if ([model hasPrefix:@"iPad6,4"]) size = CGSizeMake(1536, 2048);
-            else if ([model hasPrefix:@"iPad6,7"]) size = CGSizeMake(2048, 2732);
-            else if ([model hasPrefix:@"iPad6,8"]) size = CGSizeMake(2048, 2732);
+            if ([model isEqualToString:@"iPhone7,1"]) return CGSizeMake(1080, 1920);
+            if ([model isEqualToString:@"iPhone8,2"]) return CGSizeMake(1080, 1920);
+            if ([model isEqualToString:@"iPhone9,2"]) return CGSizeMake(1080, 1920);
+            if ([model isEqualToString:@"iPhone9,4"]) return CGSizeMake(1080, 1920);
+        }
+        if ([model hasPrefix:@"iPad"]) {
+            if ([model hasPrefix:@"iPad6,7"]) size = CGSizeMake(2048, 2732);
+            if ([model hasPrefix:@"iPad6,8"]) size = CGSizeMake(2048, 2732);
         }
     }
     
@@ -103,58 +84,90 @@ YYSYNTH_DUMMY_CLASS(UIScreen_YYAdd);
 }
 
 - (CGFloat)pixelsPerInch {
-    CGFloat ppi = 0;
-    
-    if ([[UIScreen mainScreen] isEqual:self]) {
-        NSString *model = [UIDevice currentDevice].machineModel;
-        if ([model hasPrefix:@"iPhone"]) {
-            if ([model hasPrefix:@"iPhone1"]) ppi = 163;
-            else if ([model hasPrefix:@"iPhone2"]) ppi = 163;
-            else if ([model hasPrefix:@"iPhone3"]) ppi = 326;
-            else if ([model hasPrefix:@"iPhone4"]) ppi = 326;
-            else if ([model hasPrefix:@"iPhone5"]) ppi = 326;
-            else if ([model hasPrefix:@"iPhone6"]) ppi = 326;
-            else if ([model hasPrefix:@"iPhone7,1"]) ppi = 401;
-            else if ([model hasPrefix:@"iPhone7,2"]) ppi = 326;
-            else if ([model hasPrefix:@"iPhone8,1"]) ppi = 401;
-            else if ([model hasPrefix:@"iPhone8,2"]) ppi = 326;
-            else if ([model hasPrefix:@"iPhone8,4"]) ppi = 326;
-        } else if ([model hasPrefix:@"iPod"]) {
-            if ([model hasPrefix:@"iPod1"]) ppi = 163;
-            else if ([model hasPrefix:@"iPod2"]) ppi = 163;
-            else if ([model hasPrefix:@"iPod3"]) ppi = 163;
-            else if ([model hasPrefix:@"iPod4"]) ppi = 326;
-            else if ([model hasPrefix:@"iPod5"]) ppi = 326;
-            else if ([model hasPrefix:@"iPod7"]) ppi = 326;
-        } else if ([model hasPrefix:@"iPad"]) {
-            if ([model hasPrefix:@"iPad1"]) ppi = 132;
-            else if ([model hasPrefix:@"iPad2,1"]) ppi = 132;
-            else if ([model hasPrefix:@"iPad2,2"]) ppi = 132;
-            else if ([model hasPrefix:@"iPad2,3"]) ppi = 132;
-            else if ([model hasPrefix:@"iPad2,4"]) ppi = 132;
-            else if ([model hasPrefix:@"iPad2,5"]) ppi = 163;
-            else if ([model hasPrefix:@"iPad2,6"]) ppi = 163;
-            else if ([model hasPrefix:@"iPad2,7"]) ppi = 163;
-            else if ([model hasPrefix:@"iPad3"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad4,1"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad4,2"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad4,3"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad4,4"]) ppi = 324;
-            else if ([model hasPrefix:@"iPad4,5"]) ppi = 324;
-            else if ([model hasPrefix:@"iPad4,6"]) ppi = 324;
-            else if ([model hasPrefix:@"iPad4,7"]) ppi = 324;
-            else if ([model hasPrefix:@"iPad4,8"]) ppi = 324;
-            else if ([model hasPrefix:@"iPad4,9"]) ppi = 324;
-            else if ([model hasPrefix:@"iPad5,3"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad5,4"]) ppi = 324;
-            else if ([model hasPrefix:@"iPad6,3"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad6,4"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad6,7"]) ppi = 264;
-            else if ([model hasPrefix:@"iPad6,8"]) ppi = 264;
-        }
+    if (![[UIScreen mainScreen] isEqual:self]) {
+        return 326;
     }
     
-    if (ppi == 0) ppi = 326;
+    static CGFloat ppi = 0;
+    static dispatch_once_t one;
+    static NSString *name;
+    dispatch_once(&one, ^{
+        NSDictionary<NSString*, NSNumber *> *dic = @{
+            @"Watch1,1" : @326, //@"Apple Watch 38mm",
+            @"Watch1,2" : @326, //@"Apple Watch 43mm",
+            @"Watch2,3" : @326, //@"Apple Watch Series 2 38mm",
+            @"Watch2,4" : @326, //@"Apple Watch Series 2 42mm",
+            @"Watch2,6" : @326, //@"Apple Watch Series 1 38mm",
+            @"Watch1,7" : @326, //@"Apple Watch Series 1 42mm",
+
+            @"iPod1,1" : @163, //@"iPod touch 1",
+            @"iPod2,1" : @163, //@"iPod touch 2",
+            @"iPod3,1" : @163, //@"iPod touch 3",
+            @"iPod4,1" : @326, //@"iPod touch 4",
+            @"iPod5,1" : @326, //@"iPod touch 5",
+            @"iPod7,1" : @326, //@"iPod touch 6",
+
+            @"iPhone1,1" : @163, //@"iPhone 1G",
+            @"iPhone1,2" : @163, //@"iPhone 3G",
+            @"iPhone2,1" : @163, //@"iPhone 3GS",
+            @"iPhone3,1" : @326, //@"iPhone 4 (GSM)",
+            @"iPhone3,2" : @326, //@"iPhone 4",
+            @"iPhone3,3" : @326, //@"iPhone 4 (CDMA)",
+            @"iPhone4,1" : @326, //@"iPhone 4S",
+            @"iPhone5,1" : @326, //@"iPhone 5",
+            @"iPhone5,2" : @326, //@"iPhone 5",
+            @"iPhone5,3" : @326, //@"iPhone 5c",
+            @"iPhone5,4" : @326, //@"iPhone 5c",
+            @"iPhone6,1" : @326, //@"iPhone 5s",
+            @"iPhone6,2" : @326, //@"iPhone 5s",
+            @"iPhone7,1" : @401, //@"iPhone 6 Plus",
+            @"iPhone7,2" : @326, //@"iPhone 6",
+            @"iPhone8,1" : @326, //@"iPhone 6s",
+            @"iPhone8,2" : @401, //@"iPhone 6s Plus",
+            @"iPhone8,4" : @326, //@"iPhone SE",
+            @"iPhone9,1" : @326, //@"iPhone 7",
+            @"iPhone9,2" : @401, //@"iPhone 7 Plus",
+            @"iPhone9,3" : @326, //@"iPhone 7",
+            @"iPhone9,4" : @401, //@"iPhone 7 Plus",
+
+            @"iPad1,1" : @132, //@"iPad 1",
+            @"iPad2,1" : @132, //@"iPad 2 (WiFi)",
+            @"iPad2,2" : @132, //@"iPad 2 (GSM)",
+            @"iPad2,3" : @132, //@"iPad 2 (CDMA)",
+            @"iPad2,4" : @132, //@"iPad 2",
+            @"iPad2,5" : @264, //@"iPad mini 1",
+            @"iPad2,6" : @264, //@"iPad mini 1",
+            @"iPad2,7" : @264, //@"iPad mini 1",
+            @"iPad3,1" : @324, //@"iPad 3 (WiFi)",
+            @"iPad3,2" : @324, //@"iPad 3 (4G)",
+            @"iPad3,3" : @324, //@"iPad 3 (4G)",
+            @"iPad3,4" : @324, //@"iPad 4",
+            @"iPad3,5" : @324, //@"iPad 4",
+            @"iPad3,6" : @324, //@"iPad 4",
+            @"iPad4,1" : @324, //@"iPad Air",
+            @"iPad4,2" : @324, //@"iPad Air",
+            @"iPad4,3" : @324, //@"iPad Air",
+            @"iPad4,4" : @264, //@"iPad mini 2",
+            @"iPad4,5" : @264, //@"iPad mini 2",
+            @"iPad4,6" : @264, //@"iPad mini 2",
+            @"iPad4,7" : @264, //@"iPad mini 3",
+            @"iPad4,8" : @264, //@"iPad mini 3",
+            @"iPad4,9" : @264, //@"iPad mini 3",
+            @"iPad5,1" : @264, //@"iPad mini 4",
+            @"iPad5,2" : @264, //@"iPad mini 4",
+            @"iPad5,3" : @324, //@"iPad Air 2",
+            @"iPad5,4" : @324, //@"iPad Air 2",
+            @"iPad6,3" : @324, //@"iPad Pro (9.7 inch)",
+            @"iPad6,4" : @324, //@"iPad Pro (9.7 inch)",
+            @"iPad6,7" : @264, //@"iPad Pro (12.9 inch)",
+            @"iPad6,8" : @264, //@"iPad Pro (12.9 inch)",
+            };
+        NSString *model = [UIDevice currentDevice].machineModel;
+        if (model) {
+            ppi = dic[name].doubleValue;
+        }
+        if (ppi == 0) ppi = 326;
+    });
     return ppi;
 }
 
