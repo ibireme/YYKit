@@ -43,11 +43,11 @@
 }
 
 + (instancetype)cacheWithName:(NSString *)name {
-	return [[YYCache alloc] initWithName:name];
+	return [[self alloc] initWithName:name];
 }
 
 + (instancetype)cacheWithPath:(NSString *)path {
-    return [[YYCache alloc] initWithPath:path];
+    return [[self alloc] initWithPath:path];
 }
 
 - (BOOL)containsObjectForKey:(NSString *)key {
