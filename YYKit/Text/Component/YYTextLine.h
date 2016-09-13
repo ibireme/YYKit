@@ -53,9 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CGFloat lineWidth;  ///< line width
 @property (nonatomic, readonly) CGFloat trailingWhitespaceWidth;
 
-@property (nonatomic, readonly) NSArray<YYTextAttachment *> *attachments; ///< YYTextAttachment
-@property (nonatomic, readonly) NSArray<NSValue *> *attachmentRanges;     ///< NSRange(NSValue)
-@property (nonatomic, readonly) NSArray<NSValue *> *attachmentRects;      ///< CGRect(NSValue)
+@property (nullable, nonatomic, readonly) NSArray<YYTextAttachment *> *attachments; ///< YYTextAttachment
+@property (nullable, nonatomic, readonly) NSArray<NSValue *> *attachmentRanges;     ///< NSRange(NSValue)
+@property (nullable, nonatomic, readonly) NSArray<NSValue *> *attachmentRects;      ///< CGRect(NSValue)
 
 @end
 

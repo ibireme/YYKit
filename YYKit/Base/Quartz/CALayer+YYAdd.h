@@ -22,12 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Take snapshot without transform, image's size equals to bounds.
  */
-- (UIImage *)snapshotImage;
+- (nullable UIImage *)snapshotImage;
 
 /**
  Take snapshot without transform, PDF's page size equals to bounds.
  */
-- (NSData *)snapshotPDF;
+- (nullable NSData *)snapshotPDF;
 
 /**
  Shortcut to set the layer's shadow

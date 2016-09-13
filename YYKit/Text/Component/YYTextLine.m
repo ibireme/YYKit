@@ -30,7 +30,7 @@
     if (_CTLine) CFRelease(_CTLine);
 }
 
-- (void)setCTLine:(CTLineRef)CTLine {
+- (void)setCTLine:(_Nonnull CTLineRef)CTLine {
     if (_CTLine != CTLine) {
         if (CTLine) CFRetain(CTLine);
         if (_CTLine) CFRelease(_CTLine);

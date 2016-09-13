@@ -173,7 +173,7 @@ YYSYNTH_DUMMY_CLASS(NSString_YYAdd)
     if (!len) return self;
     
     unichar *buf = malloc(sizeof(unichar) * len);
-    if (!buf) return nil;
+    if (!buf) return self;
     [self getCharacters:buf range:NSMakeRange(0, len)];
     
     NSMutableString *result = [NSMutableString string];

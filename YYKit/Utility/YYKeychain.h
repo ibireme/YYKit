@@ -170,8 +170,8 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return An item or nil.
  */
-+ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item error:(NSError **)error;
-+ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item;
++ (nullable YYKeychainItem *)selectOneItem:(YYKeychainItem *)item error:(NSError **)error;
++ (nullable YYKeychainItem *)selectOneItem:(YYKeychainItem *)item;
 
 /**
  Find all items matches the query.
@@ -188,8 +188,8 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return An array of YYKeychainItem.
  */
-+ (NSArray<YYKeychainItem *> *)selectItems:(YYKeychainItem *)item error:(NSError **)error;
-+ (NSArray<YYKeychainItem *> *)selectItems:(YYKeychainItem *)item;
++ (nullable NSArray<YYKeychainItem *> *)selectItems:(YYKeychainItem *)item error:(NSError **)error;
++ (nullable NSArray<YYKeychainItem *> *)selectItems:(YYKeychainItem *)item;
 
 @end
 

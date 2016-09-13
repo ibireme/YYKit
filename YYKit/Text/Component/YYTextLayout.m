@@ -115,7 +115,6 @@ static CGColorRef YYTextGetCGColor(CGColorRef color) {
 }
 
 + (instancetype)containerWithPath:(UIBezierPath *)path {
-    if (!path) return nil;
     YYTextContainer *one = [self new];
     one.path = path;
     return one;

@@ -538,11 +538,14 @@ static NSString *const kTrashDirectoryName = @"trash";
             char *key = (char *)sqlite3_column_text(stmt, 0);
             char *filename = (char *)sqlite3_column_text(stmt, 1);
             int size = sqlite3_column_int(stmt, 2);
-            YYKVStorageItem *item = [YYKVStorageItem new];
-            item.key = key ? [NSString stringWithUTF8String:key] : nil;
-            item.filename = filename ? [NSString stringWithUTF8String:filename] : nil;
-            item.size = size;
-            [items addObject:item];
+            NSString *keyStr = key ? [NSString stringWithUTF8String:key] : nil;
+            if (keyStr) {
+                YYKVStorageItem *item = [YYKVStorageItem new];
+                item.key = key ? [NSString stringWithUTF8String:key] : nil;
+                item.filename = filename ? [NSString stringWithUTF8String:filename] : nil;
+                item.size = size;
+                [items addObject:item];
+            }
         } else if (result == SQLITE_DONE) {
             break;
         } else {

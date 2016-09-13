@@ -107,7 +107,7 @@ static dispatch_queue_t YYAsyncLayerGetReleaseQueue() {
 #pragma mark - Private
 
 - (void)_displayAsync:(BOOL)async {
-    __strong id<YYAsyncLayerDelegate> delegate = self.delegate;
+    __strong id<YYAsyncLayerDelegate> delegate = (id)self.delegate;
     YYAsyncLayerDisplayTask *task = [delegate newAsyncDisplayTask];
     if (!task.display) {
         if (task.willDisplay) task.willDisplay(self);

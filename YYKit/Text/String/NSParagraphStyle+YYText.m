@@ -25,10 +25,13 @@ YYSYNTH_DUMMY_CLASS(NSParagraphStyle_YYText)
     
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CGFloat lineSpacing;
     if (CTParagraphStyleGetValueForSpecifier(CTStyle, kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &lineSpacing)) {
         style.lineSpacing = lineSpacing;
     }
+#pragma clang diagnostic pop
     
     CGFloat paragraphSpacing;
     if (CTParagraphStyleGetValueForSpecifier(CTStyle, kCTParagraphStyleSpecifierParagraphSpacing, sizeof(CGFloat), &paragraphSpacing)) {
@@ -117,11 +120,14 @@ YYSYNTH_DUMMY_CLASS(NSParagraphStyle_YYText)
     CTParagraphStyleSetting set[kCTParagraphStyleSpecifierCount] = { 0 };
     int count = 0;
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CGFloat lineSpacing = self.lineSpacing;
     set[count].spec = kCTParagraphStyleSpecifierLineSpacing;
     set[count].valueSize = sizeof(CGFloat);
     set[count].value = &lineSpacing;
     count++;
+#pragma clang diagnostic pop
     
     CGFloat paragraphSpacing = self.paragraphSpacing;
     set[count].spec = kCTParagraphStyleSpecifierParagraphSpacing;

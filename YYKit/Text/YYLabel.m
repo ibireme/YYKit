@@ -1164,7 +1164,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
         }
         [layer removeAnimationForKey:@"contents"];
         
-        YYLabel *view = layer.delegate;
+        __strong YYLabel *view = (YYLabel *)layer.delegate;
         if (!view) return;
         if (view->_state.layoutNeedUpdate && layoutUpdated) {
             view->_innerLayout = layout;

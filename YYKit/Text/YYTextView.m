@@ -1048,7 +1048,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         }
     }
     
-    if (range.asRange.length == 0) {
+    if (!range || range.asRange.length == 0) {
         range = [_innerLayout textRangeByExtendingPosition:position inDirection:UITextLayoutDirectionRight offset:1];
         range = [self _correctedTextRange:range];
         if (range.asRange.length == 0) {
