@@ -247,7 +247,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
         if (!model) return;
         NSDictionary *dic = @{
             @"Watch1,1" : @"Apple Watch 38mm",
-            @"Watch1,2" : @"Apple Watch 43mm",
+            @"Watch1,2" : @"Apple Watch 42mm",
             @"Watch2,3" : @"Apple Watch Series 2 38mm",
             @"Watch2,4" : @"Apple Watch Series 2 42mm",
             @"Watch2,6" : @"Apple Watch Series 1 38mm",
