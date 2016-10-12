@@ -124,7 +124,6 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 + (YYTextLayout *)_shrinkLayoutWithLayout:(YYTextLayout *)layout {
     if (layout.text.length && layout.lines.count == 0) {
         YYTextContainer *container = layout.container.copy;
-        container.maximumNumberOfRows = 1;
         CGSize containerSize = container.size;
         if (!container.verticalForm) {
             containerSize.height = YYTextContainerMaxSize.height;
