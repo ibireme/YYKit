@@ -13,7 +13,7 @@
 #import <UIKit/UIKit.h>
 #import <libkern/OSAtomic.h>
 
-#define MAX_QUEUE_COUNT 32
+#define MAX_QUEUE_COUNT sysconf(_SC_NPROCESSORS_CONF) * 2
 
 static inline dispatch_queue_priority_t NSQualityOfServiceToDispatchPriority(NSQualityOfService qos) {
     switch (qos) {
