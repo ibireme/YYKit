@@ -138,13 +138,24 @@
     }
 }
 
+/** 点击状态栏的时候调用 */
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    if (_fpsLabel.alpha != 0) {
+        [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            _fpsLabel.alpha = 0;
+        } completion:NULL];
+    }
+}
+
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha == 0) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _fpsLabel.alpha = 1;
         } completion:^(BOOL finished) {
         }];
     }
+    return YES;
 }
 
 
@@ -274,7 +285,7 @@
     }
     
     YYPhotoGroupView *v = [[YYPhotoGroupView alloc] initWithGroupItems:items];
-    [v presentFromImageView:fromView toContainer:self.navigationController.view animated:YES completion:nil];
+    [v presentFromImageView:fromView toContainer:[UIApplication sharedApplication].keyWindow animated:YES completion:nil];
 }
 
 /// 点击了 Label 的链接
