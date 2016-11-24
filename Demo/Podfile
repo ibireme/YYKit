@@ -1,0 +1,4 @@
+platform :ios, '8.0'
+target "YYKitDemo" do
+pod 'Reveal-iOS-SDK'
+end

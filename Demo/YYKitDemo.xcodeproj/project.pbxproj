@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		786C846CDEBEBF64AD1F1A60 /* libPods-YYKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62DD4B815FA6C1F974D176E4 /* libPods-YYKitDemo.a */; };
 		ABDC320D1BEAFB870012A159 /* YYTextTagExample.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDC320C1BEAFB870012A159 /* YYTextTagExample.m */; };
 		D9067DF11B975D3900F346EB /* YYTextExampleHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DF01B975D3900F346EB /* YYTextExampleHelper.m */; };
 		D9067DF41B9813B500F346EB /* YYTextEditExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DF31B9813B500F346EB /* YYTextEditExample.m */; };
@@ -196,8 +197,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		084B45C50C74E5576E5D68E6 /* Pods-YYKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYKitDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		62DD4B815FA6C1F974D176E4 /* libPods-YYKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YYKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABDC320B1BEAFB870012A159 /* YYTextTagExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextTagExample.h; sourceTree = "<group>"; };
 		ABDC320C1BEAFB870012A159 /* YYTextTagExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextTagExample.m; sourceTree = "<group>"; };
+		C41CDB72B19D486F95C1C51D /* Pods-YYKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYKitDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo.release.xcconfig"; sourceTree = "<group>"; };
 		D9067DEF1B975D3900F346EB /* YYTextExampleHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextExampleHelper.h; sourceTree = "<group>"; };
 		D9067DF01B975D3900F346EB /* YYTextExampleHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextExampleHelper.m; sourceTree = "<group>"; };
 		D9067DF21B9813B500F346EB /* YYTextEditExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextEditExample.h; sourceTree = "<group>"; };
@@ -536,12 +540,22 @@
 				D9C786401AB7C69E001317AD /* Accelerate.framework in Frameworks */,
 				D9B263B91BEF66010038C00A /* MobileCoreServices.framework in Frameworks */,
 				D9C786441AB7C6D8001317AD /* SystemConfiguration.framework in Frameworks */,
+				786C846CDEBEBF64AD1F1A60 /* libPods-YYKitDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C13174223CDD995D601A365 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				084B45C50C74E5576E5D68E6 /* Pods-YYKitDemo.debug.xcconfig */,
+				C41CDB72B19D486F95C1C51D /* Pods-YYKitDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		D9067E041B98A39200F346EB /* Feed List */ = {
 			isa = PBXGroup;
 			children = (
@@ -779,6 +793,7 @@
 				D97484D219CAAD2900F46DE1 /* YYKitDemo */,
 				D974852319CAB3AE00F46DE1 /* Frameworks */,
 				D97484D119CAAD2900F46DE1 /* Products */,
+				0C13174223CDD995D601A365 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -839,6 +854,7 @@
 				D974851919CAB39100F46DE1 /* QuartzCore.framework */,
 				D974851719CAB38D00F46DE1 /* Foundation.framework */,
 				D974851519CAB38900F46DE1 /* UIKit.framework */,
+				62DD4B815FA6C1F974D176E4 /* libPods-YYKitDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1129,9 +1145,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D97484F319CAAD2900F46DE1 /* Build configuration list for PBXNativeTarget "YYKitDemo" */;
 			buildPhases = (
+				8D639347738CEA4EB55F0509 /* Check Pods Manifest.lock */,
 				D97484CC19CAAD2900F46DE1 /* Sources */,
 				D97484CD19CAAD2900F46DE1 /* Frameworks */,
 				D97484CE19CAAD2900F46DE1 /* Resources */,
+				4E1AD753469C03D9ABD5980C /* Embed Pods Frameworks */,
+				303BC4CEEDCD03FD76927B4E /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1226,6 +1245,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		303BC4CEEDCD03FD76927B4E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4E1AD753469C03D9ABD5980C /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8D639347738CEA4EB55F0509 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D97484CC19CAAD2900F46DE1 /* Sources */ = {
@@ -1457,6 +1524,7 @@
 		};
 		D97484F419CAAD2900F46DE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 084B45C50C74E5576E5D68E6 /* Pods-YYKitDemo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1491,6 +1559,7 @@
 		};
 		D97484F519CAAD2900F46DE1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C41CDB72B19D486F95C1C51D /* Pods-YYKitDemo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";
