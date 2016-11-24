@@ -101,8 +101,8 @@ return @(ret); \
         case 'S': return_with_number(unsigned short);
         case 'i': return_with_number(int);
         case 'I': return_with_number(unsigned int);
-        case 'l': return_with_number(int);
-        case 'L': return_with_number(unsigned int);
+        case 'l': return_with_number(long);
+        case 'L': return_with_number(unsigned long);
         case 'q': return_with_number(long long);
         case 'Q': return_with_number(unsigned long long);
         case 'f': return_with_number(float);
