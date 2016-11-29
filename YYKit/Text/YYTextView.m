@@ -2912,6 +2912,11 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             img = [UIImage imageWithData:p.imageData scale:kScreenScale];
         }
         if (img && img.size.width > 1 && img.size.height > 1) {
+            if ([self.delegate respondsToSelector:@selector(textView:customHandlePastedImage:)]) {
+                if ([self.delegate textView:self customHandlePastedImage:img]) {
+                    return;
+                }
+            }
             id content = img;
             if ([img conformsToProtocol:@protocol(YYAnimatedImage)]) {
                 id<YYAnimatedImage> ani = (id)img;
