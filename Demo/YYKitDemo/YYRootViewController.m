@@ -28,7 +28,7 @@
     [self addCell:@"Feed List Demo" class:@"YYFeedListExample"];
     [self.tableView reloadData];
     
-    //[self log];
+    [self log];
 }
 
 - (void)log {
