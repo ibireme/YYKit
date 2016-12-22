@@ -340,8 +340,8 @@ else if (size <= 4 * _size_ ) { \
 
 + (BOOL)swizzleClassMethod:(SEL)originalSel with:(SEL)newSel {
     Class class = object_getClass(self);
-    Method originalMethod = class_getInstanceMethod(class, originalSel);
-    Method newMethod = class_getInstanceMethod(class, newSel);
+    Method originalMethod = class_getClassMethod(class, originalSel);
+    Method newMethod = class_getClassMethod(class, newSel);
     if (!originalMethod || !newMethod) return NO;
     method_exchangeImplementations(originalMethod, newMethod);
     return YES;
