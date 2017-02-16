@@ -55,14 +55,16 @@ YYSYNTH_DUMMY_CLASS(UIScreen_YYAdd);
         NSString *model = [UIDevice currentDevice].machineModel;
         
         if ([model hasPrefix:@"iPhone"]) {
-            if ([model isEqualToString:@"iPhone7,1"]) return CGSizeMake(1080, 1920);
-            if ([model isEqualToString:@"iPhone8,2"]) return CGSizeMake(1080, 1920);
-            if ([model isEqualToString:@"iPhone9,2"]) return CGSizeMake(1080, 1920);
-            if ([model isEqualToString:@"iPhone9,4"]) return CGSizeMake(1080, 1920);
+            if ([model isEqualToString:@"iPhone7,1"]
+                || [model isEqualToString:@"iPhone8,2"]
+                || [model isEqualToString:@"iPhone9,2"]
+                || [model isEqualToString:@"iPhone9,4"])
+                return CGSizeMake(1080, 1920);
         }
         if ([model hasPrefix:@"iPad"]) {
-            if ([model hasPrefix:@"iPad6,7"]) size = CGSizeMake(2048, 2732);
-            if ([model hasPrefix:@"iPad6,8"]) size = CGSizeMake(2048, 2732);
+            if ([model hasPrefix:@"iPad6,7"]
+                || [model hasPrefix:@"iPad6,8"])
+                size = CGSizeMake(2048, 2732);
         }
     }
     
