@@ -17,6 +17,8 @@
 #import "YYTextLayout.h"
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A simple view to diaplay `YYTextLayout`.
 
@@ -29,23 +31,25 @@
 @interface YYTextContainerView : UIView
 
 /// First responder's aciton will forward to this view.
-@property (nonatomic, weak) UIView *hostView;
+@property (nullable, nonatomic, weak) UIView *hostView;
 
 /// Debug option for layout debug. Set this property will let the view redraw it's contents.
-@property (nonatomic, copy) YYTextDebugOption *debugOption;
+@property (nullable, nonatomic, copy) YYTextDebugOption *debugOption;
 
 /// Text vertical alignment.
-@property (nonatomic, assign) YYTextVerticalAlignment textVerticalAlignment;
+@property (nonatomic) YYTextVerticalAlignment textVerticalAlignment;
 
 /// Text layout. Set this property will let the view redraw it's contents.
-@property (nonatomic, strong) YYTextLayout *layout;
+@property (nullable, nonatomic, strong) YYTextLayout *layout;
 
 /// The contents fade animation duration when the layout's contents changed. Default is 0 (no animation).
-@property (nonatomic, assign) NSTimeInterval contentsFadeDuration;
+@property (nonatomic) NSTimeInterval contentsFadeDuration;
 
 /// Convenience method to set `layout` and `contentsFadeDuration`.
 /// @param layout  Same as `layout` property.
 /// @param fadeDuration  Same as `contentsFadeDuration` property.
-- (void)setLayout:(YYTextLayout *)layout withFadeDuration:(NSTimeInterval)fadeDuration;
+- (void)setLayout:(nullable YYTextLayout *)layout withFadeDuration:(NSTimeInterval)fadeDuration;
 
 @end
+
+NS_ASSUME_NONNULL_END

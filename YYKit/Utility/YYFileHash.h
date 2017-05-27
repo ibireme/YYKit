@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// File hash algorithm type
 typedef NS_OPTIONS (NSUInteger, YYFileHashType) {
     YYFileHashTypeMD2     = 1 << 0, ///< MD2 hash
@@ -37,7 +39,6 @@ typedef NS_OPTIONS (NSUInteger, YYFileHashType) {
  */
 @interface YYFileHash : NSObject
 
-
 /**
  Start calculate file hash and return the result.
  
@@ -50,8 +51,7 @@ typedef NS_OPTIONS (NSUInteger, YYFileHashType) {
  
  @return File hash result, or nil when an error occurs.
  */
-+ (YYFileHash *)hashForFile:(NSString *)filePath types:(YYFileHashType)types;
-
++ (nullable YYFileHash *)hashForFile:(NSString *)filePath types:(YYFileHashType)types;
 
 /**
  Start calculate file hash and return the result.
@@ -71,34 +71,35 @@ typedef NS_OPTIONS (NSUInteger, YYFileHashType) {
  
  @return File hash result, or nil when an error occurs.
  */
-+ (YYFileHash *)hashForFile:(NSString *)filePath
-                      types:(YYFileHashType)types
-                 usingBlock:(void(^)(UInt64 totalSize, UInt64 processedSize, BOOL *stop))block;
++ (nullable YYFileHash *)hashForFile:(NSString *)filePath
+                               types:(YYFileHashType)types
+                          usingBlock:(nullable void (^)(UInt64 totalSize, UInt64 processedSize, BOOL *stop))block;
 
 
+@property (nonatomic, readonly) YYFileHashType types; ///< hash type
 
-@property (nonatomic, assign, readonly) YYFileHashType types; ///< hash type
+@property (nullable, nonatomic, strong, readonly) NSString *md2String; ///< md2 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *md4String; ///< md4 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *md5String; ///< md5 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *sha1String; ///< sha1 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *sha224String; ///< sha224 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *sha256String; ///< sha256 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *sha384String; ///< sha384 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *sha512String; ///< sha512 hash string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *crc32String; ///< crc32 checksum string in lowercase
+@property (nullable, nonatomic, strong, readonly) NSString *adler32String; ///< adler32 checksum string in lowercase
 
-@property (nonatomic, strong, readonly) NSString *md2String; ///< md2 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *md4String; ///< md4 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *md5String; ///< md5 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *sha1String; ///< sha1 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *sha224String; ///< sha224 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *sha256String; ///< sha256 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *sha384String; ///< sha384 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *sha512String; ///< sha512 hash string in lowercase
-@property (nonatomic, strong, readonly) NSString *crc32String; ///< crc32 checksum string in lowercase
-@property (nonatomic, strong, readonly) NSString *adler32String; ///< adler32 checksum string in lowercase
-
-@property (nonatomic, strong, readonly) NSData *md2Data; ///< md2 hash
-@property (nonatomic, strong, readonly) NSData *md4Data; ///< md4 hash
-@property (nonatomic, strong, readonly) NSData *md5Data; ///< md5 hash
-@property (nonatomic, strong, readonly) NSData *sha1Data; ///< sha1 hash
-@property (nonatomic, strong, readonly) NSData *sha224Data; ///< sha224 hash
-@property (nonatomic, strong, readonly) NSData *sha256Data; ///< sha256 hash
-@property (nonatomic, strong, readonly) NSData *sha384Data; ///< sha384 hash
-@property (nonatomic, strong, readonly) NSData *sha512Data; ///< sha512 hash
-@property (nonatomic, assign, readonly) uint32_t crc32; ///< crc32 checksum
-@property (nonatomic, assign, readonly) uint32_t adler32; ///< adler32 checksum
+@property (nullable, nonatomic, strong, readonly) NSData *md2Data; ///< md2 hash
+@property (nullable, nonatomic, strong, readonly) NSData *md4Data; ///< md4 hash
+@property (nullable, nonatomic, strong, readonly) NSData *md5Data; ///< md5 hash
+@property (nullable, nonatomic, strong, readonly) NSData *sha1Data; ///< sha1 hash
+@property (nullable, nonatomic, strong, readonly) NSData *sha224Data; ///< sha224 hash
+@property (nullable, nonatomic, strong, readonly) NSData *sha256Data; ///< sha256 hash
+@property (nullable, nonatomic, strong, readonly) NSData *sha384Data; ///< sha384 hash
+@property (nullable, nonatomic, strong, readonly) NSData *sha512Data; ///< sha512 hash
+@property (nonatomic, readonly) uint32_t crc32; ///< crc32 checksum
+@property (nonatomic, readonly) uint32_t adler32; ///< adler32 checksum
 
 @end
+
+NS_ASSUME_NONNULL_END

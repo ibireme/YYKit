@@ -21,7 +21,7 @@
 + (NSBundle *)emoticonBundle;
 
 /// 微博表情 Array<WBEmotionGroup> (实际应该做成动态更新的)
-+ (NSArray *)emoticonGroups;
++ (NSArray<WBEmoticonGroup *> *)emoticonGroups;
 
 /// 微博图片 cache
 + (YYMemoryCache *)imageCache;

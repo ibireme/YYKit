@@ -74,7 +74,7 @@
     return NSNotFound;
 }
 
-- (void)setWithMedias:(NSArray *)medias {
+- (void)setWithMedias:(NSArray<T1Media *> *)medias {
     for (int i = 0; i < 4; i++) {
         UIImageView *view = _imageViews[i];
         if (i >= medias.count) {
@@ -366,7 +366,7 @@
         _retweetButton.width = _retweetLabel.right - _retweetButton.left;
     } else {
         _retweetLabel.hidden = YES;
-        _retweetButton.width = _retweetButton.height;;
+        _retweetButton.width = _retweetButton.height;
     }
     
     if (layout.favoriteCountTextLayout) {
@@ -413,7 +413,7 @@
         _retweetButton.width = _retweetLabel.right - _retweetButton.left;
     } else {
         _retweetLabel.hidden = YES;
-        _retweetButton.width = _retweetButton.height;;
+        _retweetButton.width = _retweetButton.height;
     }
 }
 

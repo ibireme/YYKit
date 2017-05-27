@@ -19,6 +19,8 @@
 #import "YYTextInput.h"
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A single dot view. The frame should be foursquare.
  Change the background color for display.
@@ -39,8 +41,8 @@
 @interface YYSelectionGrabber : UIView
 
 @property (nonatomic, readonly) YYSelectionGrabberDot *dot; ///< the dot view
-@property (nonatomic, assign) YYTextDirection dotDirection; ///< don't support composite direction
-@property (nonatomic, strong) UIColor *color; ///< tint color, default is nil
+@property (nonatomic) YYTextDirection dotDirection;         ///< don't support composite direction
+@property (nullable, nonatomic, strong) UIColor *color;     ///< tint color, default is nil
 
 @end
 
@@ -52,14 +54,14 @@
  */
 @interface YYTextSelectionView : UIView
 
-@property (nonatomic, weak) UIView *hostView; ///< the holder view
-@property (nonatomic, strong) UIColor *color; ///< the tint color
-@property (nonatomic, assign, getter = isCaretBlinks) BOOL caretBlinks; ///< whether the caret is blinks
-@property (nonatomic, assign, getter = isCaretVisible) BOOL caretVisible; ///< whether the caret is visible
-@property (nonatomic, assign, getter = isVerticalForm) BOOL verticalForm; ///< whether the text view is vertical form
+@property (nullable, nonatomic, weak) UIView *hostView; ///< the holder view
+@property (nullable, nonatomic, strong) UIColor *color; ///< the tint color
+@property (nonatomic, getter = isCaretBlinks) BOOL caretBlinks; ///< whether the caret is blinks
+@property (nonatomic, getter = isCaretVisible) BOOL caretVisible; ///< whether the caret is visible
+@property (nonatomic, getter = isVerticalForm) BOOL verticalForm; ///< weather the text view is vertical form
 
-@property (nonatomic, assign) CGRect caretRect; ///< caret rect (width==0 or height==0)
-@property (nonatomic, copy) NSArray *selectionRects; ///<  array of YYTextSelectionRect, default is nil
+@property (nonatomic) CGRect caretRect; ///< caret rect (width==0 or height==0)
+@property (nullable, nonatomic, copy) NSArray<YYTextSelectionRect *> *selectionRects; ///< default is nil
 
 @property (nonatomic, readonly) UIView *caretView;
 @property (nonatomic, readonly) YYSelectionGrabber *startGrabber;
@@ -72,3 +74,5 @@
 - (BOOL)isSelectionRectsContainsPoint:(CGPoint)point;
 
 @end
+
+NS_ASSUME_NONNULL_END

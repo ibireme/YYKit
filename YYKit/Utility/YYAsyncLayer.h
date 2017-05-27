@@ -14,6 +14,7 @@
 
 @class YYAsyncLayerDisplayTask;
 
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  The YYAsyncLayer class is a subclass of CALayer used for render contents asynchronously.
@@ -49,7 +50,7 @@
  
  @param layer  The layer.
  */
-@property (nonatomic, copy) void (^willDisplay)(CALayer *layer);
+@property (nullable, nonatomic, copy) void (^willDisplay)(CALayer *layer);
 
 /**
  This block is called to draw the layer's contents.
@@ -62,7 +63,7 @@
  @param isCancelled  If this block returns `YES`, the method should cancel the
  drawing process and return as quickly as possible.
  */
-@property (nonatomic, copy) void (^display)(CGContextRef context, CGSize size, BOOL(^isCancelled)(void));
+@property (nullable, nonatomic, copy) void (^display)(CGContextRef context, CGSize size, BOOL(^isCancelled)(void));
 
 /**
  This block will be called after the asynchronous drawing finished.
@@ -71,6 +72,8 @@
  @param layer  The layer.
  @param finished  If the draw process is cancelled, it's `NO`, otherwise it's `YES`;
  */
-@property (nonatomic, copy) void (^didDisplay)(CALayer *layer, BOOL finished);
+@property (nullable, nonatomic, copy) void (^didDisplay)(CALayer *layer, BOOL finished);
 
 @end
+
+NS_ASSUME_NONNULL_END

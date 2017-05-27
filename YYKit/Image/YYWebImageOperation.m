@@ -15,11 +15,12 @@
 #import "YYWeakProxy.h"
 #import "UIImage+YYAdd.h"
 #import <ImageIO/ImageIO.h>
-#import <libkern/OSAtomic.h>
 #import "YYKitMacro.h"
 
 #if __has_include("YYDispatchQueuePool.h")
 #import "YYDispatchQueuePool.h"
+#else
+#import <libkern/OSAtomic.h>
 #endif
 
 #define MIN_PROGRESSIVE_TIME_INTERVAL 0.2
@@ -52,32 +53,33 @@ static NSData *JPEGSOSMarker() {
     return marker;
 }
 
+
 static NSMutableSet *URLBlacklist;
-static OSSpinLock URLBlacklistLock;
+static dispatch_semaphore_t URLBlacklistLock;
 
 static void URLBlacklistInit() {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         URLBlacklist = [NSMutableSet new];
-        URLBlacklistLock = OS_SPINLOCK_INIT;
+        URLBlacklistLock = dispatch_semaphore_create(1);
     });
 }
 
 static BOOL URLBlackListContains(NSURL *url) {
     if (!url || url == (id)[NSNull null]) return NO;
     URLBlacklistInit();
-    OSSpinLockLock(&URLBlacklistLock);
+    dispatch_semaphore_wait(URLBlacklistLock, DISPATCH_TIME_FOREVER);
     BOOL contains = [URLBlacklist containsObject:url];
-    OSSpinLockUnlock(&URLBlacklistLock);
+    dispatch_semaphore_signal(URLBlacklistLock);
     return contains;
 }
 
 static void URLInBlackListAdd(NSURL *url) {
     if (!url || url == (id)[NSNull null]) return;
     URLBlacklistInit();
-    OSSpinLockLock(&URLBlacklistLock);
+    dispatch_semaphore_wait(URLBlacklistLock, DISPATCH_TIME_FOREVER);
     [URLBlacklist addObject:url];
-    OSSpinLockUnlock(&URLBlacklistLock);
+    dispatch_semaphore_signal(URLBlacklistLock);
 }
 
 
@@ -168,7 +170,7 @@ static void URLInBlackListAdd(NSURL *url) {
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:@"YYWebImageOperation init error" reason:@"YYWebImageOperation must be initialized with a request. Use the designated initializer to init." userInfo:nil];
-    return [self initWithRequest:nil options:0 cache:nil cacheKey:nil progress:nil transform:nil completion:nil];
+    return [self initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@""]] options:0 cache:nil cacheKey:nil progress:nil transform:nil completion:nil];
 }
 
 - (instancetype)initWithRequest:(NSURLRequest *)request
@@ -193,6 +195,7 @@ static void URLInBlackListAdd(NSURL *url) {
     _finished = NO;
     _cancelled = NO;
     _taskID = UIBackgroundTaskInvalid;
+    _lock = [NSRecursiveLock new];
     return self;
 }
 
@@ -249,7 +252,7 @@ static void URLInBlackListAdd(NSURL *url) {
             if (image) {
                 [_lock lock];
                 if (![self isCancelled]) {
-                    if (_completion) _completion(image, _request.URL, YYWebImageFromMemoryCache, YYWebImageStageCancelled, nil);
+                    if (_completion) _completion(image, _request.URL, YYWebImageFromMemoryCache, YYWebImageStageFinished, nil);
                 }
                 [self _finish];
                 [_lock unlock];
@@ -433,7 +436,7 @@ static void URLInBlackListAdd(NSURL *url) {
             _data = [NSMutableData dataWithCapacity:_expectedSize > 0 ? _expectedSize : 0];
             if (_progress) {
                 [_lock lock];
-                if ([self isCancelled]) _progress(0, _expectedSize);
+                if (![self isCancelled]) _progress(0, _expectedSize);
                 [_lock unlock];
             }
         }

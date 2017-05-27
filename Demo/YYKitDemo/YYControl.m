@@ -50,7 +50,7 @@
 }
 
 - (void)timerFire {
-    [self touchesCancelled:nil withEvent:nil];
+    [self touchesCancelled:[NSSet set] withEvent:nil];
     _longPressDetected = YES;
     if (_longPressBlock) _longPressBlock(self, _point);
     [self endTimer];

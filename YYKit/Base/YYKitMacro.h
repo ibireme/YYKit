@@ -232,18 +232,23 @@ static inline void YYBenchmark(void (^block)(void), void (^complete)(double ms))
     complete(ms);
 }
 
-/**
- Get compile timestamp.
- @return A new date object set to the compile date and time.
- */
-static inline NSDate *YYCompileTime() {
-    NSString *timeStr = [NSString stringWithFormat:@"%s %s",__DATE__, __TIME__];
+static inline NSDate *_YYCompileTime(const char *data, const char *time) {
+    NSString *timeStr = [NSString stringWithFormat:@"%s %s",data,time];
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MMM dd yyyy HH:mm:ss"];
     [formatter setLocale:locale];
     return [formatter dateFromString:timeStr];
 }
+
+/**
+ Get compile timestamp.
+ @return A new date object set to the compile date and time.
+ */
+#ifndef YYCompileTime
+// use macro to avoid compile warning when use pch file
+#define YYCompileTime() _YYCompileTime(__DATE__, __TIME__)
+#endif
 
 /**
  Returns a dispatch_time delay from now.

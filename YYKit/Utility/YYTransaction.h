@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  YYTransaction let you perform a selector once before current runloop sleep.
  */
@@ -36,3 +38,5 @@
 - (void)commit;
 
 @end
+
+NS_ASSUME_NONNULL_END

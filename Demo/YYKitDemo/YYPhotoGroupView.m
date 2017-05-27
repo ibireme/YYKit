@@ -749,7 +749,7 @@
     if (!tile.imageView.image) return;
     
     // try to save original image data if the image contains multi-frame (such as GIF/APNG)
-    id imageItem = [tile.imageView.image dataRepresentation];
+    id imageItem = [tile.imageView.image imageDataRepresentation];
     YYImageType type = YYImageDetectType((__bridge CFDataRef)(imageItem));
     if (type != YYImageTypePNG &&
         type != YYImageTypeJPEG &&
@@ -759,7 +759,10 @@
     
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:@[imageItem] applicationActivities:nil];
-    
+    if ([activityViewController respondsToSelector:@selector(popoverPresentationController)]) {
+        activityViewController.popoverPresentationController.sourceView = self;
+    }
+
     UIViewController *toVC = self.toContainerView.viewController;
     if (!toVC) toVC = self.viewController;
     [toVC presentViewController:activityViewController animated:YES completion:nil];

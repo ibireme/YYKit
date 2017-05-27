@@ -1,4 +1,4 @@
-YYKit <a href="#中文介绍">中文介绍</a>
+YYKit
 ==============
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ibireme/YYKit/master/LICENSE)&nbsp;
@@ -37,7 +37,7 @@ Installation
 
 ### CocoaPods
 
-1. Add `pod "YYKit"` to your Podfile.
+1. Add `pod 'YYKit'` to your Podfile.
 2. Run `pod install` or `pod update`.
 3. Import \<YYKit/YYKit.h\>.
 
@@ -80,13 +80,12 @@ You can also install documentation locally using [appledoc](https://github.com/t
 
 Requirements
 ==============
-This library requires a deployment target of iOS 6.0 or greater.
+This library requires `iOS 6.0+` and `Xcode 7.0+`.
 
-
-About
+Notice
 ==============
-I want to use the APIs as if it was provided by system, so I don't add prefix in
-these categories. You should try the sub-projects above first.
+I want to use the APIs as if it was provided by system, and I don't add prefix in
+these categories. I do not recommend using the `YYKit` directly, you should try the separated components first.
 
 License
 ==============
@@ -126,7 +125,7 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 
 ### CocoaPods
 
-1. 在 Podfile 中添加  `pod "YYKit"`。
+1. 在 Podfile 中添加  `pod 'YYKit'`。
 2. 执行 `pod install` 或 `pod update`。
 3. 导入 \<YYKit/YYKit.h\>。
 
@@ -167,12 +166,12 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 
 系统要求
 ==============
-该项目最低支持 iOS 6.0。
+该项目最低支持 `iOS 6.0` 和 `Xcode 7.0`。
 
 
-关于
+注意
 ==============
-我希望调用 API 时，有着和调用系统自带 API 一样的体验，所以我并没有为 Category 方法添加前缀。我已经用工具扫描过这个项目中的 API，确保没有对系统 API 产生影响。我知道没有前缀的 Category 可能会带来麻烦，所以如果你只需要其中部分功能，请先查看上面那些拆分出来的子项目。
+我希望调用 API 时，有着和调用系统自带 API 一样的体验，所以我并没有为 Category 方法添加前缀。我已经用工具扫描过这个项目中的 API，确保没有对系统 API 产生影响，但即使这样没有前缀的 Category 也可能会带来其他麻烦。因此我不太推荐直接使用 `YYKit` 这个库，你应该先尝试一下上面那些拆分出来的独立组件。 
 
 
 许可证
@@ -184,3 +183,5 @@ YYKit 使用 MIT 许可证，详情见 LICENSE 文件。
 ==============
 [iOS 保持界面流畅的技巧
 ](http://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/) 
+
+

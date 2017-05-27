@@ -197,6 +197,8 @@ void YY_HSL2HSB(CGFloat h, CGFloat s, CGFloat l,
     }
 }
 
+#undef CLAMP_COLOR_VALUE
+
 @implementation UIColor (YYAdd)
 
 + (UIColor *)colorWithHue:(CGFloat)hue
@@ -352,7 +354,7 @@ static BOOL hexStrToRGBA(NSString *str,
 - (UIColor *)colorByChangeHue:(CGFloat)h saturation:(CGFloat)s brightness:(CGFloat)b alpha:(CGFloat)a {
     CGFloat hh, ss, bb, aa;
     if (![self getHue:&hh saturation:&ss brightness:&bb alpha:&aa]) {
-        return nil;
+        return self;
     }
     hh += h;
     ss += s;

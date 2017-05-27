@@ -783,7 +783,7 @@
     }
     
     // 匹配 [表情]
-    NSArray *emoticonResults = [[WBStatusHelper regexEmoticon] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
+    NSArray<NSTextCheckingResult *> *emoticonResults = [[WBStatusHelper regexEmoticon] matchesInString:text.string options:kNilOptions range:text.rangeOfAll];
     NSUInteger emoClipLength = 0;
     for (NSTextCheckingResult *emo in emoticonResults) {
         if (emo.range.location == NSNotFound && emo.range.length <= 1) continue;

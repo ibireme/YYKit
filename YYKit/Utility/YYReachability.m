@@ -58,6 +58,13 @@ static void YYReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 }
 
 - (instancetype)init {
+    /*
+     See Apple's Reachability implementation and readme:
+     The address 0.0.0.0, which reachability treats as a special token that 
+     causes it to actually monitor the general routing status of the device, 
+     both IPv4 and IPv6.
+     https://developer.apple.com/library/ios/samplecode/Reachability/Listings/ReadMe_md.html#//apple_ref/doc/uid/DTS40007324-ReadMe_md-DontLinkElementID_11
+     */
     struct sockaddr_in zero_addr;
     bzero(&zero_addr, sizeof(zero_addr));
     zero_addr.sin_len = sizeof(zero_addr);
@@ -144,7 +151,7 @@ static void YYReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
     localWifiAddress.sin_len = sizeof(localWifiAddress);
     localWifiAddress.sin_family = AF_INET;
     localWifiAddress.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
-    YYReachability *one = [self reachabilityWithAddress:&localWifiAddress];
+    YYReachability *one = [self reachabilityWithAddress:(const struct sockaddr *)&localWifiAddress];
     one.allowWWAN = NO;
     return one;
 }
@@ -154,7 +161,7 @@ static void YYReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
     return [[self alloc] initWithRef:ref];
 }
 
-+ (instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress {
++ (instancetype)reachabilityWithAddress:(const struct sockaddr *)hostAddress {
     SCNetworkReachabilityRef ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)hostAddress);
     return [[self alloc] initWithRef:ref];
 }

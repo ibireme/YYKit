@@ -10,7 +10,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class YYMemoryCache, YYDiskCache;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /// Image cache type
 typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
@@ -51,7 +54,7 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
 ///=============================================================================
 
 /** The name of the cache. Default is nil. */
-@property (copy) NSString *name;
+@property (nullable, copy) NSString *name;
 
 /** The underlying memory cache. see `YYMemoryCache` for more information.*/
 @property (strong, readonly) YYMemoryCache *memoryCache;
@@ -65,7 +68,7 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @discussion When fetch image from disk cache, it will use 'YYImage' to decode 
  animated image such as WebP/APNG/GIF. Set to 'NO' to ignore animated image.
  */
-@property (assign) BOOL allowAnimatedImage;
+@property BOOL allowAnimatedImage;
 
 /**
  Whether decode the image to memory bitmap. Default is YES.
@@ -73,7 +76,7 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @discussion If the value is YES, then the image will be decoded to memory bitmap
  for better display performance, but may cost more memory.
  */
-@property (assign) BOOL decodeForDisplay;
+@property BOOL decodeForDisplay;
 
 
 #pragma mark - Initializer
@@ -97,7 +100,7 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  Once initialized you should not read and write to this directory.
  @result A new cache object, or nil if an error occurs.
  */
-- (instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 
 #pragma mark - Access Methods
@@ -128,7 +131,10 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @param key       The key with which to associate the image. If nil, this method has no effect.
  @param type      The cache type to store image.
  */
-- (void)setImage:(UIImage *)image imageData:(NSData *)imageData forKey:(NSString *)key withType:(YYImageCacheType)type;
+- (void)setImage:(nullable UIImage *)image
+       imageData:(nullable NSData *)imageData
+          forKey:(NSString *)key
+        withType:(YYImageCacheType)type;
 
 /**
  Removes the image of the specified key in the cache (both memory and disk).
@@ -176,7 +182,7 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @param key A string identifying the image. If nil, just return nil.
  @return The image associated with key, or nil if no image is associated with key.
  */
-- (UIImage *)getImageForKey:(NSString *)key;
+- (nullable UIImage *)getImageForKey:(NSString *)key;
 
 /**
  Returns the image associated with a given key.
@@ -186,7 +192,7 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @param key A string identifying the image. If nil, just return nil.
  @return The image associated with key, or nil if no image is associated with key.
  */
-- (UIImage *)getImageForKey:(NSString *)key withType:(YYImageCacheType)type;
+- (nullable UIImage *)getImageForKey:(NSString *)key withType:(YYImageCacheType)type;
 
 /**
  Asynchronously get the image associated with a given key.
@@ -195,7 +201,9 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @param type  The cache type.
  @param block A completion block which will be called on main thread.
  */
-- (void)getImageForKey:(NSString *)key withType:(YYImageCacheType)type withBlock:(void(^)(UIImage *image, YYImageCacheType type))block;
+- (void)getImageForKey:(NSString *)key
+              withType:(YYImageCacheType)type
+             withBlock:(void(^)(UIImage * _Nullable image, YYImageCacheType type))block;
 
 /**
  Returns the image data associated with a given key.
@@ -204,7 +212,7 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @param key A string identifying the image. If nil, just return nil.
  @return The image data associated with key, or nil if no image is associated with key.
  */
-- (NSData *)getImageDataForKey:(NSString *)key;
+- (nullable NSData *)getImageDataForKey:(NSString *)key;
 
 /**
  Asynchronously get the image data associated with a given key.
@@ -212,6 +220,9 @@ typedef NS_OPTIONS(NSUInteger, YYImageCacheType) {
  @param key   A string identifying the image. If nil, just return nil.
  @param block A completion block which will be called on main thread.
  */
-- (void)getImageDataForKey:(NSString *)key withBlock:(void(^)(NSData *imageData))block;
+- (void)getImageDataForKey:(NSString *)key
+                 withBlock:(void(^)(NSData * _Nullable imageData))block;
 
 @end
+
+NS_ASSUME_NONNULL_END

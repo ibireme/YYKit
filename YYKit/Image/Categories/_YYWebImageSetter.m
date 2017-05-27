@@ -19,7 +19,7 @@ const NSTimeInterval _YYWebImageProgressiveFadeTime = 0.4;
 
 
 @implementation _YYWebImageSetter {
-    OSSpinLock _lock;
+    dispatch_semaphore_t _lock;
     NSURL *_imageURL;
     NSOperation *_operation;
     int32_t _sentinel;
@@ -27,14 +27,14 @@ const NSTimeInterval _YYWebImageProgressiveFadeTime = 0.4;
 
 - (instancetype)init {
     self = [super init];
-    _lock = OS_SPINLOCK_INIT;
+    _lock = dispatch_semaphore_create(1);
     return self;
 }
 
 - (NSURL *)imageURL {
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     NSURL *imageURL = _imageURL;
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
     return imageURL;
 }
 
@@ -43,16 +43,16 @@ const NSTimeInterval _YYWebImageProgressiveFadeTime = 0.4;
     [_operation cancel];
 }
 
-- (void)setOperationWithSentinel:(int32_t)sentinel
-                             url:(NSURL *)imageURL
-                         options:(YYWebImageOptions)options
-                         manager:(YYWebImageManager *)manager
-                        progress:(YYWebImageProgressBlock)progress
-                       transform:(YYWebImageTransformBlock)transform
-                      completion:(YYWebImageCompletionBlock)completion {
+- (int32_t)setOperationWithSentinel:(int32_t)sentinel
+                                url:(NSURL *)imageURL
+                            options:(YYWebImageOptions)options
+                            manager:(YYWebImageManager *)manager
+                           progress:(YYWebImageProgressBlock)progress
+                          transform:(YYWebImageTransformBlock)transform
+                         completion:(YYWebImageCompletionBlock)completion {
     if (sentinel != _sentinel) {
         if (completion) completion(nil, imageURL, YYWebImageFromNone, YYWebImageStageCancelled, nil);
-        return;
+        return _sentinel;
     }
     
     NSOperation *operation = [manager requestImageWithURL:imageURL options:options progress:progress transform:transform completion:completion];
@@ -61,15 +61,16 @@ const NSTimeInterval _YYWebImageProgressiveFadeTime = 0.4;
         completion(nil, imageURL, YYWebImageFromNone, YYWebImageStageFinished, [NSError errorWithDomain:@"com.ibireme.yykit.webimage" code:-1 userInfo:userInfo]);
     }
     
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     if (sentinel == _sentinel) {
         if (_operation) [_operation cancel];
         _operation = operation;
-        OSAtomicIncrement32(&_sentinel);
+        sentinel = OSAtomicIncrement32(&_sentinel);
     } else {
         [operation cancel];
     }
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
+    return sentinel;
 }
 
 - (int32_t)cancel {
@@ -78,14 +79,14 @@ const NSTimeInterval _YYWebImageProgressiveFadeTime = 0.4;
 
 - (int32_t)cancelWithNewURL:(NSURL *)imageURL {
     int32_t sentinel;
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     if (_operation) {
         [_operation cancel];
         _operation = nil;
     }
     _imageURL = imageURL;
     sentinel = OSAtomicIncrement32(&_sentinel);
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
     return sentinel;
 }
 

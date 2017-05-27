@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark - Enum Define
 
 /// The attribute type
@@ -156,8 +158,8 @@ UIKIT_EXTERN NSString *const YYTextTruncationToken; ///< Horizontal ellipsis (U+
  
  @param containerView The text container view (such as YYLabel/YYTextView).
  @param text          The whole text.
- @param range         The text range in `text`.
- @param rect          The text frame in `containerView`.
+ @param range         The text range in `text` (if no range, the range.location is NSNotFound).
+ @param rect          The text frame in `containerView` (if no data, the rect is CGRectNull).
  */
 typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSRange range, CGRect rect);
 
@@ -170,9 +172,9 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  It may used for copy/paste plain text from attributed string.
  Example: If :) is replace by a custom emoji (such as😊), the backed string can be set to @":)".
  */
-@interface YYTextBackedString : NSObject <NSCoding,NSCopying>
-+ (instancetype)stringWithString:(NSString *)string;
-@property (nonatomic, copy) NSString *string; ///< backed string
+@interface YYTextBackedString : NSObject <NSCoding, NSCopying>
++ (instancetype)stringWithString:(nullable NSString *)string;
+@property (nullable, nonatomic, copy) NSString *string; ///< backed string
 @end
 
 
@@ -187,7 +189,7 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  */
 @interface YYTextBinding : NSObject <NSCoding, NSCopying>
 + (instancetype)bindingWithDeleteConfirm:(BOOL)deleteConfirm;
-@property (nonatomic, assign) BOOL deleteConfirm; ///< confirm the range when delete in YYTextView
+@property (nonatomic) BOOL deleteConfirm; ///< confirm the range when delete in YYTextView
 @end
 
 
@@ -199,13 +201,13 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  It's similar to `NSShadow`, but offers more options.
  */
 @interface YYTextShadow : NSObject <NSCoding, NSCopying>
-+ (instancetype)shadowWithColor:(UIColor *)color offset:(CGSize)offset radius:(CGFloat)radius;
++ (instancetype)shadowWithColor:(nullable UIColor *)color offset:(CGSize)offset radius:(CGFloat)radius;
 
-@property (nonatomic, strong) UIColor *color;           ///< shadow color
-@property (nonatomic, assign) CGSize offset;            ///< shadow offset
-@property (nonatomic, assign) CGFloat radius;           ///< shadow blur radius
-@property (nonatomic, assign) CGBlendMode blendMode;    ///< shadow blend mode
-@property (nonatomic, strong) YYTextShadow *subShadow;  ///< a sub shadow which will be added above the parent shadow
+@property (nullable, nonatomic, strong) UIColor *color; ///< shadow color
+@property (nonatomic) CGSize offset;                    ///< shadow offset
+@property (nonatomic) CGFloat radius;                   ///< shadow blur radius
+@property (nonatomic) CGBlendMode blendMode;            ///< shadow blend mode
+@property (nullable, nonatomic, strong) YYTextShadow *subShadow;  ///< a sub shadow which will be added above the parent shadow
 
 + (instancetype)shadowWithNSShadow:(NSShadow *)nsShadow; ///< convert NSShadow to YYTextShadow
 - (NSShadow *)nsShadow; ///< convert YYTextShadow to NSShadow
@@ -222,11 +224,11 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  */
 @interface YYTextDecoration : NSObject <NSCoding, NSCopying>
 + (instancetype)decorationWithStyle:(YYTextLineStyle)style;
-+ (instancetype)decorationWithStyle:(YYTextLineStyle)style width:(NSNumber *)width color:(UIColor *)color;
-@property (nonatomic, assign) YYTextLineStyle style; ///< line style
-@property (nonatomic, strong) NSNumber *width;       ///< line width (nil means automatic width)
-@property (nonatomic, strong) UIColor *color;        ///< line color (nil means automatic color)
-@property (nonatomic, strong) YYTextShadow *shadow;  ///< line shadow
++ (instancetype)decorationWithStyle:(YYTextLineStyle)style width:(nullable NSNumber *)width color:(nullable UIColor *)color;
+@property (nonatomic) YYTextLineStyle style;                   ///< line style
+@property (nullable, nonatomic, strong) NSNumber *width;       ///< line width (nil means automatic width)
+@property (nullable, nonatomic, strong) UIColor *color;        ///< line color (nil means automatic color)
+@property (nullable, nonatomic, strong) YYTextShadow *shadow;  ///< line shadow
 @end
 
 
@@ -244,16 +246,16 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
     ╰──────╯
  */
 @interface YYTextBorder : NSObject <NSCoding, NSCopying>
-+ (instancetype)borderWithLineStyle:(YYTextLineStyle)lineStyle lineWidth:(CGFloat)width strokeColor:(UIColor *)color;
-+ (instancetype)borderWithFillColor:(UIColor *)color cornerRadius:(CGFloat)cornerRadius;
-@property (nonatomic, assign) YYTextLineStyle lineStyle; ///< border line style
-@property (nonatomic, assign) CGFloat strokeWidth;       ///< border line width
-@property (nonatomic, strong) UIColor *strokeColor;      ///< border line color
-@property (nonatomic, assign) CGLineJoin lineJoin;       ///< border line join
-@property (nonatomic, assign) UIEdgeInsets insets;       ///< border insets for text bounds
-@property (nonatomic, assign) CGFloat cornerRadius;      ///< border corder radius
-@property (nonatomic, strong) YYTextShadow *shadow;      ///< border shadow
-@property (nonatomic, strong) UIColor *fillColor;        ///< inner fill color
++ (instancetype)borderWithLineStyle:(YYTextLineStyle)lineStyle lineWidth:(CGFloat)width strokeColor:(nullable UIColor *)color;
++ (instancetype)borderWithFillColor:(nullable UIColor *)color cornerRadius:(CGFloat)cornerRadius;
+@property (nonatomic) YYTextLineStyle lineStyle;              ///< border line style
+@property (nonatomic) CGFloat strokeWidth;                    ///< border line width
+@property (nullable, nonatomic, strong) UIColor *strokeColor; ///< border line color
+@property (nonatomic) CGLineJoin lineJoin;                    ///< border line join
+@property (nonatomic) UIEdgeInsets insets;                    ///< border insets for text bounds
+@property (nonatomic) CGFloat cornerRadius;                   ///< border corder radius
+@property (nullable, nonatomic, strong) YYTextShadow *shadow; ///< border shadow
+@property (nullable, nonatomic, strong) UIColor *fillColor;   ///< inner fill color
 @end
 
 
@@ -268,11 +270,11 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  then it will be added to the text container's view or layer.
  */
 @interface YYTextAttachment : NSObject<NSCoding, NSCopying>
-+ (instancetype)attachmentWithContent:(id)content;
-@property (nonatomic, strong) id content;                    ///< Supported type: UIImage, UIView, CALayer
-@property (nonatomic, assign) UIViewContentMode contentMode; ///< Content display mode.
-@property (nonatomic, assign) UIEdgeInsets contentInsets;    ///< The insets when drawing content.
-@property (nonatomic, strong) NSDictionary *userInfo;        ///< The user information dictionary.
++ (instancetype)attachmentWithContent:(nullable id)content;
+@property (nullable, nonatomic, strong) id content;             ///< Supported type: UIImage, UIView, CALayer
+@property (nonatomic) UIViewContentMode contentMode;            ///< Content display mode.
+@property (nonatomic) UIEdgeInsets contentInsets;               ///< The insets when drawing content.
+@property (nullable, nonatomic, strong) NSDictionary *userInfo; ///< The user information dictionary.
 @end
 
 
@@ -287,44 +289,59 @@ typedef void(^YYTextAction)(UIView *containerView, NSAttributedString *text, NSR
  (set or remove) the original attributes in the range for display.
  */
 @interface YYTextHighlight : NSObject <NSCoding, NSCopying>
+
 /**
  Attributes that you can apply to text in an attributed string when highlight.
  Key:   Same as CoreText/YYText Attribute Name.
  Value: Modify attribute value when highlight (NSNull for remove attribute).
  */
-@property (nonatomic, copy) NSDictionary *attributes;
+@property (nullable, nonatomic, copy) NSDictionary<NSString *, id> *attributes;
 
-+ (instancetype)highlightWithAttributes:(NSDictionary *)attributes;
+/**
+ Creates a highlight object with specified attributes.
+ 
+ @param attributes The attributes which will replace original attributes when highlight,
+        If the value is NSNull, it will removed when highlight.
+ */
++ (instancetype)highlightWithAttributes:(nullable NSDictionary<NSString *, id> *)attributes;
+
+/**
+ Convenience methods to create a default highlight with the specifeid background color.
+ 
+ @param color The background border color.
+ */
++ (instancetype)highlightWithBackgroundColor:(nullable UIColor *)color;
 
 // Convenience methods below to set the `attributes`.
-- (void)setFont:(UIFont *)font;
-- (void)setColor:(UIColor *)color;
-- (void)setStrokeWidth:(NSNumber *)width;
-- (void)setStrokeColor:(UIColor *)color;
-- (void)setShadow:(YYTextShadow *)shadow;
-- (void)setInnerShadow:(YYTextShadow *)shadow;
-- (void)setUnderline:(YYTextDecoration *)underline;
-- (void)setStrikethrough:(YYTextDecoration *)strikethrough;
-- (void)setBackgroundBorder:(YYTextBorder *)border;
-- (void)setBorder:(YYTextBorder *)border;
-- (void)setAttachment:(YYTextAttachment *)attachment;
+- (void)setFont:(nullable UIFont *)font;
+- (void)setColor:(nullable UIColor *)color;
+- (void)setStrokeWidth:(nullable NSNumber *)width;
+- (void)setStrokeColor:(nullable UIColor *)color;
+- (void)setShadow:(nullable YYTextShadow *)shadow;
+- (void)setInnerShadow:(nullable YYTextShadow *)shadow;
+- (void)setUnderline:(nullable YYTextDecoration *)underline;
+- (void)setStrikethrough:(nullable YYTextDecoration *)strikethrough;
+- (void)setBackgroundBorder:(nullable YYTextBorder *)border;
+- (void)setBorder:(nullable YYTextBorder *)border;
+- (void)setAttachment:(nullable YYTextAttachment *)attachment;
 
 /**
  The user information dictionary, default is nil.
  */
-@property (nonatomic, copy) NSDictionary *userInfo;
+@property (nullable, nonatomic, copy) NSDictionary *userInfo;
 
 /**
  Tap action when user tap the highlight, default is nil.
- If the value is nil, YYTextView or YYLabel will ask it's delegate to deal with tap action.
+ If the value is nil, YYTextView or YYLabel will ask it's delegate to handle the tap action.
  */
-@property (nonatomic, copy) YYTextAction tapAction;
+@property (nullable, nonatomic, copy) YYTextAction tapAction;
 
 /**
  Long press action when user long press the highlight, default is nil.
- If the value is nil, YYTextView or YYLabel will ask it's delegate to deal with long press action.
+ If the value is nil, YYTextView or YYLabel will ask it's delegate to handle the long press action.
  */
-@property (nonatomic, copy) YYTextAction longPressAction;
+@property (nullable, nonatomic, copy) YYTextAction longPressAction;
 
 @end
 
+NS_ASSUME_NONNULL_END

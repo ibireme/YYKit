@@ -10,7 +10,10 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @class YYMemoryCache, YYDiskCache;
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  `YYCache` is a thread safe key-value cache.
@@ -39,17 +42,40 @@
      read and write to this directory.
  @result A new cache object, or nil if an error occurs.
  */
-- (instancetype)initWithName:(NSString *)name;
+- (nullable instancetype)initWithName:(NSString *)name;
 
 /**
- Create a new instance with the specified name.
+ Create a new instance with the specified path.
  Multiple instances with the same name will make the cache unstable.
  
  @param path  Full path of a directory in which the cache will write data.
      Once initialized you should not read and write to this directory.
  @result A new cache object, or nil if an error occurs.
  */
-- (instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithPath:(NSString *)path NS_DESIGNATED_INITIALIZER;
+
+/**
+ Convenience Initializers
+ Create a new instance with the specified name.
+ Multiple instances with the same name will make the cache unstable.
+ 
+ @param name  The name of the cache. It will create a dictionary with the name in
+     the app's caches dictionary for disk cache. Once initialized you should not 
+     read and write to this directory.
+ @result A new cache object, or nil if an error occurs.
+ */
++ (nullable instancetype)cacheWithName:(NSString *)name;
+
+/**
+ Convenience Initializers
+ Create a new instance with the specified path.
+ Multiple instances with the same name will make the cache unstable.
+ 
+ @param path  Full path of a directory in which the cache will write data.
+     Once initialized you should not read and write to this directory.
+ @result A new cache object, or nil if an error occurs.
+ */
++ (nullable instancetype)cacheWithPath:(NSString *)path;
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
@@ -76,7 +102,7 @@
  @param key   A string identifying the value. If nil, just return NO.
  @param block A block which will be invoked in background queue when finished.
  */
-- (void)containsObjectForKey:(NSString *)key withBlock:(void(^)(NSString *key, BOOL contains))block;
+- (void)containsObjectForKey:(NSString *)key withBlock:(nullable void(^)(NSString *key, BOOL contains))block;
 
 /**
  Returns the value associated with a given key.
@@ -85,7 +111,7 @@
  @param key A string identifying the value. If nil, just return nil.
  @return The value associated with key, or nil if no value is associated with key.
  */
-- (id<NSCoding>)objectForKey:(NSString *)key;
+- (nullable id<NSCoding>)objectForKey:(NSString *)key;
 
 /**
  Returns the value associated with a given key.
@@ -95,7 +121,7 @@
  @param key A string identifying the value. If nil, just return nil.
  @param block A block which will be invoked in background queue when finished.
  */
-- (void)objectForKey:(NSString *)key withBlock:(void(^)(NSString *key, id<NSCoding> object))block;
+- (void)objectForKey:(NSString *)key withBlock:(nullable void(^)(NSString *key, id<NSCoding> object))block;
 
 /**
  Sets the value of the specified key in the cache.
@@ -104,7 +130,7 @@
  @param object The object to be stored in the cache. If nil, it calls `removeObjectForKey:`.
  @param key    The key with which to associate the value. If nil, this method has no effect.
  */
-- (void)setObject:(id<NSCoding>)object forKey:(NSString *)key;
+- (void)setObject:(nullable id<NSCoding>)object forKey:(NSString *)key;
 
 /**
  Sets the value of the specified key in the cache.
@@ -114,7 +140,7 @@
  @param object The object to be stored in the cache. If nil, it calls `removeObjectForKey:`.
  @param block  A block which will be invoked in background queue when finished.
  */
-- (void)setObject:(id<NSCoding>)object forKey:(NSString *)key withBlock:(void(^)(void))block;
+- (void)setObject:(nullable id<NSCoding>)object forKey:(NSString *)key withBlock:(nullable void(^)(void))block;
 
 /**
  Removes the value of the specified key in the cache.
@@ -132,7 +158,7 @@
  @param key The key identifying the value to be removed. If nil, this method has no effect.
  @param block  A block which will be invoked in background queue when finished.
  */
-- (void)removeObjectForKey:(NSString *)key withBlock:(void(^)(NSString *key))block;
+- (void)removeObjectForKey:(NSString *)key withBlock:(nullable void(^)(NSString *key))block;
 
 /**
  Empties the cache.
@@ -157,7 +183,9 @@
  @param progress This block will be invoked during removing, pass nil to ignore.
  @param end      This block will be invoked at the end, pass nil to ignore.
  */
-- (void)removeAllObjectsWithProgressBlock:(void(^)(int removedCount, int totalCount))progress
-                                 endBlock:(void(^)(BOOL error))end;
+- (void)removeAllObjectsWithProgressBlock:(nullable void(^)(int removedCount, int totalCount))progress
+                                 endBlock:(nullable void(^)(BOOL error))end;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -82,7 +82,7 @@
 @property (nonatomic, strong) WBStatusTitleView *titleView;     // 标题栏
 @property (nonatomic, strong) WBStatusProfileView *profileView; // 用户资料
 @property (nonatomic, strong) YYLabel *textLabel;               // 文本
-@property (nonatomic, strong) NSArray *picViews;                // 图片 Array<UIImageView>
+@property (nonatomic, strong) NSArray<UIView *> *picViews;      // 图片
 @property (nonatomic, strong) UIView *retweetBackgroundView;    //转发容器
 @property (nonatomic, strong) YYLabel *retweetTextLabel;        // 转发文本
 @property (nonatomic, strong) WBStatusCardView *cardView;       // 卡片

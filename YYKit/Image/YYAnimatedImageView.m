@@ -14,25 +14,24 @@
 #import "UIDevice+YYAdd.h"
 #import "YYImageCoder.h"
 #import "YYKitMacro.h"
-#import <libkern/OSAtomic.h>
 
 #define BUFFER_SIZE (10 * 1024 * 1024) // 10MB (minimum memory buffer size)
 
-#define LOCK(...) OSSpinLockLock(&self->_lock); \
+#define LOCK(...) dispatch_semaphore_wait(self->_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
-OSSpinLockUnlock(&self->_lock);
+dispatch_semaphore_signal(self->_lock);
 
-#define LOCK_VIEW(...) OSSpinLockLock(&view->_lock); \
+#define LOCK_VIEW(...) dispatch_semaphore_wait(view->_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
-OSSpinLockUnlock(&view->_lock);
+dispatch_semaphore_signal(view->_lock);
 
 
-typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
-    YYAnimagedImageTypeNone = 0,
-    YYAnimagedImageTypeImage,
-    YYAnimagedImageTypeHighlightedImage,
-    YYAnimagedImageTypeImages,
-    YYAnimagedImageTypeHighlightedImages,
+typedef NS_ENUM(NSUInteger, YYAnimatedImageType) {
+    YYAnimatedImageTypeNone = 0,
+    YYAnimatedImageTypeImage,
+    YYAnimatedImageTypeHighlightedImage,
+    YYAnimatedImageTypeImages,
+    YYAnimatedImageTypeHighlightedImages,
 };
 
 @interface YYAnimatedImageView() {
@@ -40,7 +39,7 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     UIImage <YYAnimatedImage> *_curAnimatedImage;
     
     dispatch_once_t _onceToken;
-    OSSpinLock _lock; ///< lock for _buffer
+    dispatch_semaphore_t _lock; ///< lock for _buffer
     NSOperationQueue *_requestQueue; ///< image request queue, serial
     
     CADisplayLink *_link; ///< ticker for change frame
@@ -80,22 +79,27 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     if ([self isCancelled]) return;
     view->_incrBufferCount++;
     if (view->_incrBufferCount == 0) [view calcMaxBufferCount];
-    if ((int)view->_incrBufferCount > (int)view->_maxBufferCount) {
+    if (view->_incrBufferCount > (NSInteger)view->_maxBufferCount) {
         view->_incrBufferCount = view->_maxBufferCount;
     }
     NSUInteger idx = _nextIndex;
     NSUInteger max = view->_incrBufferCount < 1 ? 1 : view->_incrBufferCount;
     NSUInteger total = view->_totalFrameCount;
+    view = nil;
+    
     for (int i = 0; i < max; i++, idx++) {
         @autoreleasepool {
             if (idx >= total) idx = 0;
             if ([self isCancelled]) break;
+            __strong YYAnimatedImageView *view = _view;
+            if (!view) break;
             LOCK_VIEW(BOOL miss = (view->_buffer[@(idx)] == nil));
             if (miss) {
                 UIImage *img = [_curImage animatedImageFrameAtIndex:idx];
                 img = img.imageByDecoded;
                 if ([self isCancelled]) break;
                 LOCK_VIEW(view->_buffer[@(idx)] = img ? img : [NSNull null]);
+                view = nil;
             }
         }
     }
@@ -141,7 +145,7 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
 // init the animated params.
 - (void)resetAnimated {
     dispatch_once(&_onceToken, ^{
-        _lock = OS_SPINLOCK_INIT;
+        _lock = dispatch_semaphore_create(1);
         _buffer = [NSMutableDictionary new];
         _requestQueue = [[NSOperationQueue alloc] init];
         _requestQueue.maxConcurrentOperationCount = 1;
@@ -186,22 +190,22 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
 
 - (void)setImage:(UIImage *)image {
     if (self.image == image) return;
-    [self setImage:image withType:YYAnimagedImageTypeImage];
+    [self setImage:image withType:YYAnimatedImageTypeImage];
 }
 
 - (void)setHighlightedImage:(UIImage *)highlightedImage {
     if (self.highlightedImage == highlightedImage) return;
-    [self setImage:highlightedImage withType:YYAnimagedImageTypeHighlightedImage];
+    [self setImage:highlightedImage withType:YYAnimatedImageTypeHighlightedImage];
 }
 
 - (void)setAnimationImages:(NSArray *)animationImages {
     if (self.animationImages == animationImages) return;
-    [self setImage:animationImages withType:YYAnimagedImageTypeImages];
+    [self setImage:animationImages withType:YYAnimatedImageTypeImages];
 }
 
 - (void)setHighlightedAnimationImages:(NSArray *)highlightedAnimationImages {
     if (self.highlightedAnimationImages == highlightedAnimationImages) return;
-    [self setImage:highlightedAnimationImages withType:YYAnimagedImageTypeHighlightedImages];
+    [self setImage:highlightedAnimationImages withType:YYAnimatedImageTypeHighlightedImages];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
@@ -210,46 +214,46 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     [self imageChanged];
 }
 
-- (id)imageForType:(YYAnimagedImageType)type {
+- (id)imageForType:(YYAnimatedImageType)type {
     switch (type) {
-        case YYAnimagedImageTypeNone: return nil;
-        case YYAnimagedImageTypeImage: return self.image;
-        case YYAnimagedImageTypeHighlightedImage: return self.highlightedImage;
-        case YYAnimagedImageTypeImages: return self.animationImages;
-        case YYAnimagedImageTypeHighlightedImages: return self.highlightedAnimationImages;
+        case YYAnimatedImageTypeNone: return nil;
+        case YYAnimatedImageTypeImage: return self.image;
+        case YYAnimatedImageTypeHighlightedImage: return self.highlightedImage;
+        case YYAnimatedImageTypeImages: return self.animationImages;
+        case YYAnimatedImageTypeHighlightedImages: return self.highlightedAnimationImages;
     }
     return nil;
 }
 
-- (YYAnimagedImageType)currentImageType {
-    YYAnimagedImageType curType = YYAnimagedImageTypeNone;
+- (YYAnimatedImageType)currentImageType {
+    YYAnimatedImageType curType = YYAnimatedImageTypeNone;
     if (self.highlighted) {
-        if (self.highlightedAnimationImages.count) curType = YYAnimagedImageTypeHighlightedImages;
-        else if (self.highlightedImage) curType = YYAnimagedImageTypeHighlightedImage;
+        if (self.highlightedAnimationImages.count) curType = YYAnimatedImageTypeHighlightedImages;
+        else if (self.highlightedImage) curType = YYAnimatedImageTypeHighlightedImage;
     }
-    if (curType == YYAnimagedImageTypeNone) {
-        if (self.animationImages.count) curType = YYAnimagedImageTypeImages;
-        else if (self.image) curType = YYAnimagedImageTypeImage;
+    if (curType == YYAnimatedImageTypeNone) {
+        if (self.animationImages.count) curType = YYAnimatedImageTypeImages;
+        else if (self.image) curType = YYAnimatedImageTypeImage;
     }
     return curType;
 }
 
-- (void)setImage:(id)image withType:(YYAnimagedImageType)type {
+- (void)setImage:(id)image withType:(YYAnimatedImageType)type {
     [self stopAnimating];
     if (_link) [self resetAnimated];
     _curFrame = nil;
     switch (type) {
-        case YYAnimagedImageTypeNone: break;
-        case YYAnimagedImageTypeImage: super.image = image; break;
-        case YYAnimagedImageTypeHighlightedImage: super.highlightedImage = image; break;
-        case YYAnimagedImageTypeImages: super.animationImages = image; break;
-        case YYAnimagedImageTypeHighlightedImages: super.highlightedAnimationImages = image; break;
+        case YYAnimatedImageTypeNone: break;
+        case YYAnimatedImageTypeImage: super.image = image; break;
+        case YYAnimatedImageTypeHighlightedImage: super.highlightedImage = image; break;
+        case YYAnimatedImageTypeImages: super.animationImages = image; break;
+        case YYAnimatedImageTypeHighlightedImages: super.highlightedAnimationImages = image; break;
     }
     [self imageChanged];
 }
 
 - (void)imageChanged {
-    YYAnimagedImageType newType = [self currentImageType];
+    YYAnimatedImageType newType = [self currentImageType];
     id newVisibleImage = [self imageForType:newType];
     NSUInteger newImageFrameCount = 0;
     BOOL hasContentsRect = NO;
@@ -288,16 +292,17 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
 
 // dynamically adjust buffer size for current memory.
 - (void)calcMaxBufferCount {
-    NSUInteger bytes = _curAnimatedImage.animatedImageBytesPerFrame;
-    if (bytes == 0) bytes = 1;
+    int64_t bytes = (int64_t)_curAnimatedImage.animatedImageBytesPerFrame;
+    if (bytes == 0) bytes = 1024;
     
     int64_t total = [UIDevice currentDevice].memoryTotal;
     int64_t free = [UIDevice currentDevice].memoryFree;
     int64_t max = MIN(total * 0.2, free * 0.6);
     max = MAX(max, BUFFER_SIZE);
     if (_maxBufferSize) max = max > _maxBufferSize ? _maxBufferSize : max;
-    _maxBufferCount = (float)max / (float)bytes;
-    if (_maxBufferCount == 0) _maxBufferCount = 1;
+    double maxBufferCount = (double)max / (double)bytes;
+    maxBufferCount = YY_CLAMP(maxBufferCount, 1, 512);
+    _maxBufferCount = maxBufferCount;
 }
 
 - (void)dealloc {
@@ -313,13 +318,14 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
 
 - (void)stopAnimating {
     [super stopAnimating];
+    [_requestQueue cancelAllOperations];
     _link.paused = YES;
     self.currentIsPlayingAnimation = NO;
 }
 
 - (void)startAnimating {
-    YYAnimagedImageType type = [self currentImageType];
-    if (type == YYAnimagedImageTypeImages || type == YYAnimagedImageTypeHighlightedImages) {
+    YYAnimatedImageType type = [self currentImageType];
+    if (type == YYAnimatedImageTypeImages || type == YYAnimatedImageTypeHighlightedImages) {
         NSArray *images = [self imageForType:type];
         if (images.count > 0) {
             [super startAnimating];
@@ -535,17 +541,21 @@ typedef NS_ENUM(NSUInteger, YYAnimagedImageType) {
     self = [super initWithCoder:aDecoder];
     _runloopMode = [aDecoder decodeObjectForKey:@"runloopMode"];
     if (_runloopMode.length == 0) _runloopMode = NSRunLoopCommonModes;
-    _autoPlayAnimatedImage = [aDecoder decodeBoolForKey:@"autoPlayAnimatedImage"];
+    if ([aDecoder containsValueForKey:@"autoPlayAnimatedImage"]) {
+        _autoPlayAnimatedImage = [aDecoder decodeBoolForKey:@"autoPlayAnimatedImage"];
+    } else {
+        _autoPlayAnimatedImage = YES;
+    }
     
     UIImage *image = [aDecoder decodeObjectForKey:@"YYAnimatedImage"];
     UIImage *highlightedImage = [aDecoder decodeObjectForKey:@"YYHighlightedAnimatedImage"];
     if (image) {
         self.image = image;
-        [self setImage:image withType:YYAnimagedImageTypeImage];
+        [self setImage:image withType:YYAnimatedImageTypeImage];
     }
     if (highlightedImage) {
         self.highlightedImage = highlightedImage;
-        [self setImage:highlightedImage withType:YYAnimagedImageTypeHighlightedImage];
+        [self setImage:highlightedImage withType:YYAnimatedImageTypeHighlightedImage];
     }
     return self;
 }

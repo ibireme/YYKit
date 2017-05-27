@@ -22,12 +22,27 @@
 static NSString *const YYNSThreadAutoleasePoolKey = @"YYNSThreadAutoleasePoolKey";
 static NSString *const YYNSThreadAutoleasePoolStackKey = @"YYNSThreadAutoleasePoolStackKey";
 
+static const void *PoolStackRetainCallBack(CFAllocatorRef allocator, const void *value) {
+    return value;
+}
+
+static void PoolStackReleaseCallBack(CFAllocatorRef allocator, const void *value) {
+    CFRelease((CFTypeRef)value);
+}
+
+
 static inline void YYAutoreleasePoolPush() {
     NSMutableDictionary *dic =  [NSThread currentThread].threadDictionary;
     NSMutableArray *poolStack = dic[YYNSThreadAutoleasePoolStackKey];
     
     if (!poolStack) {
+        /*
+         do not retain pool on push,
+         but release on pop to avoid memory analyze warning
+         */
         CFArrayCallBacks callbacks = {0};
+        callbacks.retain = PoolStackRetainCallBack;
+        callbacks.release = PoolStackReleaseCallBack;
         poolStack = (id)CFArrayCreateMutable(CFAllocatorGetDefault(), 0, &callbacks);
         dic[YYNSThreadAutoleasePoolStackKey] = poolStack;
         CFRelease(poolStack);
@@ -39,9 +54,7 @@ static inline void YYAutoreleasePoolPush() {
 static inline void YYAutoreleasePoolPop() {
     NSMutableDictionary *dic =  [NSThread currentThread].threadDictionary;
     NSMutableArray *poolStack = dic[YYNSThreadAutoleasePoolStackKey];
-    NSAutoreleasePool *pool = [poolStack lastObject];
     [poolStack removeLastObject]; // pop
-    [pool release]; //< release, may get warning in analyze...
 }
 
 static void YYRunLoopAutoreleasePoolObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
@@ -61,28 +74,23 @@ static void YYRunLoopAutoreleasePoolObserverCallBack(CFRunLoopObserverRef observ
 }
 
 static void YYRunloopAutoreleasePoolSetup() {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        CFRunLoopRef runloop = CFRunLoopGetCurrent();
+    CFRunLoopRef runloop = CFRunLoopGetCurrent();
 
-        CFRunLoopObserverRef pushObserver;
-        pushObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
-                                               kCFRunLoopEntry,
-                                               true,         // repeat
-                                               -0x7FFFFFFF,  // before other observers
-                                               YYRunLoopAutoreleasePoolObserverCallBack, NULL);
-        CFRunLoopAddObserver(runloop, pushObserver, kCFRunLoopCommonModes);
-        CFRelease(pushObserver);
-
-        CFRunLoopObserverRef popObserver;
-        popObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(),
-                                              kCFRunLoopBeforeWaiting | kCFRunLoopExit,
-                                              true,        // repeat
-                                              0x7FFFFFFF,  // after other observers
-                                              YYRunLoopAutoreleasePoolObserverCallBack, NULL);
-        CFRunLoopAddObserver(runloop, popObserver, kCFRunLoopCommonModes);
-        CFRelease(popObserver);
-    });
+    CFRunLoopObserverRef pushObserver;
+    pushObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(), kCFRunLoopEntry,
+                                           true,         // repeat
+                                           -0x7FFFFFFF,  // before other observers
+                                           YYRunLoopAutoreleasePoolObserverCallBack, NULL);
+    CFRunLoopAddObserver(runloop, pushObserver, kCFRunLoopCommonModes);
+    CFRelease(pushObserver);
+    
+    CFRunLoopObserverRef popObserver;
+    popObserver = CFRunLoopObserverCreate(CFAllocatorGetDefault(), kCFRunLoopBeforeWaiting | kCFRunLoopExit,
+                                          true,        // repeat
+                                          0x7FFFFFFF,  // after other observers
+                                          YYRunLoopAutoreleasePoolObserverCallBack, NULL);
+    CFRunLoopAddObserver(runloop, popObserver, kCFRunLoopCommonModes);
+    CFRelease(popObserver);
 }
 
 @implementation NSThread (YYAdd)

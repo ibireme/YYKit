@@ -115,9 +115,9 @@ static id YYKeychainQuerySynchonizationID(YYKeychainQuerySynchronizationMode mod
         case YYKeychainQuerySynchronizationModeAny:
             return (__bridge id)(kSecAttrSynchronizableAny);
         case YYKeychainQuerySynchronizationModeNo:
-            return @(NO);
+            return (__bridge id)kCFBooleanFalse;
         case YYKeychainQuerySynchronizationModeYes:
-            return @(YES);
+            return (__bridge id)kCFBooleanTrue;
         default:
             return (__bridge id)(kSecAttrSynchronizableAny);
     }
@@ -130,8 +130,8 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
 }
 
 @interface YYKeychainItem ()
-@property (nonatomic, readwrite, copy) NSDate *modificationDate;
-@property (nonatomic, readwrite, copy) NSDate *creationDate;
+@property (nonatomic, readwrite, strong) NSDate *modificationDate;
+@property (nonatomic, readwrite, strong) NSDate *creationDate;
 @end
 
 @implementation YYKeychainItem
@@ -192,7 +192,6 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
 - (NSMutableDictionary *)dic {
     NSMutableDictionary *dic = [NSMutableDictionary new];
     
-    
     dic[(__bridge id)kSecClass] = (__bridge id)kSecClassGenericPassword;
     
     if (self.account) dic[(__bridge id)kSecAttrAccount] = self.account;
@@ -229,6 +228,7 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
 }
 
 - (instancetype)initWithDic:(NSDictionary *)dic {
+    if (dic.count == 0) return nil;
     self = self.init;
     
     self.service = dic[(__bridge id)kSecAttrService];
@@ -292,7 +292,7 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
 
 + (NSString *)getPasswordForService:(NSString *)serviceName
                             account:(NSString *)account
-                              error:(__autoreleasing NSError **)error {
+                              error:(NSError **)error {
     if (!serviceName || !account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return nil;
@@ -305,9 +305,14 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return result.password;
 }
 
++ (nullable NSString *)getPasswordForService:(NSString *)serviceName
+                                     account:(NSString *)account {
+    return [self getPasswordForService:serviceName account:account error:NULL];
+}
+
 + (BOOL)deletePasswordForService:(NSString *)serviceName
                          account:(NSString *)account
-                           error:(__autoreleasing NSError **)error {
+                           error:(NSError **)error {
     if (!serviceName || !account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return NO;
@@ -319,10 +324,14 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return [self deleteItem:item error:error];
 }
 
++ (BOOL)deletePasswordForService:(NSString *)serviceName account:(NSString *)account {
+    return [self deletePasswordForService:serviceName account:account error:NULL];
+}
+
 + (BOOL)setPassword:(NSString *)password
          forService:(NSString *)serviceName
             account:(NSString *)account
-              error:(__autoreleasing NSError **)error {
+              error:(NSError **)error {
     if (!password || !serviceName || !account) {
         if (error) *error = [YYKeychain errorWithCode:errSecParam];
         return NO;
@@ -335,11 +344,23 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
         result.password = password;
         return [self updateItem:result error:error];
     } else {
+        item.password = password;
         return [self insertItem:item error:error];
     }
 }
 
-+ (BOOL)insertItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)setPassword:(NSString *)password
+         forService:(NSString *)serviceName
+            account:(NSString *)account {
+    return [self setPassword:password forService:serviceName account:account error:NULL];
+}
+
++ (BOOL)insertItem:(YYKeychainItem *)item error:(NSError **)error {
+    if (!item.service || !item.account || !item.passwordData) {
+        if (error) *error = [YYKeychain errorWithCode:errSecParam];
+        return NO;
+    }
+    
     NSMutableDictionary *query = [item dic];
     OSStatus status = status = SecItemAdd((__bridge CFDictionaryRef)query, NULL);
     if (status != errSecSuccess) {
@@ -350,9 +371,19 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return YES;
 }
 
-+ (BOOL)updateItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)insertItem:(YYKeychainItem *)item {
+    return [self insertItem:item error:NULL];
+}
+
++ (BOOL)updateItem:(YYKeychainItem *)item error:(NSError **)error {
+    if (!item.service || !item.account || !item.passwordData) {
+        if (error) *error = [YYKeychain errorWithCode:errSecParam];
+        return NO;
+    }
+    
     NSMutableDictionary *query = [item queryDic];
     NSMutableDictionary *update = [item dic];
+    [update removeObjectForKey:(__bridge id)kSecClass];
     if (!query || !update) return NO;
     OSStatus status = status = SecItemUpdate((__bridge CFDictionaryRef)query, (__bridge CFDictionaryRef)update);
     if (status != errSecSuccess) {
@@ -363,7 +394,16 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return YES;
 }
 
-+ (BOOL)deleteItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)updateItem:(YYKeychainItem *)item {
+    return [self updateItem:item error:NULL];
+}
+
++ (BOOL)deleteItem:(YYKeychainItem *)item error:(NSError **)error {
+    if (!item.service || !item.account) {
+        if (error) *error = [YYKeychain errorWithCode:errSecParam];
+        return NO;
+    }
+    
     NSMutableDictionary *query = [item dic];
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)query);
     if (status != errSecSuccess) {
@@ -374,29 +414,50 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     return YES;
 }
 
-+ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (BOOL)deleteItem:(YYKeychainItem *)item {
+    return [self deleteItem:item error:NULL];
+}
+
++ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item error:(NSError **)error {
+    if (!item.service || !item.account) {
+        if (error) *error = [YYKeychain errorWithCode:errSecParam];
+        return nil;
+    }
+    
     NSMutableDictionary *query = [item dic];
     query[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
     query[(__bridge id)kSecReturnAttributes] = @YES;
+    query[(__bridge id)kSecReturnData] = @YES;
     
     OSStatus status;
     CFTypeRef result = NULL;
     status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
-    if (status != errSecSuccess && error != NULL) {
-        *error = [[self class] errorWithCode:status];
+    if (status != errSecSuccess) {
+        if (error) *error = [[self class] errorWithCode:status];
         return nil;
     }
+    if (!result) return nil;
     
-    NSArray *arr = (__bridge NSArray *)(result);
-    YYKeychainItem *newItem = nil;
-    if (arr.count) newItem = [[YYKeychainItem alloc] initWithDic:arr[0]];
-    return newItem;
+    NSDictionary *dic = nil;
+    if (CFGetTypeID(result) == CFDictionaryGetTypeID()) {
+        dic = (__bridge NSDictionary *)(result);
+    } else if (CFGetTypeID(result) == CFArrayGetTypeID()){
+        dic = [(__bridge NSArray *)(result) firstObject];
+        if (![dic isKindOfClass:[NSDictionary class]]) dic = nil;
+    }
+    if (!dic.count) return nil;
+    return [[YYKeychainItem alloc] initWithDic:dic];
 }
 
-+ (NSArray *)selectItems:(YYKeychainItem *)item error:(__autoreleasing NSError **)error {
++ (YYKeychainItem *)selectOneItem:(YYKeychainItem *)item {
+    return [self selectOneItem:item error:NULL];
+}
+
++ (NSArray *)selectItems:(YYKeychainItem *)item error:(NSError **)error {
     NSMutableDictionary *query = [item dic];
     query[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitAll;
     query[(__bridge id)kSecReturnAttributes] = @YES;
+    query[(__bridge id)kSecReturnData] = @YES;
     
     OSStatus status;
     CFTypeRef result = NULL;
@@ -407,13 +468,23 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     }
     
     NSMutableArray *res = [NSMutableArray new];
-    NSArray *arr = (__bridge NSArray *)(result);
-    for (NSDictionary *dic in arr) {
+    NSDictionary *dic = nil;
+    if (CFGetTypeID(result) == CFDictionaryGetTypeID()) {
+        dic = (__bridge NSDictionary *)(result);
         YYKeychainItem *item = [[YYKeychainItem alloc] initWithDic:dic];
         if (item) [res addObject:item];
+    } else if (CFGetTypeID(result) == CFArrayGetTypeID()){
+        for (NSDictionary *dic in (__bridge NSArray *)(result)) {
+            YYKeychainItem *item = [[YYKeychainItem alloc] initWithDic:dic];
+            if (item) [res addObject:item];
+        }
     }
     
     return res;
+}
+
++ (NSArray *)selectItems:(YYKeychainItem *)item {
+    return [self selectItems:item error:NULL];
 }
 
 + (NSError *)errorWithCode:(OSStatus)osCode {

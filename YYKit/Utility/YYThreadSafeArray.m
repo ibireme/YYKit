@@ -11,25 +11,24 @@
 
 #import "YYThreadSafeArray.h"
 #import "NSArray+YYAdd.h"
-#import <libkern/OSAtomic.h>
 
 
 #define INIT(...) self = super.init; \
 if (!self) return nil; \
 __VA_ARGS__; \
 if (!_arr) return nil; \
-_lock = OS_SPINLOCK_INIT; \
+_lock = dispatch_semaphore_create(1); \
 return self;
 
 
-#define LOCK(...) OSSpinLockLock(&_lock); \
+#define LOCK(...) dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER); \
 __VA_ARGS__; \
-OSSpinLockUnlock(&_lock);
+dispatch_semaphore_signal(_lock);
 
 
 @implementation YYThreadSafeArray {
     NSMutableArray *_arr;  //Subclass a class cluster...
-    OSSpinLock _lock;
+    dispatch_semaphore_t _lock;
 }
 
 #pragma mark - init
@@ -327,11 +326,11 @@ OSSpinLockUnlock(&_lock);
     if ([otherArray isKindOfClass:YYThreadSafeArray.class]) {
         YYThreadSafeArray *other = (id)otherArray;
         BOOL isEqual;
-        OSSpinLockLock(&_lock);
-        OSSpinLockLock(&other->_lock);
+        dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
+        dispatch_semaphore_wait(other->_lock, DISPATCH_TIME_FOREVER);
         isEqual = [_arr isEqualToArray:other->_arr];
-        OSSpinLockUnlock(&other->_lock);
-        OSSpinLockUnlock(&_lock);
+        dispatch_semaphore_signal(other->_lock);
+        dispatch_semaphore_signal(_lock);
         return isEqual;
     }
     return NO;
@@ -361,11 +360,11 @@ OSSpinLockUnlock(&_lock);
     if ([object isKindOfClass:YYThreadSafeArray.class]) {
         YYThreadSafeArray *other = object;
         BOOL isEqual;
-        OSSpinLockLock(&_lock);
-        OSSpinLockLock(&other->_lock);
+        dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
+        dispatch_semaphore_wait(other->_lock, DISPATCH_TIME_FOREVER);
         isEqual = [_arr isEqual:other->_arr];
-        OSSpinLockUnlock(&other->_lock);
-        OSSpinLockUnlock(&_lock);
+        dispatch_semaphore_signal(other->_lock);
+        dispatch_semaphore_signal(_lock);
         return isEqual;
     }
     return NO;

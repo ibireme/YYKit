@@ -13,7 +13,6 @@
 #import "YYWebImageOperation.h"
 #import "_YYWebImageSetter.h"
 #import "YYKitMacro.h"
-#import <libkern/OSAtomic.h>
 #import <objc/runtime.h>
 
 YYSYNTH_DUMMY_CLASS(UIButton_YYWebImage)
@@ -45,29 +44,29 @@ static int _YYWebImageBackgroundSetterKey;
 
 @implementation _YYWebImageSetterDicForButton {
     NSMutableDictionary *_dic;
-    OSSpinLock _lock;
+    dispatch_semaphore_t _lock;
 }
 - (instancetype)init {
     self = [super init];
-    _lock = OS_SPINLOCK_INIT;
+    _lock = dispatch_semaphore_create(1);
     _dic = [NSMutableDictionary new];
     return self;
 }
 - (_YYWebImageSetter *)setterForState:(NSNumber *)state {
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     _YYWebImageSetter *setter = _dic[state];
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
     return setter;
     
 }
 - (_YYWebImageSetter *)lazySetterForState:(NSNumber *)state {
-    OSSpinLockLock(&_lock);
+    dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     _YYWebImageSetter *setter = _dic[state];
     if (!setter) {
         setter = [_YYWebImageSetter new];
         _dic[state] = setter;
     }
-    OSSpinLockUnlock(&_lock);
+    dispatch_semaphore_signal(_lock);
     return setter;
 }
 @end
@@ -133,18 +132,28 @@ static int _YYWebImageBackgroundSetterKey;
                 });
             };
             
+            __block int32_t newSentinel = 0;
+            __block __weak typeof(setter) weakSetter = nil;
             YYWebImageCompletionBlock _completion = ^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
                 __strong typeof(_self) self = _self;
                 BOOL setImage = (stage == YYWebImageStageFinished || stage == YYWebImageStageProgress) && image && !(options & YYWebImageOptionAvoidSetImage);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (setImage && self) {
+                    BOOL sentinelChanged = weakSetter && weakSetter.sentinel != newSentinel;
+                    if (setImage && self && !sentinelChanged) {
                         [self setImage:image forState:state.integerValue];
                     }
-                    if (completion) completion(image, url, from, stage, error);
+                    if (completion) {
+                        if (sentinelChanged) {
+                            completion(nil, url, YYWebImageFromNone, YYWebImageStageCancelled, nil);
+                        } else {
+                            completion(image, url, from, stage, error);
+                        }
+                    }
                 });
             };
             
-            [setter setOperationWithSentinel:sentinel url:imageURL options:options manager:manager progress:_progress transform:transform completion:_completion];
+            newSentinel = [setter setOperationWithSentinel:sentinel url:imageURL options:options manager:manager progress:_progress transform:transform completion:_completion];
+            weakSetter = setter;
         });
     });
 }
@@ -300,18 +309,28 @@ static int _YYWebImageBackgroundSetterKey;
                 });
             };
             
+            __block int32_t newSentinel = 0;
+            __block __weak typeof(setter) weakSetter = nil;
             YYWebImageCompletionBlock _completion = ^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
                 __strong typeof(_self) self = _self;
                 BOOL setImage = (stage == YYWebImageStageFinished || stage == YYWebImageStageProgress) && image && !(options & YYWebImageOptionAvoidSetImage);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (setImage && self) {
+                    BOOL sentinelChanged = weakSetter && weakSetter.sentinel != newSentinel;
+                    if (setImage && self && !sentinelChanged) {
                         [self setBackgroundImage:image forState:state.integerValue];
                     }
-                    if (completion) completion(image, url, from, stage, error);
+                    if (completion) {
+                        if (sentinelChanged) {
+                            completion(nil, url, YYWebImageFromNone, YYWebImageStageCancelled, nil);
+                        } else {
+                            completion(image, url, from, stage, error);
+                        }
+                    }
                 });
             };
             
-            [setter setOperationWithSentinel:sentinel url:imageURL options:options manager:manager progress:_progress transform:transform completion:_completion];
+            newSentinel = [setter setOperationWithSentinel:sentinel url:imageURL options:options manager:manager progress:_progress transform:transform completion:_completion];
+            weakSetter = setter;
         });
     });
 }

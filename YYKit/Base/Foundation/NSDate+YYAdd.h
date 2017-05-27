@@ -11,11 +11,12 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Provides extensions for `NSDate`.
  */
 @interface NSDate (YYAdd)
-
 
 #pragma mark - Component Properties
 ///=============================================================================
@@ -51,7 +52,7 @@
  @param years  Number of years to add.
  @return Date modified by the number of desired years.
  */
-- (NSDate *)dateByAddingYears:(NSInteger)years;
+- (nullable NSDate *)dateByAddingYears:(NSInteger)years;
 
 /**
  Returns a date representing the receiver date shifted later by the provided number of months.
@@ -59,7 +60,7 @@
  @param months  Number of months to add.
  @return Date modified by the number of desired months.
  */
-- (NSDate *)dateByAddingMonths:(NSInteger)months;
+- (nullable NSDate *)dateByAddingMonths:(NSInteger)months;
 
 /**
  Returns a date representing the receiver date shifted later by the provided number of weeks.
@@ -67,7 +68,7 @@
  @param weeks  Number of weeks to add.
  @return Date modified by the number of desired weeks.
  */
-- (NSDate *)dateByAddingWeeks:(NSInteger)weeks;
+- (nullable NSDate *)dateByAddingWeeks:(NSInteger)weeks;
 
 /**
  Returns a date representing the receiver date shifted later by the provided number of days.
@@ -75,7 +76,7 @@
  @param days  Number of days to add.
  @return Date modified by the number of desired days.
  */
-- (NSDate *)dateByAddingDays:(NSInteger)days;
+- (nullable NSDate *)dateByAddingDays:(NSInteger)days;
 
 /**
  Returns a date representing the receiver date shifted later by the provided number of hours.
@@ -83,7 +84,7 @@
  @param hours  Number of hours to add.
  @return Date modified by the number of desired hours.
  */
-- (NSDate *)dateByAddingHours:(NSInteger)hours;
+- (nullable NSDate *)dateByAddingHours:(NSInteger)hours;
 
 /**
  Returns a date representing the receiver date shifted later by the provided number of minutes.
@@ -91,7 +92,7 @@
  @param minutes  Number of minutes to add.
  @return Date modified by the number of desired minutes.
  */
-- (NSDate *)dateByAddingMinutes:(NSInteger)minutes;
+- (nullable NSDate *)dateByAddingMinutes:(NSInteger)minutes;
 
 /**
  Returns a date representing the receiver date shifted later by the provided number of seconds.
@@ -99,7 +100,7 @@
  @param seconds  Number of seconds to add.
  @return Date modified by the number of desired seconds.
  */
-- (NSDate *)dateByAddingSeconds:(NSInteger)seconds;
+- (nullable NSDate *)dateByAddingSeconds:(NSInteger)seconds;
 
 
 #pragma mark - Date Format
@@ -117,7 +118,7 @@
  
  @return NSString representing the formatted date string.
  */
-- (NSString *)stringWithFormat:(NSString *)format;
+- (nullable NSString *)stringWithFormat:(NSString *)format;
 
 /**
  Returns a formatted string representing this date.
@@ -133,7 +134,9 @@
  
  @return NSString representing the formatted date string.
  */
-- (NSString *)stringWithFormat:(NSString *)format timeZone:(NSTimeZone *)timeZone locale:(NSLocale *)locale;
+- (nullable NSString *)stringWithFormat:(NSString *)format
+                               timeZone:(nullable NSTimeZone *)timeZone
+                                 locale:(nullable NSLocale *)locale;
 
 /**
  Returns a string representing this date in ISO8601 format.
@@ -141,7 +144,7 @@
  
  @return NSString representing the formatted date string in ISO8601.
  */
-- (NSString *)stringWithISOFormat;
+- (nullable NSString *)stringWithISOFormat;
 
 /**
  Returns a date parsed from given string interpreted using the format.
@@ -152,7 +155,7 @@
  @return A date representation of string interpreted using the format.
  If can not parse the string, returns nil.
  */
-+ (NSDate *)dateWithString:(NSString *)dateString format:(NSString *)format;
++ (nullable NSDate *)dateWithString:(NSString *)dateString format:(NSString *)format;
 
 /**
  Returns a date parsed from given string interpreted using the format.
@@ -165,7 +168,10 @@
  @return A date representation of string interpreted using the format.
  If can not parse the string, returns nil.
  */
-+ (NSDate *)dateWithString:(NSString *)dateString format:(NSString *)format timeZone:(NSTimeZone *)timeZone locale:(NSLocale *)locale;
++ (nullable NSDate *)dateWithString:(NSString *)dateString
+                             format:(NSString *)format
+                           timeZone:(nullable NSTimeZone *)timeZone
+                             locale:(nullable NSLocale *)locale;
 
 /**
  Returns a date parsed from given string interpreted using the ISO8601 format.
@@ -175,6 +181,8 @@
  @return A date representation of string interpreted using the format.
  If can not parse the string, returns nil.
  */
-+ (NSDate *)dateWithISOFormatString:(NSString *)dateString;
++ (nullable NSDate *)dateWithISOFormatString:(NSString *)dateString;
 
 @end
+
+NS_ASSUME_NONNULL_END

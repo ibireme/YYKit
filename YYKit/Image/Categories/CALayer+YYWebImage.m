@@ -145,12 +145,15 @@ static int _YYWebImageSetterKey;
                 });
             };
             
+            __block int32_t newSentinel = 0;
+            __block __weak typeof(setter) weakSetter = nil;
             YYWebImageCompletionBlock _completion = ^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
                 __strong typeof(_self) self = _self;
                 BOOL setImage = (stage == YYWebImageStageFinished || stage == YYWebImageStageProgress) && image && !(options & YYWebImageOptionAvoidSetImage);
                 BOOL showFade = (options & YYWebImageOptionSetImageWithFadeAnimation);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (setImage && self) {
+                    BOOL sentinelChanged = weakSetter && weakSetter.sentinel != newSentinel;
+                    if (setImage && self && !sentinelChanged) {
                         if (showFade) {
                             CATransition *transition = [CATransition animation];
                             transition.duration = stage == YYWebImageStageFinished ? _YYWebImageFadeTime : _YYWebImageProgressiveFadeTime;
@@ -160,11 +163,18 @@ static int _YYWebImageSetterKey;
                         }
                         self.contents = (id)image.CGImage;
                     }
-                    if (completion) completion(image, url, from, stage, error);
+                    if (completion) {
+                        if (sentinelChanged) {
+                            completion(nil, url, YYWebImageFromNone, YYWebImageStageCancelled, nil);
+                        } else {
+                            completion(image, url, from, stage, error);
+                        }
+                    }
                 });
             };
             
-            [setter setOperationWithSentinel:sentinel url:imageURL options:options manager:manager progress:_progress transform:transform completion:_completion];
+            newSentinel = [setter setOperationWithSentinel:sentinel url:imageURL options:options manager:manager progress:_progress transform:transform completion:_completion];
+            weakSetter = setter;
         });
         
         

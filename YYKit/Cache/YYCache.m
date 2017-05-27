@@ -17,7 +17,7 @@
 
 - (instancetype) init {
     NSLog(@"Use \"initWithName\" or \"initWithPath\" to create YYCache instance.");
-    return [self initWithPath:nil];
+    return [self initWithPath:@""];
 }
 
 - (instancetype)initWithName:(NSString *)name {
@@ -40,6 +40,14 @@
     _diskCache = diskCache;
     _memoryCache = memoryCache;
     return self;
+}
+
++ (instancetype)cacheWithName:(NSString *)name {
+	return [[self alloc] initWithName:name];
+}
+
++ (instancetype)cacheWithPath:(NSString *)path {
+    return [[self alloc] initWithPath:path];
 }
 
 - (BOOL)containsObjectForKey:(NSString *)key {
@@ -77,7 +85,12 @@
             block(key, object);
         });
     } else {
-        [_diskCache objectForKey:key withBlock:block];
+        [_diskCache objectForKey:key withBlock:^(NSString *key, id<NSCoding> object) {
+            if (object && ![_memoryCache objectForKey:key]) {
+                [_memoryCache setObject:object forKey:key];
+            }
+            block(key, object);
+        }];
     }
 }
 
@@ -124,4 +137,3 @@
 }
 
 @end
-

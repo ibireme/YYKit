@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  YYMemoryCache is a fast in-memory cache that stores key-value pairs.
  In contrast to NSDictionary, keys are retained and not copied.
@@ -34,7 +36,7 @@
 ///=============================================================================
 
 /** The name of the cache. Default is nil. */
-@property (copy) NSString *name;
+@property (nullable, copy) NSString *name;
 
 /** The number of objects in the cache (read-only) */
 @property (readonly) NSUInteger totalCount;
@@ -55,7 +57,7 @@
  This is not a strict limit—if the cache goes over the limit, some objects in the
  cache could be evicted later in backgound thread.
  */
-@property (assign) NSUInteger countLimit;
+@property NSUInteger countLimit;
 
 /**
  The maximum total cost that the cache can hold before it starts evicting objects.
@@ -64,7 +66,7 @@
  This is not a strict limit—if the cache goes over the limit, some objects in the
  cache could be evicted later in backgound thread.
  */
-@property (assign) NSUInteger costLimit;
+@property NSUInteger costLimit;
 
 /**
  The maximum expiry time of objects in cache.
@@ -73,7 +75,7 @@
  This is not a strict limit—if an object goes over the limit, the object could 
  be evicted later in backgound thread.
  */
-@property (assign) NSTimeInterval ageLimit;
+@property NSTimeInterval ageLimit;
 
 /**
  The auto trim check time interval in seconds. Default is 5.0.
@@ -81,31 +83,31 @@
  @discussion The cache holds an internal timer to check whether the cache reaches 
  its limits, and if the limit is reached, it begins to evict objects.
  */
-@property (assign) NSTimeInterval autoTrimInterval;
+@property NSTimeInterval autoTrimInterval;
 
 /**
  If `YES`, the cache will remove all objects when the app receives a memory warning.
  The default value is `YES`.
  */
-@property (assign) BOOL shouldRemoveAllObjectsOnMemoryWarning;
+@property BOOL shouldRemoveAllObjectsOnMemoryWarning;
 
 /**
  If `YES`, The cache will remove all objects when the app enter background.
  The default value is `YES`.
  */
-@property (assign) BOOL shouldRemoveAllObjectsWhenEnteringBackground;
+@property BOOL shouldRemoveAllObjectsWhenEnteringBackground;
 
 /**
  A block to be executed when the app receives a memory warning.
  The default value is nil.
  */
-@property (copy) void(^didReceiveMemoryWarningBlock)(YYMemoryCache *cache);
+@property (nullable, copy) void(^didReceiveMemoryWarningBlock)(YYMemoryCache *cache);
 
 /**
  A block to be executed when the app enter background.
  The default value is nil.
  */
-@property (copy) void(^didEnterBackgroundBlock)(YYMemoryCache *cache);
+@property (nullable, copy) void(^didEnterBackgroundBlock)(YYMemoryCache *cache);
 
 /**
  If `YES`, the key-value pair will be released on main thread, otherwise on
@@ -114,14 +116,14 @@
  @discussion You may set this value to `YES` if the key-value object contains
  the instance which should be released in main thread (such as UIView/CALayer).
  */
-@property (assign) BOOL releaseOnMainThread;
+@property BOOL releaseOnMainThread;
 
 /**
  If `YES`, the key-value pair will be released asynchronously to avoid blocking 
  the access methods, otherwise it will be released in the access method  
  (such as removeObjectForKey:). Default is YES.
  */
-@property (assign) BOOL releaseAsynchronously;
+@property BOOL releaseAsynchronously;
 
 
 #pragma mark - Access Methods
@@ -143,7 +145,7 @@
  @param key An object identifying the value. If nil, just return nil.
  @return The value associated with key, or nil if no value is associated with key.
  */
-- (id)objectForKey:(id)key;
+- (nullable id)objectForKey:(id)key;
 
 /**
  Sets the value of the specified key in the cache (0 cost).
@@ -153,7 +155,7 @@
  @discussion Unlike an NSMutableDictionary object, a cache does not copy the key 
  objects that are put into it.
  */
-- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(nullable id)object forKey:(id)key;
 
 /**
  Sets the value of the specified key in the cache, and associates the key-value 
@@ -165,7 +167,7 @@
  @discussion Unlike an NSMutableDictionary object, a cache does not copy the key
  objects that are put into it.
  */
-- (void)setObject:(id)object forKey:(id)key withCost:(NSUInteger)cost;
+- (void)setObject:(nullable id)object forKey:(id)key withCost:(NSUInteger)cost;
 
 /**
  Removes the value of the specified key in the cache.
@@ -207,3 +209,5 @@
 - (void)trimToAge:(NSTimeInterval)age;
 
 @end
+
+NS_ASSUME_NONNULL_END

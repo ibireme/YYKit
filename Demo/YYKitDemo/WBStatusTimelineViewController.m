@@ -83,7 +83,7 @@
             WBTimelineItem *item = [WBTimelineItem modelWithJSON:data];
             for (WBStatus *status in item.statuses) {
                 WBStatusLayout *layout = [[WBStatusLayout alloc] initWithStatus:status style:WBLayoutStyleTimeline];
-                [layout layout];
+//                [layout layout];
                 [_layouts addObject:layout];
             }
         }
@@ -92,7 +92,7 @@
         [_layouts addObjectsFromArray:_layouts];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.title = [NSString stringWithFormat:@"Weibo (loaded:%d)", (int)_layouts.count];;
+            self.title = [NSString stringWithFormat:@"Weibo (loaded:%d)", (int)_layouts.count];
             [indicator removeFromSuperview];
             self.navigationController.view.userInteractionEnabled = YES;
             [_tableView reloadData];
@@ -254,13 +254,13 @@
 
 /// 点击了图片
 - (void)cell:(WBStatusCell *)cell didClickImageAtIndex:(NSUInteger)index {
-    UIImageView *fromView = nil;
+    UIView *fromView = nil;
     NSMutableArray *items = [NSMutableArray new];
     WBStatus *status = cell.statusView.layout.status;
-    NSArray *pics = status.retweetedStatus ? status.retweetedStatus.pics : status.pics;
+    NSArray<WBPicture *> *pics = status.retweetedStatus ? status.retweetedStatus.pics : status.pics;
     
     for (NSUInteger i = 0, max = pics.count; i < max; i++) {
-        UIImageView *imgView = cell.statusView.picViews[i];
+        UIView *imgView = cell.statusView.picViews[i];
         WBPicture *pic = pics[i];
         WBPictureMetadata *meta = pic.largest.badgeType == WBPictureBadgeTypeGIF ? pic.largest : pic.large;
         YYPhotoGroupItem *item = [YYPhotoGroupItem new];

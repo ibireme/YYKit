@@ -11,6 +11,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern void YY_RGB2HSL(CGFloat r, CGFloat g, CGFloat b,
                        CGFloat *h, CGFloat *s, CGFloat *l);
 
@@ -175,7 +177,7 @@ extern void YY_HSL2HSB(CGFloat h, CGFloat s, CGFloat l,
  
  @return        An UIColor object from string, or nil if an error occurs.
  */
-+ (UIColor *)colorWithHexString:(NSString *)hexStr;
++ (nullable UIColor *)colorWithHexString:(NSString *)hexStr;
 
 /**
  Creates and returns a color object by add new color.
@@ -233,7 +235,7 @@ extern void YY_HSL2HSB(CGFloat h, CGFloat s, CGFloat l,
  
  @return The color's value as a hex string.
  */
-- (NSString *)hexString;
+- (nullable NSString *)hexString;
 
 /**
  Returns the color's RGBA value as a hex string (lowercase).
@@ -243,7 +245,7 @@ extern void YY_HSL2HSB(CGFloat h, CGFloat s, CGFloat l,
  
  @return The color's value as a hex string.
  */
-- (NSString *)hexStringWithAlpha;
+- (nullable NSString *)hexStringWithAlpha;
 
 
 #pragma mark - Retrieving Color Information
@@ -349,6 +351,8 @@ extern void YY_HSL2HSB(CGFloat h, CGFloat s, CGFloat l,
 /**
  Readable colorspace string.
  */
-@property (nonatomic, readonly) NSString *colorSpaceString;
+@property (nullable, nonatomic, readonly) NSString *colorSpaceString;
 
 @end
+
+NS_ASSUME_NONNULL_END

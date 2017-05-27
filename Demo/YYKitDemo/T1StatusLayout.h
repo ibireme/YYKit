@@ -70,7 +70,7 @@
 @property (nonatomic, strong) YYTextLayout *retweetCountTextLayout;
 @property (nonatomic, strong) YYTextLayout *favoriteCountTextLayout;
 
-@property (nonatomic, strong) NSArray *images; // Array<T1Media>
+@property (nonatomic, strong) NSArray<T1Media *> *images;
 @property (nonatomic, readonly) T1Tweet *displayedTweet;
 
 - (YYTextLayout *)retweetCountTextLayoutForTweet:(T1Tweet *)tweet;

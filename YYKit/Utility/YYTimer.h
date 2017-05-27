@@ -11,6 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  YYTimer is a thread-safe timer based on GCD. It has similar API with `NSTimer`.
  YYTimer object differ from NSTimer in a few ways:
@@ -42,3 +44,5 @@
 - (void)fire;
 
 @end
+
+NS_ASSUME_NONNULL_END

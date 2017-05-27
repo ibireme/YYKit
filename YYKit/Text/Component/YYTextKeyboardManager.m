@@ -472,7 +472,7 @@ static int _YYTextKeyboardViewFrameObserverKey;
     }
     
     if (!CGRectEqualToRect(trans.toFrame, _fromFrame)) {
-        for (id<YYTextKeyboardObserver> observer in _observers) {
+        for (id<YYTextKeyboardObserver> observer in _observers.copy) {
             if ([observer respondsToSelector:@selector(keyboardChangedWithTransition:)]) {
                 [observer keyboardChangedWithTransition:trans];
             }

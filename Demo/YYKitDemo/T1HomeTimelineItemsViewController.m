@@ -213,7 +213,7 @@
     }
     UIImageView *fromView = nil;
     NSMutableArray *items = [NSMutableArray new];
-    NSArray *images = cell.layout.images;
+    NSArray<T1Media *> *images = cell.layout.images;
     
     for (NSUInteger i = 0, max = images.count; i < max; i++) {
         UIImageView *imgView = cell.statusView.mediaView.imageViews[i];

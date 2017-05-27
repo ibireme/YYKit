@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-#define WEBP_DECODER_ABI_VERSION 0x0203    // MAJOR(8b) + MINOR(8b)
+#define WEBP_DECODER_ABI_VERSION 0x0208    // MAJOR(8b) + MINOR(8b)
 
 // Note: forward declaring enumerations is not allowed in (strict) C and C++,
 // the types are left here for reference.
@@ -48,7 +48,7 @@ WEBP_EXTERN(int) WebPGetInfo(const uint8_t* data, size_t data_size,
 // Decodes WebP images pointed to by 'data' and returns RGBA samples, along
 // with the dimensions in *width and *height. The ordering of samples in
 // memory is R, G, B, A, R, G, B, A... in scan order (endian-independent).
-// The returned pointer should be deleted calling free().
+// The returned pointer should be deleted calling WebPFree().
 // Returns NULL in case of error.
 WEBP_EXTERN(uint8_t*) WebPDecodeRGBA(const uint8_t* data, size_t data_size,
                                      int* width, int* height);
@@ -73,9 +73,9 @@ WEBP_EXTERN(uint8_t*) WebPDecodeBGR(const uint8_t* data, size_t data_size,
 
 // Decode WebP images pointed to by 'data' to Y'UV format(*). The pointer
 // returned is the Y samples buffer. Upon return, *u and *v will point to
-// the U and V chroma data. These U and V buffers need NOT be free()'d,
-// unlike the returned Y luma one. The dimension of the U and V planes
-// are both (*width + 1) / 2 and (*height + 1)/ 2.
+// the U and V chroma data. These U and V buffers need NOT be passed to
+// WebPFree(), unlike the returned Y luma one. The dimension of the U and V
+// planes are both (*width + 1) / 2 and (*height + 1)/ 2.
 // Upon return, the Y buffer has a stride returned as '*stride', while U and V
 // have a common stride returned as '*uv_stride'.
 // Return NULL in case of error.
@@ -84,6 +84,9 @@ WEBP_EXTERN(uint8_t*) WebPDecodeYUV(const uint8_t* data, size_t data_size,
                                     int* width, int* height,
                                     uint8_t** u, uint8_t** v,
                                     int* stride, int* uv_stride);
+
+// Releases memory returned by the WebPDecode*() functions above.
+WEBP_EXTERN(void) WebPFree(void* ptr);
 
 // These five functions are variants of the above ones, that decode the image
 // directly into a pre-allocated buffer 'output_buffer'. The maximum storage
@@ -406,12 +409,7 @@ struct WebPBitstreamFeatures {
   int has_animation;  // True if the bitstream is an animation.
   int format;         // 0 = undefined (/mixed), 1 = lossy, 2 = lossless
 
-  // Unused for now:
-  int no_incremental_decoding;  // if true, using incremental decoding is not
-                                // recommended.
-  int rotate;                   // TODO(later)
-  int uv_sampling;              // should be 0 for now. TODO(later)
-  uint32_t pad[2];              // padding for later use
+  uint32_t pad[5];    // padding for later use
 };
 
 // Internal, version-checked, entry point
@@ -442,23 +440,10 @@ struct WebPDecoderOptions {
   int scaled_width, scaled_height;    // final resolution
   int use_threads;                    // if true, use multi-threaded decoding
   int dithering_strength;             // dithering strength (0=Off, 100=full)
-#if WEBP_DECODER_ABI_VERSION > 0x0203
   int flip;                           // flip output vertically
-#endif
-#if WEBP_DECODER_ABI_VERSION > 0x0204
   int alpha_dithering_strength;       // alpha dithering strength in [0..100]
-#endif
 
-  // Unused for now:
-  int force_rotation;                 // forced rotation (to be applied _last_)
-  int no_enhancement;                 // if true, discard enhancement layer
-#if WEBP_DECODER_ABI_VERSION < 0x0203
   uint32_t pad[5];                    // padding for later use
-#elif WEBP_DECODER_ABI_VERSION < 0x0204
-  uint32_t pad[4];                    // padding for later use
-#else
-  uint32_t pad[3];                    // padding for later use
-#endif
 };
 
 // Main object storing the configuration for advanced decoding.

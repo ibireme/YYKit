@@ -251,7 +251,7 @@
     return dic;
 }
 
-+ (NSArray *)emoticonGroups {
++ (NSArray<WBEmoticonGroup *> *)emoticonGroups {
     static NSMutableArray *groups;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -282,7 +282,7 @@
             groupDic[group.groupID] = group;
         }
         
-        NSArray *additionals = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[emoticonBundlePath stringByAppendingPathComponent:@"additional"] error:nil];
+        NSArray<NSString *> *additionals = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[emoticonBundlePath stringByAppendingPathComponent:@"additional"] error:nil];
         for (NSString *path in additionals) {
             WBEmoticonGroup *group = groupDic[path];
             if (!group) continue;

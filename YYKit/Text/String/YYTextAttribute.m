@@ -383,6 +383,17 @@ YYTextAttributeType YYTextAttributeGetType(NSString *name){
     return one;
 }
 
++ (instancetype)highlightWithBackgroundColor:(UIColor *)color {
+    YYTextBorder *highlightBorder = [YYTextBorder new];
+    highlightBorder.insets = UIEdgeInsetsMake(-2, -1, -2, -1);
+    highlightBorder.cornerRadius = 3;
+    highlightBorder.fillColor = color;
+    
+    YYTextHighlight *one = [self new];
+    [one setBackgroundBorder:highlightBorder];
+    return one;
+}
+
 - (void)setAttributes:(NSDictionary *)attributes {
     _attributes = attributes.mutableCopy;
 }
