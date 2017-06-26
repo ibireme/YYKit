@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Provide some some common method for `NSArray`.
  */
-@interface NSArray (YYAdd)
+@interface NSArray<__covariant ObjectType> (YYAdd)
 
 /**
  Creates and returns an array from a specified property list data.
@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return The object in the array with a random index value.
  If the array is empty, returns nil.
  */
-- (nullable id)randomObject;
+- (nullable ObjectType)randomObject;
 
 /**
  Returns the object located at index, or return nil when out of bounds.
@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param index The object located at index.
  */
-- (nullable id)objectOrNilAtIndex:(NSUInteger)index;
+- (nullable ObjectType)objectOrNilAtIndex:(NSUInteger)index;
 
 /**
  Convert object to json string. return nil if an error occurs.
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Provide some some common method for `NSMutableArray`.
  */
-@interface NSMutableArray (YYAdd)
+@interface NSMutableArray<ObjectType>  (YYAdd)
 
 /**
  Creates and returns an array from a specified property list data.
@@ -123,7 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return The first object, or nil.
  */
-- (nullable id)popFirstObject;
+- (nullable ObjectType)popFirstObject;
 
 /**
  Removes and returns the object with the highest-valued index in the array.
@@ -131,7 +131,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return The first object, or nil.
  */
-- (nullable id)popLastObject;
+- (nullable ObjectType)popLastObject;
 
 /**
  Inserts a given object at the end of the array.
