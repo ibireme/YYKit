@@ -72,16 +72,20 @@ dispatch_semaphore_signal(_lock);
 }
 
 - (void)fire {
+    if (!_valid) return;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     id target = _target;
-    if (!_repeats || !target) {
+    if (!target) {
         dispatch_semaphore_signal(_lock);
         [self invalidate];
     } else {
         dispatch_semaphore_signal(_lock);
         [target performSelector:_selector withObject:self];
+        if (!_repeats) {
+            [self invalidate];
+        }
     }
 #pragma clang diagnostic pop
 }
