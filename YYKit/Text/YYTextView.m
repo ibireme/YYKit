@@ -153,6 +153,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         unsigned int insideUndoBlock : 1;
         unsigned int firstResponderBeforeUndoAlert : 1;
     } _state;
+    
+    BOOL _isExcludeNeed;     // fix iOS10 Keyboard -- 用于控制 iOS10 键盘标点符号Bug  是否开启排除操作
 }
 
 @end
@@ -1396,6 +1398,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 /// Replace the range with the text, and change the `_selectTextRange`.
 /// The caller should make sure the `range` and `text` are valid before call this method.
 - (void)_replaceRange:(YYTextRange *)range withText:(NSString *)text notifyToDelegate:(BOOL)notify{
+    if (_isExcludeNeed) {
+        notify = NO;
+    }
     if (NSEqualRanges(range.asRange, _selectedTextRange.asRange)) {
         if (notify) [_inputDelegate selectionWillChange:self];
         NSRange newRange = NSMakeRange(0, 0);
@@ -1492,9 +1497,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         YYTextRange *oldTextRange = _selectedTextRange;
         NSRange newRange = _selectedTextRange.asRange;
         
-        [_inputDelegate textWillChange:self];
+        if(!_isExcludeNeed)[_inputDelegate textWillChange:self];
         BOOL textChanged = [self.textParser parseText:_innerText selectedRange:&newRange];
-        [_inputDelegate textDidChange:self];
+        if(!_isExcludeNeed)[_inputDelegate textDidChange:self];
         
         YYTextRange *newTextRange = [YYTextRange rangeWithRange:newRange];
         newTextRange = [self _correctedTextRange:newTextRange];
@@ -3357,6 +3362,22 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if (!range) return;
     if (!text) text = @"";
     if (range.asRange.length == 0 && text.length == 0) return;
+    
+    //控制排除设置 ---Fix iOS10下标点符号Bug  @Saylor
+    //此处拦截
+    //需要排除的字符集
+    NSString *strExclude = @"#。，、？！；（）@“”【】｛｝#%^*+=_\\|《》&·,?!'/.:";
+    _isExcludeNeed = NO;
+    
+    for (int i=0; i< strExclude.length -1; i++) {
+        NSString *str= [NSString stringWithFormat:@"%c",[strExclude characterAtIndex:i]];
+        
+        if ([strExclude containsString:str]) {
+            _isExcludeNeed = YES;
+            break;
+        }
+    }
+    
     range = [self _correctedTextRange:range];
     
     if ([self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
