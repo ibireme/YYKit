@@ -154,7 +154,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         unsigned int firstResponderBeforeUndoAlert : 1;
     } _state;
     
-    BOOL _isExcludeNeed;     // fix iOS10 Keyboard -- 用于控制 iOS10 键盘标点符号Bug  是否开启排除操作
+    BOOL _isExcludeNeed;     /// fix iOS10 Keyboard -- 用于控制 iOS10 键盘标点符号Bug  是否开启排除操作
+    BOOL _isPasteOp;         /// fix 设置nablesReturnKeyAutomatically 、returnTypeSend 属性后，粘贴内容时，发送按钮置灰的问题
 }
 
 @end
@@ -2891,6 +2892,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (void)paste:(id)sender {
+    _isPasteOp = YES;
     [self _endTouchTracking];
     UIPasteboard *p = [UIPasteboard generalPasteboard];
     NSAttributedString *atr = nil;
@@ -3370,9 +3372,13 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _isExcludeNeed = NO;
     
     for (int i=0; i< strExclude.length -1; i++) {
-        NSString *str= [NSString stringWithFormat:@"%c",[strExclude characterAtIndex:i]];
+        NSString *str = [strExclude substringWithRange:NSMakeRange(i, 1)];
+        if (_isPasteOp) {
+            _isPasteOp = NO;
+            break;
+        }
         
-        if ([strExclude containsString:str]) {
+        if ([text containsString:str]) {
             _isExcludeNeed = YES;
             break;
         }
