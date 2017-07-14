@@ -44,6 +44,8 @@
 #define kDefaultInset UIEdgeInsetsMake(6, 4, 6, 4)
 #define kDefaultVerticalInset UIEdgeInsetsMake(4, 6, 4, 6)
 
+#define kDefaultNumberOfLines 0
+#define kDefaultTruncationToken nil
 
 NSString *const YYTextViewTextDidBeginEditingNotification = @"YYTextViewTextDidBeginEditing";
 NSString *const YYTextViewTextDidChangeNotification = @"YYTextViewTextDidChange";
@@ -1882,6 +1884,20 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [self didChangeValueForKey:@"textContainerInset"];
 }
 
+- (void)_setNumberOfLines:(NSInteger)numberOfLines{
+    if (_numberOfLines == numberOfLines) return;
+    [self willChangeValueForKey:@"numberOfLines"];
+    _numberOfLines = numberOfLines;
+    [self didChangeValueForKey:@"numberOfLines"];
+}
+
+- (void)_setTruncationToken:(NSAttributedString *)truncationToken{
+    if (_truncationToken == truncationToken || [_truncationToken isEqual:truncationToken]) return;
+    [self willChangeValueForKey:@"truncationToken"];
+    _truncationToken = truncationToken;
+    [self didChangeValueForKey:@"truncationToken"];
+}
+
 - (void)_setExclusionPaths:(NSArray *)exclusionPaths {
     if (_exclusionPaths == exclusionPaths || [_exclusionPaths isEqual:exclusionPaths]) return;
     [self willChangeValueForKey:@"exclusionPaths"];
@@ -1958,6 +1974,10 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _innerContainer = [YYTextContainer new];
     _innerContainer.insets = kDefaultInset;
     _textContainerInset = kDefaultInset;
+    
+    _numberOfLines = kDefaultNumberOfLines;
+    _truncationToken = kDefaultTruncationToken;
+    
     _typingAttributesHolder = [[NSMutableAttributedString alloc] initWithString:@" "];
     _linkTextAttributes = @{NSForegroundColorAttributeName : [self _defaultTintColor],
                             (id)kCTForegroundColorAttributeName : (id)[self _defaultTintColor].CGColor};
@@ -2192,6 +2212,23 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if (UIEdgeInsetsEqualToEdgeInsets(_textContainerInset, textContainerInset)) return;
     [self _setTextContainerInset:textContainerInset];
     _innerContainer.insets = textContainerInset;
+    [self _commitUpdate];
+}
+
+- (void)setNumberOfLines:(NSUInteger)numberOfLines{
+    if (_numberOfLines == numberOfLines) return;
+    [self _setNumberOfLines:numberOfLines];
+    _innerContainer.maximumNumberOfRows = numberOfLines;
+    _innerContainer.truncationType = YYTextTruncationTypeEnd;
+    
+    [self _commitUpdate];
+}
+
+- (void)setTruncationToken:(NSAttributedString *)truncationToken{
+    if (_truncationToken == truncationToken || [_truncationToken isEqual:truncationToken]) return;
+    [self _setTruncationToken:truncationToken];
+    _innerContainer.truncationToken = truncationToken;
+    
     [self _commitUpdate];
 }
 
@@ -3030,6 +3067,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             @"attributedText",
             @"textVerticalAlignment",
             @"textContainerInset",
+            @"numberOfLines",
+            @"truncationToken",
             @"exclusionPaths",
             @"verticalForm",
             @"linePositionModifier",
@@ -3053,6 +3092,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     self.textVerticalAlignment = [aDecoder decodeIntegerForKey:@"textVerticalAlignment"];
     self.dataDetectorTypes = [aDecoder decodeIntegerForKey:@"dataDetectorTypes"];
     self.textContainerInset = ((NSValue *)[aDecoder decodeObjectForKey:@"textContainerInset"]).UIEdgeInsetsValue;
+    self.numberOfLines = [aDecoder decodeIntegerForKey:@"numberOfLines"];
+    self.truncationToken = [aDecoder decodeObjectForKey:@"truncationToken"];
     self.exclusionPaths = [aDecoder decodeObjectForKey:@"exclusionPaths"];
     self.verticalForm = [aDecoder decodeBoolForKey:@"verticalForm"];
     return self;
@@ -3065,6 +3106,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [aCoder encodeInteger:self.textVerticalAlignment forKey:@"textVerticalAlignment"];
     [aCoder encodeInteger:self.dataDetectorTypes forKey:@"dataDetectorTypes"];
     [aCoder encodeUIEdgeInsets:self.textContainerInset forKey:@"textContainerInset"];
+    [aCoder encodeInteger:self.numberOfLines forKey:@"numberOfLines"];
+    [aCoder encodeObject:self.truncationToken forKey:@"truncationToken"];
     [aCoder encodeObject:self.exclusionPaths forKey:@"exclusionPaths"];
     [aCoder encodeBool:self.verticalForm forKey:@"verticalForm"];
 }

@@ -239,6 +239,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nullable, nonatomic, copy) YYTextDebugOption *debugOption;
 
+/**
+ The truncation token string used when text is truncated. Default is nil.
+ When the value is nil, the label use "…" as default truncation token.
+ */
+@property (nullable, nonatomic, copy) NSAttributedString *truncationToken;
+
+/**
+ The maximum number of lines to use for rendering text. Default value is 1.
+ 0 means no limit.
+ */
+@property (nonatomic) NSUInteger numberOfLines;
 
 #pragma mark - Working with the Selection and Menu
 ///=============================================================================
