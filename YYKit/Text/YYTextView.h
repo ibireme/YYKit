@@ -246,7 +246,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSAttributedString *truncationToken;
 
 /**
- The maximum number of lines to use for rendering text. Default value is 1.
+ The maximum number of lines to use for rendering text. Default value is 0.
  0 means no limit.
  */
 @property (nonatomic) NSUInteger numberOfLines;
