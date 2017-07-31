@@ -1405,11 +1405,11 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         notify = NO;
     }
     if (NSEqualRanges(range.asRange, _selectedTextRange.asRange)) {
-        if (notify) [_inputDelegate selectionWillChange:self];
+//        if (notify) [_inputDelegate selectionWillChange:self];
         NSRange newRange = NSMakeRange(0, 0);
         newRange.location = _selectedTextRange.start.offset + text.length;
         _selectedTextRange = [YYTextRange rangeWithRange:newRange];
-        if (notify) [_inputDelegate selectionDidChange:self];
+//        if (notify) [_inputDelegate selectionDidChange:self];
     } else {
         if (range.asRange.length != text.length) {
             if (notify) [_inputDelegate selectionWillChange:self];
@@ -1445,15 +1445,16 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                     _selectedTextRange = [YYTextRange rangeWithRange:newRange];
                 }
             }
-            _selectedTextRange = [self _correctedTextRange:_selectedTextRange];
+            //这里的Range修正 存在问题:误判 导致系统键盘点击联想的单词输入会被空格分离
+//            _selectedTextRange = [self _correctedTextRange:_selectedTextRange];
             if (notify) [_inputDelegate selectionDidChange:self];
         }
     }
-    if (notify) [_inputDelegate textWillChange:self];
+    if (!self.textParser) [_inputDelegate textWillChange:self];
     NSRange newRange = NSMakeRange(range.asRange.location, text.length);
     [_innerText replaceCharactersInRange:range.asRange withString:text];
     [_innerText removeDiscontinuousAttributesInRange:newRange];
-    if (notify) [_inputDelegate textDidChange:self];
+    if (!self.textParser) [_inputDelegate textDidChange:self];
 }
 
 /// Save current typing attributes to the attributes holder.
@@ -1499,10 +1500,10 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     if (self.textParser) {
         YYTextRange *oldTextRange = _selectedTextRange;
         NSRange newRange = _selectedTextRange.asRange;
-        
-        if(!_isExcludeNeed)[_inputDelegate textWillChange:self];
+        //此处方法注释掉
+//        if(!_isExcludeNeed)[_inputDelegate textWillChange:self];
         BOOL textChanged = [self.textParser parseText:_innerText selectedRange:&newRange];
-        if(!_isExcludeNeed)[_inputDelegate textDidChange:self];
+//        if(!_isExcludeNeed)[_inputDelegate textDidChange:self];
         
         YYTextRange *newTextRange = [YYTextRange rangeWithRange:newRange];
         newTextRange = [self _correctedTextRange:newTextRange];
