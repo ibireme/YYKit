@@ -1446,7 +1446,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                 }
             }
             //这里的Range修正 存在问题:误判 导致系统键盘点击联想的单词输入会被空格分离
-//            _selectedTextRange = [self _correctedTextRange:_selectedTextRange];
+            _selectedTextRange = [self _correctedTextRange:_selectedTextRange];
             if (notify) [_inputDelegate selectionDidChange:self];
         }
     }
@@ -1455,6 +1455,21 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [_innerText replaceCharactersInRange:range.asRange withString:text];
     [_innerText removeDiscontinuousAttributesInRange:newRange];
     if (!self.textParser) [_inputDelegate textDidChange:self];
+    
+    /*
+     修正光标位置的方法放在这里，因为此处已经替换文本完毕
+     问题的本质原因，替换完文本后 range 没有得到更新
+     */
+    //    NSLog(@"Correct cursor position");
+    
+    if (range.asRange.location + range.asRange.length == _selectedTextRange.asRange.location && _selectedTextRange.asRange.length == 0) {
+        //修正_selectedTextRange
+        [_inputDelegate selectionWillChange:self];
+        
+        _selectedTextRange = [YYTextRange rangeWithRange:NSMakeRange(_selectedTextRange.asRange.location + text.length - range.asRange.length, 0)];
+        
+        [_inputDelegate selectionDidChange:self];
+    }
 }
 
 /// Save current typing attributes to the attributes holder.
