@@ -230,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param cls  The instance's class in array.
  @param json  A json array of `NSArray`, `NSString` or `NSData`.
-              Example: [{"name","Mary"},{name:"Joe"}]
+              Example: [{"name":"Mary"},{name:"Joe"}]
  
  @return A array, or nil if an error occurs.
  */
