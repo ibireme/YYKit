@@ -87,7 +87,7 @@ static inline CGFloat CGAffineTransformGetTranslateY(CGAffineTransform transform
  
  @see http://stackoverflow.com/questions/13291796/calculate-values-for-a-cgaffinetransform-from-three-points-in-each-of-two-uiview
  */
-CGAffineTransform YYCGAffineTransformGetFromPoints(CGPoint before[3], CGPoint after[3]);
+CGAffineTransform YYCGAffineTransformGetFromPoints(CGPoint before[_Nonnull 3], CGPoint after[_Nonnull 3]);
 
 /// Get the transform which can converts a point from the coordinate system of a given view to another.
 CGAffineTransform YYCGAffineTransformGetFromViews(UIView *from, UIView *to);
@@ -114,7 +114,7 @@ NSString *YYUIViewContentModeToCAGravity(UIViewContentMode contentMode);
 
 
 /**
- Returns a rectangle to fit the @param rect with specified content mode.
+ Returns a rectangle to fit the `rect` with specified content mode.
  
  @param rect The constrant rect
  @param size The content size

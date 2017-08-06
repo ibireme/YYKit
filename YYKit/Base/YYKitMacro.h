@@ -200,8 +200,8 @@ static inline CFTypeRef YYCFAutorelease(CFTypeRef CF_RELEASES_ARGUMENT arg) {
 
 /**
  Profile time cost.
- @param ^block     code to benchmark
- @param ^complete  code time cost (millisecond)
+ @param block    code to benchmark
+ @param complete code time cost (millisecond)
  
  Usage:
     YYBenchmark(^{

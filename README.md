@@ -181,6 +181,6 @@ YYKit 使用 MIT 许可证，详情见 LICENSE 文件。
 相关文章
 ==============
 [iOS 保持界面流畅的技巧
-](http://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/) 
+](https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/) 
 
 

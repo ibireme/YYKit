@@ -141,6 +141,10 @@
     }
 }
 
++ (BOOL)supportsSecureCoding {
+    return  YES;
+}
+
 #pragma mark - protocol YYAnimatedImage
 
 - (NSUInteger)animatedImageFrameCount {

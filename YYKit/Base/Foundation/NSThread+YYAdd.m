@@ -47,7 +47,7 @@ static inline void YYAutoreleasePoolPush() {
         dic[YYNSThreadAutoleasePoolStackKey] = poolStack;
         CFRelease(poolStack);
     }
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; //< create
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; // create
     [poolStack addObject:pool]; // push
 }
 
