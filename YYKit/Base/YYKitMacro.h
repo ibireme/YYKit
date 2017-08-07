@@ -232,8 +232,8 @@ static inline void YYBenchmark(void (^block)(void), void (^complete)(double ms))
     complete(ms);
 }
 
-static inline NSDate *_YYCompileTime(const char *data, const char *time) {
-    NSString *timeStr = [NSString stringWithFormat:@"%s %s",data,time];
+static inline NSDate *_YYCompileTime(const char *date, const char *time) {
+    NSString *timeStr = [NSString stringWithFormat:@"%s %s", date, time];
     NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MMM dd yyyy HH:mm:ss"];
