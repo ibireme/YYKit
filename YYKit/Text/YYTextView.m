@@ -3314,11 +3314,17 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [self _hideMenu];
     _state.deleteConfirm = NO;
     _state.typingAttributesOnce = NO;
-    
-    [_inputDelegate selectionWillChange:self];
+    /*
+     以下被注释的两句代码引起如下问题：
+     字母键盘，英文模式  
+     输入 Res
+     键盘纠正状态栏  高亮词 “Tes”
+     此时点击后退键，会错误的将Tes 传入到文本框
+     */
+//    [_inputDelegate selectionWillChange:self];
     _selectedTextRange = selectedTextRange;
     _lastTypeRange = _selectedTextRange.asRange;
-    [_inputDelegate selectionDidChange:self];
+//    [_inputDelegate selectionDidChange:self];
     
     [self _updateOuterProperties];
     [self _updateSelectionView];
