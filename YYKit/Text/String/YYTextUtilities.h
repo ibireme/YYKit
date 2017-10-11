@@ -251,13 +251,13 @@ static inline UTF32Char UTF16SurrogatePairToUTF32Char(UTF16Char char16[_Nonnull 
  Get the character set which should rotate in vertical form.
  @return The shared character set.
  */
-NSCharacterSet *YYTextVerticalFormRotateCharacterSet();
+NSCharacterSet *YYTextVerticalFormRotateCharacterSet(void);
 
 /**
  Get the character set which should rotate and move in vertical form.
  @return The shared character set.
  */
-NSCharacterSet *YYTextVerticalFormRotateAndMoveCharacterSet();
+NSCharacterSet *YYTextVerticalFormRotateAndMoveCharacterSet(void);
 
 NS_ASSUME_NONNULL_END
 YY_EXTERN_C_END

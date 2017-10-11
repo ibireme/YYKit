@@ -754,7 +754,7 @@
     [_profileView.avatarView setImageWithURL:layout.status.user.avatarLarge //profileImageURL
                                  placeholder:nil
                                      options:kNilOptions
-                                     manager:[WBStatusHelper avatarImageManager] //< 圆角头像manager，内置圆角处理
+																		 manager:[WBStatusHelper avatarImageManager] ///< 圆角头像manager，内置圆角处理
                                     progress:nil
                                    transform:nil
                                   completion:nil];
@@ -981,7 +981,7 @@
 }
 
 - (void)prepareForReuse {
-    // ignore
+	[super prepareForReuse];
 }
 
 - (void)setLayout:(WBStatusLayout *)layout {

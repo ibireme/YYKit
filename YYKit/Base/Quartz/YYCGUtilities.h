@@ -33,10 +33,10 @@ CGContextRef _Nullable YYCGContextCreateGrayBitmapContext(CGSize size, CGFloat s
 
 
 /// Get main screen's scale.
-CGFloat YYScreenScale();
+CGFloat YYScreenScale(void);
 
 /// Get main screen's size. Height is always larger than width.
-CGSize YYScreenSize();
+CGSize YYScreenSize(void);
 
 
 

@@ -12,6 +12,7 @@
 #import "YYDispatchQueuePool.h"
 #import <UIKit/UIKit.h>
 #import <libkern/OSAtomic.h>
+#import <stdatomic.h>
 
 #define MAX_QUEUE_COUNT 32
 
@@ -93,7 +94,8 @@ static void YYDispatchContextRelease(YYDispatchContext *context) {
 }
 
 static dispatch_queue_t YYDispatchContextGetQueue(YYDispatchContext *context) {
-    uint32_t counter = (uint32_t)OSAtomicIncrement32(&context->counter);
+	  _Atomic uint32_t counter = atomic_fetch_add_explicit(&counter, 1, memory_order_relaxed);
+		counter = ++context->counter;
     void *queue = context->queues[counter % context->queueCount];
     return (__bridge dispatch_queue_t)(queue);
 }
