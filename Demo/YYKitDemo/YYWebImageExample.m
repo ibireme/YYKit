@@ -103,7 +103,7 @@
 }
 
 - (void)prepareForReuse {
-    //nothing
+	[super prepareForReuse];
 }
 
 @end
