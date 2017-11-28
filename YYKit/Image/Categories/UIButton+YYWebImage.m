@@ -96,7 +96,7 @@ static int _YYWebImageBackgroundSetterKey;
     int32_t sentinel = [setter cancelWithNewURL:imageURL];
     
     dispatch_async_on_main_queue(^{
-        if (!imageURL) {
+        if (!imageURL || imageURL.absoluteString.length == 0) {
             if (!(options & YYWebImageOptionIgnorePlaceHolder)) {
                 [self setImage:placeholder forState:state.integerValue];
             }
@@ -273,7 +273,7 @@ static int _YYWebImageBackgroundSetterKey;
     int32_t sentinel = [setter cancelWithNewURL:imageURL];
     
     dispatch_async_on_main_queue(^{
-        if (!imageURL) {
+        if (!imageURL || imageURL.absoluteString.length == 0) {
             if (!(options & YYWebImageOptionIgnorePlaceHolder)) {
                 [self setBackgroundImage:placeholder forState:state.integerValue];
             }
