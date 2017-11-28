@@ -117,7 +117,7 @@ static int _YYWebImageHighlightedSetterKey;
             }
         }
         
-        if (!imageURL) {
+        if (!imageURL || imageURL.absoluteString.length == 0) {
             if (!(options & YYWebImageOptionIgnorePlaceHolder)) {
                 self.image = placeholder;
             }
@@ -281,7 +281,7 @@ static int _YYWebImageHighlightedSetterKey;
                 [self.layer removeAnimationForKey:_YYWebImageFadeAnimationKey];
             }
         }
-        if (!imageURL) {
+        if (!imageURL || imageURL.absoluteString.length == 0) {
             if (!(options & YYWebImageOptionIgnorePlaceHolder)) {
                 self.highlightedImage = placeholder;
             }

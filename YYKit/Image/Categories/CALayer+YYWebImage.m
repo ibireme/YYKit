@@ -110,7 +110,7 @@ static int _YYWebImageSetterKey;
             [self removeAnimationForKey:_YYWebImageFadeAnimationKey];
         }
         
-        if (!imageURL) {
+        if (!imageURL || imageURL.absoluteString.length == 0) {
             if (!(options & YYWebImageOptionIgnorePlaceHolder)) {
                 self.contents = (id)placeholder.CGImage;
             }

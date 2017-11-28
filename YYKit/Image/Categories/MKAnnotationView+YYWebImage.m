@@ -109,7 +109,7 @@ static int _YYWebImageSetterKey;
                 [self.layer removeAnimationForKey:_YYWebImageFadeAnimationKey];
             }
         }
-        if (!imageURL) {
+        if (!imageURL || imageURL.absoluteString.length == 0) {
             if (!(options & YYWebImageOptionIgnorePlaceHolder)) {
                 self.image = placeholder;
             }
