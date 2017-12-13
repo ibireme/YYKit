@@ -282,6 +282,12 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             @"iPhone9,2" : @"iPhone 7 Plus",
             @"iPhone9,3" : @"iPhone 7",
             @"iPhone9,4" : @"iPhone 7 Plus",
+            @"iPhone10,1" : @"iPhone 8",
+            @"iPhone10,2" : @"iPhone 8 Plus",
+            @"iPhone10,3" : @"iPhone X",
+            @"iPhone10,4" : @"iPhone 8",
+            @"iPhone10,5" : @"iPhone 8 Plus",
+            @"iPhone10,6" : @"iPhone X",
             
             @"iPad1,1" : @"iPad 1",
             @"iPad2,1" : @"iPad 2 (WiFi)",
