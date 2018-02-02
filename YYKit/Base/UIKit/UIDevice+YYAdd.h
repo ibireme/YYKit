@@ -191,3 +191,7 @@ NS_ASSUME_NONNULL_END
 #ifndef kiOS9Later
 #define kiOS9Later (kSystemVersion >= 9)
 #endif
+
+#ifndef kiOS11Later
+#define kiOS11Later (kSystemVersion >= 11)
+#endif

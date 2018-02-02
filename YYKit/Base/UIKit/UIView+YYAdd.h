@@ -100,6 +100,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (CGRect)convertRect:(CGRect)rect fromViewOrWindow:(nullable UIView *)view;
 
+/**
+ add a nomal view to the UIVisualEffectView
+ 
+ @param subView : which view will add the parentView
+ @return void
+ */
+- (void)visualEffectViewAddSubview:(UIView *)subView;
+
 
 @property (nonatomic) CGFloat left;        ///< Shortcut for frame.origin.x.
 @property (nonatomic) CGFloat top;         ///< Shortcut for frame.origin.y
