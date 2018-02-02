@@ -173,6 +173,16 @@ YYSYNTH_DUMMY_CLASS(UIView_YYAdd)
     return rect;
 }
 
+- (void)visualEffectViewAddSubview:(UIView *)subView {
+    if ([self isKindOfClass:[UIVisualEffectView class]] && [UIDevice currentDevice].systemVersion.floatValue >= 11.f) {
+        UIVisualEffectView *visualEffectView = (UIVisualEffectView *)self;
+        [visualEffectView.contentView addSubview:subView];
+    }
+    else {
+        [self addSubview:subView];
+    }
+}
+
 - (CGFloat)left {
     return self.frame.origin.x;
 }
