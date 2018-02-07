@@ -347,8 +347,10 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     if (!_font) _font = [self _defaultFont];
     _textColor = _innerText.color;
     if (!_textColor) _textColor = [UIColor blackColor];
-    _textAlignment = _innerText.alignment;
-    _lineBreakMode = _innerText.lineBreakMode;
+    //判断text 是否为空
+    BOOL isEmptyStr = _innerText.length == 0;
+    _textAlignment = isEmptyStr ?: _innerText.alignment;
+    _lineBreakMode = isEmptyStr ?: _innerText.lineBreakMode;
     NSShadow *shadow = _innerText.shadow;
     _shadowColor = shadow.shadowColor;
 #if !TARGET_INTERFACE_BUILDER
