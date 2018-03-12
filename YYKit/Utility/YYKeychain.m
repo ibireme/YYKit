@@ -434,10 +434,14 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
     if (status != errSecSuccess) {
         if (error) *error = [[self class] errorWithCode:status];
+        if (result) {
+            CFRelease(result);
+        }
         return nil;
     }
-    if (!result) return nil;
-    
+    if (!result) {
+        return nil;
+    }
     NSDictionary *dic = nil;
     if (CFGetTypeID(result) == CFDictionaryGetTypeID()) {
         dic = (__bridge NSDictionary *)(result);
@@ -445,6 +449,7 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
         dic = [(__bridge NSArray *)(result) firstObject];
         if (![dic isKindOfClass:[NSDictionary class]]) dic = nil;
     }
+    CFRelease(result);
     if (!dic.count) return nil;
     return [[YYKeychainItem alloc] initWithDic:dic];
 }
