@@ -37,13 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
      4. Put the image to cache and return it with `completion` block.
  
  */
-@interface YYWebImageOperation : NSOperation
+@interface YYWebImageOperation : NSOperation <NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 
 @property (nonatomic, strong, readonly)           NSURLRequest      *request;  ///< The image URL request.
-@property (nullable, nonatomic, strong, readonly) NSURLResponse     *response; ///< The response for request.
+@property (nullable, nonatomic, strong)           NSURLResponse     *response; ///< The response for request.
 @property (nullable, nonatomic, strong, readonly) YYImageCache      *cache;    ///< The image cache.
 @property (nonatomic, strong, readonly)           NSString          *cacheKey; ///< The image cache key.
 @property (nonatomic, readonly)                   YYWebImageOptions options;   ///< The operation's option.
+@property (strong, nonatomic, readonly, nullable) NSURLSessionTask *dataTask; ////< The operation's task
+
 
 /**
  Whether the URL connection should consult the credential storage for authenticating 
@@ -85,6 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
                         options:(YYWebImageOptions)options
                           cache:(nullable YYImageCache *)cache
                        cacheKey:(nullable NSString *)cacheKey
+                        session:(nullable NSURLSession*)session
                        progress:(nullable YYWebImageProgressBlock)progress
                       transform:(nullable YYWebImageTransformBlock)transform
                      completion:(nullable YYWebImageCompletionBlock)completion NS_DESIGNATED_INITIALIZER;
