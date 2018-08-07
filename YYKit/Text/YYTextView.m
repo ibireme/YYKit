@@ -706,10 +706,19 @@ static BOOL _autoCursorEnable = NO;
     CGRect rect = [_innerLayout rectForRange:range];
     if (CGRectIsNull(rect)) return;
     rect = [self _convertRectFromLayout:rect];
+    //convert to scTop
+    CGRect rectTop = [_containerView convertRect:rect toView:scTop];
     rect = [_containerView convertRect:rect toView:self];
     
-    if (rect.size.width < 1) rect.size.width = 1;
-    if (rect.size.height < 1) rect.size.height = 1;
+    if (rect.size.width < 1) {
+        rect.size.width = 1;
+        rectTop.size.width = 1;
+    }
+    if (rect.size.height < 1) {
+        rect.size.height = 1;
+        rectTop.size.height = 1;
+    }
+    
     CGFloat extend = 3;
     
     BOOL insetModified = NO;
