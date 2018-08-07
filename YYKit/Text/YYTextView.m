@@ -859,7 +859,7 @@ static BOOL _autoCursorEnable = NO;
 - (UIScrollView *)_findTopScrollView {
     UIScrollView *topScrollView = nil;
     UIView *viewTemp = self.superview;
-    while (!viewTemp && ![viewTemp isKindOfClass:[UIScrollView class]]) {
+    while (viewTemp && ![viewTemp isKindOfClass:[UIScrollView class]]) {
         viewTemp = viewTemp.superview;
     }
     
