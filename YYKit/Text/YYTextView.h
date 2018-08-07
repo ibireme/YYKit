@@ -69,6 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface YYTextView : UIScrollView <UITextInput>
 
+#pragma mark - Add class property
+/// do something like IQKeyboardManager, default NO.
+/// attention self.scrollEnable must be NO.
+@property(class, nonatomic, assign) BOOL autoCursorEnable;
+
 
 #pragma mark - Accessing the Delegate
 ///=============================================================================
@@ -362,6 +367,9 @@ NS_ASSUME_NONNULL_BEGIN
 #else // TARGET_INTERFACE_BUILDER
 IB_DESIGNABLE
 @interface YYTextView : UIScrollView <UITextInput>
+/// do something like IQKeyboardManager, default NO.
+@property(class, nonatomic) IBInspectable BOOL autoCursorEnable;
+
 @property (null_resettable, nonatomic, copy) IBInspectable NSString *text;
 @property (nullable, nonatomic, strong) IBInspectable UIColor *textColor;
 @property (nullable, nonatomic, strong) IBInspectable NSString *fontName_;

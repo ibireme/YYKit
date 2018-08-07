@@ -111,6 +111,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     BOOL _insetModifiedByKeyboard; ///< text is covered by keyboard, and the contentInset is modified
     UIEdgeInsets _originalContentInset; ///< the original contentInset before modified
     UIEdgeInsets _originalScrollIndicatorInsets; ///< the original scrollIndicatorInsets before modified
+    UIEdgeInsets _originalTopContentInset; ///< the original contentInset before modified
+    UIEdgeInsets _originalTopScrollIndicatorInsets; ///< the original scrollIndicatorInsets before modified
+    
     
     NSTimer *_longPressTimer;
     NSTimer *_autoScrollTimer;
@@ -158,6 +161,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     
     BOOL _isExcludeNeed;     /// fix iOS10 Keyboard -- 用于控制 iOS10 键盘标点符号Bug  是否开启排除操作
     BOOL _isPasteOp;         /// fix 设置nablesReturnKeyAutomatically 、returnTypeSend 属性后，粘贴内容时，发送按钮置灰的问题
+    BOOL _isAutoCursorEnable; ///用于标记第一次启用自动光标定位，辅助记录scTop 原数据。
 }
 
 @end
@@ -185,6 +189,16 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 #pragma mark - @protocol UITextInput optional
 @synthesize selectionAffinity = _selectionAffinity;
 
+#pragma mark - Class Property
+static BOOL _autoCursorEnable = NO;
+
++ (void)setAutoCursorEnable:(BOOL)autoCursorEnable{
+    _autoCursorEnable = autoCursorEnable;
+}
+
++ (BOOL)autoCursorEnable{
+    return _autoCursorEnable;
+}
 
 #pragma mark - Private
 
@@ -686,6 +700,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 /// Scroll range to visible, take account into keyboard and insets.
 - (void)_scrollRangeToVisible:(YYTextRange *)range {
     if (!range) return;
+    //get top ScrollView
+    UIScrollView *scTop = [self _findTopScrollView];
+    
     CGRect rect = [_innerLayout rectForRange:range];
     if (CGRectIsNull(rect)) return;
     rect = [self _convertRectFromLayout:rect];
@@ -697,6 +714,45 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     
     BOOL insetModified = NO;
     YYTextKeyboardManager *mgr = [YYTextKeyboardManager defaultManager];
+    
+    ///function like IQkeyboardManager.
+    if (!self.scrollEnabled && [YYTextView autoCursorEnable]) {
+        CGRect topBounds = scTop.bounds;
+        topBounds.origin = CGPointZero;
+        //save scTop origin inset.
+        if(!_isAutoCursorEnable){
+            _isAutoCursorEnable = YES;
+            _originalTopContentInset = scTop.contentInset;
+            _originalTopScrollIndicatorInsets = scTop.scrollIndicatorInsets;
+        }
+        
+        CGRect kbTopRect = [mgr convertRect:mgr.keyboardFrame toView:scTop];
+        kbTopRect.origin.y -= _extraAccessoryViewHeight;
+        kbTopRect.size.height += _extraAccessoryViewHeight;
+        kbTopRect.origin.x -= scTop.contentOffset.x;
+        kbTopRect.origin.y -= scTop.contentOffset.y;
+
+        CGRect inter = CGRectIntersection(topBounds, kbTopRect);
+        UIEdgeInsets newTopInset = UIEdgeInsetsZero;
+        newTopInset.bottom = inter.size.height + extend;
+        
+        UIViewAnimationOptions curve;
+        if (kiOS7Later) {
+            curve = 7 << 16;
+        } else {
+            curve = UIViewAnimationOptionCurveEaseInOut;
+        }
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | curve animations:^{
+            
+            [scTop setContentInset:newTopInset];
+            [scTop setScrollIndicatorInsets:newTopInset];
+            [scTop scrollRectToVisible:CGRectInset(rectTop, -extend, -extend) animated:NO];
+            
+        } completion:NULL];
+        
+        return;
+    }
+    
     
     if (mgr.keyboardVisible && self.window && self.superview && self.isFirstResponder && !_verticalForm) {
         CGRect bounds = self.bounds;
@@ -725,9 +781,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                         _originalContentInset = self.contentInset;
                         _originalScrollIndicatorInsets = self.scrollIndicatorInsets;
                     }
+                    
+                    CGFloat fltDiffBottom = CGRectGetMaxY(bounds) - CGRectGetMaxY(inter);
+                    
                     UIEdgeInsets newInset = originalContentInset;
                     UIEdgeInsets newIndicatorInsets = originalScrollIndicatorInsets;
-                    newInset.bottom = inter.size.height + extend;
+                    newInset.bottom = inter.size.height + extend + fltDiffBottom;
                     newIndicatorInsets.bottom = newInset.bottom;
                     UIViewAnimationOptions curve;
                     if (kiOS7Later) {
@@ -766,6 +825,38 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             [super setScrollIndicatorInsets:_originalScrollIndicatorInsets];
         }
     }
+    
+    if ([YYTextView autoCursorEnable]) {
+        
+        UIScrollView *scTop = [self _findTopScrollView];
+        
+        if (animated) {
+            [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut  animations:^{
+                //还原顶层容器间距
+                [scTop setContentInset:_originalTopContentInset];
+                [scTop setScrollIndicatorInsets:_originalTopScrollIndicatorInsets];
+                
+            } completion:NULL];
+        } else {
+            //还原顶层容器间距
+            [scTop setContentInset:_originalTopContentInset];
+            [scTop setScrollIndicatorInsets:_originalTopScrollIndicatorInsets];
+        }
+    }
+    
+}
+
+/// Find top scrollView, Implement function like IQKeyboard.
+- (UIScrollView *)_findTopScrollView {
+    UIScrollView *topScrollView = nil;
+    UIView *viewTemp = self.superview;
+    while (![viewTemp isKindOfClass:[UIScrollView class]]) {
+        viewTemp = viewTemp.superview;
+    }
+    
+    topScrollView = (UIScrollView *)viewTemp;
+    
+    return topScrollView;
 }
 
 /// Keyboard frame changed, scroll the caret to visible range, or modify the content insets.
