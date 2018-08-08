@@ -725,7 +725,10 @@ static BOOL _autoCursorEnable = NO;
     YYTextKeyboardManager *mgr = [YYTextKeyboardManager defaultManager];
     
     ///function like IQkeyboardManager.
-    if (!self.scrollEnabled && [YYTextView autoCursorEnable]) {
+    if ([YYTextView autoCursorEnable]) {
+        //force set scrollEnabled NO
+        self.scrollEnabled = NO;
+        
         CGRect topBounds = scTop.bounds;
         topBounds.origin = CGPointZero;
         //save scTop origin inset.
@@ -3116,6 +3119,14 @@ static BOOL _autoCursorEnable = NO;
             [self _saveToUndoStack];
             [self _resetRedoStack];
             [self replaceRange:_selectedTextRange withText:string];
+            
+            ///autoCursor statue need fix
+            if([YYTextView autoCursorEnable]){
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self insertText:@" "];
+                    [self deleteBackward];
+                });
+            }
         }
     }
 }
