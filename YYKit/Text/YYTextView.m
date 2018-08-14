@@ -865,7 +865,10 @@ static BOOL _autoCursorEnable = NO;
     while (viewTemp && ![viewTemp isKindOfClass:[UIScrollView class]]) {
         viewTemp = viewTemp.superview;
     }
-    
+    ///correct the obj
+    if ([viewTemp isKindOfClass: NSClassFromString(@"UITableViewWrapperView")]) {
+        viewTemp = viewTemp.superview;
+    }
     topScrollView = (UIScrollView *)viewTemp;
     
     return topScrollView;
