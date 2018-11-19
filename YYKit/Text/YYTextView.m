@@ -2183,7 +2183,11 @@ static BOOL _autoCursorEnable = NO;
 #pragma mark - Property
 
 - (void)setText:(NSString *)text {
-    if (_text == text || [_text isEqualToString:text]) return;
+    if (_text == text || [_text isEqualToString:text]){
+        //复用的情况下，解析状态会丢失
+        if ([self _parseText])_state.needUpdate = YES;
+        return;
+    }
     [self _setText:text];
     
     _state.selectedWithoutEdit = NO;
@@ -2271,7 +2275,10 @@ static BOOL _autoCursorEnable = NO;
 }
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
-    if (_attributedText == attributedText) return;
+    if (_attributedText == attributedText) {
+        if ([self _parseText]) _state.needUpdate = YES;
+       return;
+    }
     [self _setAttributedText:attributedText];
     _state.typingAttributesOnce = NO;
     
@@ -2944,6 +2951,7 @@ static BOOL _autoCursorEnable = NO;
     BOOL isFirstResponder = self.isFirstResponder;
     if (!isFirstResponder) return YES;
     BOOL resign = [super resignFirstResponder];
+
     if (resign) {
         if (_markedTextRange) {
             _markedTextRange = nil;
@@ -3364,7 +3372,9 @@ static BOOL _autoCursorEnable = NO;
 #pragma mark - @protocol UIKeyInput
 
 - (BOOL)hasText {
-    return _innerText.length > 0;
+    //Fix: MLeaksFinder . leaks.
+//    return _innerText.length > 0;
+    return NO;
 }
 
 - (void)insertText:(NSString *)text {
