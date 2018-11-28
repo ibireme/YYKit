@@ -3559,17 +3559,19 @@ static BOOL _autoCursorEnable = NO;
     //需要排除的字符集
     NSString *strExclude = @"#。，、？！；（）@“”【】｛｝#%^*+=_\\|《》&·,?!'/.:";
     _isExcludeNeed = NO;
-    
-    for (int i=0; i< strExclude.length -1; i++) {
-        NSString *str = [strExclude substringWithRange:NSMakeRange(i, 1)];
-        if (_isPasteOp) {
-            _isPasteOp = NO;
-            break;
-        }
-        
-        if ([text containsString:str]) {
-            _isExcludeNeed = YES;
-            break;
+   
+    if (self.isFirstResponder) {
+        for (int i=0; i< strExclude.length -1; i++) {
+            NSString *str = [strExclude substringWithRange:NSMakeRange(i, 1)];
+            if (_isPasteOp) {
+                _isPasteOp = NO;
+                break;
+            }
+            
+            if ([text containsString:str]) {
+                _isExcludeNeed = YES;
+                break;
+            }
         }
     }
     
