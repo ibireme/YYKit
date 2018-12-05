@@ -53,11 +53,11 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
 
 - (BOOL)isJailbroken {
     if ([self isSimulator]) return NO; // Dont't check simulator
-    
+
     // iOS9 URL Scheme query changed ...
     // NSURL *cydiaURL = [NSURL URLWithString:@"cydia://package"];
     // if ([[UIApplication sharedApplication] canOpenURL:cydiaURL]) return YES;
-    
+
     NSArray *paths = @[@"/Applications/Cydia.app",
                        @"/private/var/lib/apt/",
                        @"/private/var/lib/cydia",
@@ -65,19 +65,19 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
     for (NSString *path in paths) {
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) return YES;
     }
-    
+
     FILE *bash = fopen("/bin/bash", "r");
     if (bash != NULL) {
         fclose(bash);
         return YES;
     }
-    
+
     NSString *path = [NSString stringWithFormat:@"/private/%@", [NSString stringWithUUID]];
     if ([@"test" writeToFile : path atomically : YES encoding : NSUTF8StringEncoding error : NULL]) {
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
         return YES;
     }
-    
+
     return NO;
 }
 
@@ -109,7 +109,7 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
                             address = [NSString stringWithUTF8String:str];
                         }
                     } break;
-                        
+
                     case AF_INET6: { // IPv6
                         char str[INET6_ADDRSTRLEN] = {0};
                         inet_ntop(family, &(((struct sockaddr_in6 *)addr->ifa_addr)->sin6_addr), str, sizeof(str));
@@ -117,7 +117,7 @@ YYSYNTH_DUMMY_CLASS(UIDevice_YYAdd)
                             address = [NSString stringWithUTF8String:str];
                         }
                     }
-                        
+
                     default: break;
                 }
                 if (address) break;
@@ -179,7 +179,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
         sharedOutCounters = [NSMutableDictionary new];
         lock = dispatch_semaphore_create(1);
     });
-    
+
     yy_net_interface_counter counter = {0};
     struct ifaddrs *addrs;
     const struct ifaddrs *cursor;
@@ -194,11 +194,11 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
                     uint64_t counter_in = ((NSNumber *)sharedInCounters[name]).unsignedLongLongValue;
                     counter_in = yy_net_counter_add(counter_in, data->ifi_ibytes);
                     sharedInCounters[name] = @(counter_in);
-                    
+
                     uint64_t counter_out = ((NSNumber *)sharedOutCounters[name]).unsignedLongLongValue;
                     counter_out = yy_net_counter_add(counter_out, data->ifi_obytes);
                     sharedOutCounters[name] = @(counter_out);
-                    
+
                     if ([name hasPrefix:@"en"]) {
                         counter.en_in += counter_in;
                         counter.en_out += counter_out;
@@ -216,7 +216,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
         dispatch_semaphore_signal(lock);
         freeifaddrs(addrs);
     }
-    
+
     return counter;
 }
 
@@ -252,14 +252,14 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             @"Watch2,4" : @"Apple Watch Series 2 42mm",
             @"Watch2,6" : @"Apple Watch Series 1 38mm",
             @"Watch1,7" : @"Apple Watch Series 1 42mm",
-            
+
             @"iPod1,1" : @"iPod touch 1",
             @"iPod2,1" : @"iPod touch 2",
             @"iPod3,1" : @"iPod touch 3",
             @"iPod4,1" : @"iPod touch 4",
             @"iPod5,1" : @"iPod touch 5",
             @"iPod7,1" : @"iPod touch 6",
-            
+
             @"iPhone1,1" : @"iPhone 1G",
             @"iPhone1,2" : @"iPhone 3G",
             @"iPhone2,1" : @"iPhone 3GS",
@@ -282,7 +282,17 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             @"iPhone9,2" : @"iPhone 7 Plus",
             @"iPhone9,3" : @"iPhone 7",
             @"iPhone9,4" : @"iPhone 7 Plus",
-            
+            @"iPhone10,1" : @"iPhone 8",
+            @"iPhone10,4" : @"iPhone 8",
+            @"iPhone10,2" : @"iPhone 8 Plus",
+            @"iPhone10,5" : @"iPhone 8 Plus",
+            @"iPhone10,3" : @"iPhone X",
+            @"iPhone10,6" : @"iPhone X",
+            @"iPhone11,2" : @"iPhone XS",
+            @"iPhone11,4" : @"iPhone XS Max",
+            @"iPhone11,6" : @"iPhone XS Max China",
+            @"iPhone11,8" : @"iPhone XR",
+
             @"iPad1,1" : @"iPad 1",
             @"iPad2,1" : @"iPad 2 (WiFi)",
             @"iPad2,2" : @"iPad 2 (GSM)",
@@ -314,12 +324,18 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             @"iPad6,4" : @"iPad Pro (9.7 inch)",
             @"iPad6,7" : @"iPad Pro (12.9 inch)",
             @"iPad6,8" : @"iPad Pro (12.9 inch)",
-            
+            @"iPad6,11" : @"iPad 5 (WiFi)",
+            @"iPad6,12" : @"iPad 5 (Wifi + Cellular)",
+            @"iPad7,1" : @"iPad Pro 2 12.9 (Wifi)",
+            @"iPad7,2" : @"iPad Pro 2 12.9 (Wifi + Cellular)",
+            @"iPad7,3" : @"iPad PRO 10.5 (Wifi)",
+            @"iPad7,4" : @"iPad PRO 10.5 (Wifi + Cellular)",
+
             @"AppleTV2,1" : @"Apple TV 2",
             @"AppleTV3,1" : @"Apple TV 3",
             @"AppleTV3,2" : @"Apple TV 3",
             @"AppleTV5,3" : @"Apple TV 4",
-            
+
             @"i386" : @"Simulator x86",
             @"x86_64" : @"Simulator x64",
         };
@@ -373,7 +389,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     vm_size_t page_size;
     vm_statistics_data_t vm_stat;
     kern_return_t kern;
-    
+
     kern = host_page_size(host_port, &page_size);
     if (kern != KERN_SUCCESS) return -1;
     kern = host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
@@ -387,7 +403,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     vm_size_t page_size;
     vm_statistics_data_t vm_stat;
     kern_return_t kern;
-    
+
     kern = host_page_size(host_port, &page_size);
     if (kern != KERN_SUCCESS) return -1;
     kern = host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
@@ -401,7 +417,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     vm_size_t page_size;
     vm_statistics_data_t vm_stat;
     kern_return_t kern;
-    
+
     kern = host_page_size(host_port, &page_size);
     if (kern != KERN_SUCCESS) return -1;
     kern = host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
@@ -415,7 +431,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     vm_size_t page_size;
     vm_statistics_data_t vm_stat;
     kern_return_t kern;
-    
+
     kern = host_page_size(host_port, &page_size);
     if (kern != KERN_SUCCESS) return -1;
     kern = host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
@@ -429,7 +445,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     vm_size_t page_size;
     vm_statistics_data_t vm_stat;
     kern_return_t kern;
-    
+
     kern = host_page_size(host_port, &page_size);
     if (kern != KERN_SUCCESS) return -1;
     kern = host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
@@ -443,7 +459,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     vm_size_t page_size;
     vm_statistics_data_t vm_stat;
     kern_return_t kern;
-    
+
     kern = host_page_size(host_port, &page_size);
     if (kern != KERN_SUCCESS) return -1;
     kern = host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size);
@@ -470,20 +486,20 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
     mach_msg_type_number_t _numCPUInfo, _numPrevCPUInfo = 0;
     unsigned _numCPUs;
     NSLock *_cpuUsageLock;
-    
+
     int _mib[2U] = { CTL_HW, HW_NCPU };
     size_t _sizeOfNumCPUs = sizeof(_numCPUs);
     int _status = sysctl(_mib, 2U, &_numCPUs, &_sizeOfNumCPUs, NULL, 0U);
     if (_status)
         _numCPUs = 1;
-    
+
     _cpuUsageLock = [[NSLock alloc] init];
-    
+
     natural_t _numCPUsU = 0U;
     kern_return_t err = host_processor_info(mach_host_self(), PROCESSOR_CPU_LOAD_INFO, &_numCPUsU, &_cpuInfo, &_numCPUInfo);
     if (err == KERN_SUCCESS) {
         [_cpuUsageLock lock];
-        
+
         NSMutableArray *cpus = [NSMutableArray new];
         for (unsigned i = 0U; i < _numCPUs; ++i) {
             Float32 _inUse, _total;
@@ -500,7 +516,7 @@ static yy_net_interface_counter yy_get_net_interface_counter() {
             }
             [cpus addObject:@(_inUse / _total)];
         }
-        
+
         [_cpuUsageLock unlock];
         if (_prevCPUInfo) {
             size_t prevCpuInfoSize = sizeof(integer_t) * _numPrevCPUInfo;
