@@ -134,7 +134,7 @@ static force_inline NSNumber *YYNSNumberCreateFromID(__unsafe_unretained id valu
 /// Parse string to date.
 static force_inline NSDate *YYNSDateFromString(__unsafe_unretained NSString *string) {
     typedef NSDate* (^YYNSDateParseBlock)(NSString *string);
-    #define kParserNum 34
+#define kParserNum 34
     static YYNSDateParseBlock blocks[kParserNum + 1] = {0};
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -165,12 +165,12 @@ static force_inline NSDate *YYNSDateFromString(__unsafe_unretained NSString *str
             formatter2.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter2.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
             formatter2.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-
+            
             NSDateFormatter *formatter3 = [[NSDateFormatter alloc] init];
             formatter3.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter3.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
             formatter3.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS";
-
+            
             NSDateFormatter *formatter4 = [[NSDateFormatter alloc] init];
             formatter4.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter4.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
@@ -183,7 +183,7 @@ static force_inline NSDate *YYNSDateFromString(__unsafe_unretained NSString *str
                     return [formatter2 dateFromString:string];
                 }
             };
-
+            
             blocks[23] = ^(NSString *string) {
                 if ([string characterAtIndex:10] == 'T') {
                     return [formatter3 dateFromString:string];
@@ -205,11 +205,11 @@ static force_inline NSDate *YYNSDateFromString(__unsafe_unretained NSString *str
             NSDateFormatter *formatter = [NSDateFormatter new];
             formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZ";
-
+            
             NSDateFormatter *formatter2 = [NSDateFormatter new];
             formatter2.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter2.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-
+            
             blocks[20] = ^(NSString *string) { return [formatter dateFromString:string]; };
             blocks[24] = ^(NSString *string) { return [formatter dateFromString:string]?: [formatter2 dateFromString:string]; };
             blocks[25] = ^(NSString *string) { return [formatter dateFromString:string]; };
@@ -225,11 +225,11 @@ static force_inline NSDate *YYNSDateFromString(__unsafe_unretained NSString *str
             NSDateFormatter *formatter = [NSDateFormatter new];
             formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter.dateFormat = @"EEE MMM dd HH:mm:ss Z yyyy";
-
+            
             NSDateFormatter *formatter2 = [NSDateFormatter new];
             formatter2.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
             formatter2.dateFormat = @"EEE MMM dd HH:mm:ss.SSS Z yyyy";
-
+            
             blocks[30] = ^(NSString *string) { return [formatter dateFromString:string]; };
             blocks[34] = ^(NSString *string) { return [formatter2 dateFromString:string]; };
         }
@@ -239,7 +239,7 @@ static force_inline NSDate *YYNSDateFromString(__unsafe_unretained NSString *str
     YYNSDateParseBlock parser = blocks[string.length];
     if (!parser) return nil;
     return parser(string);
-    #undef kParserNum
+#undef kParserNum
 }
 
 
@@ -1152,7 +1152,7 @@ static void ModelSetWithPropertyMetaArrayFunction(const void *_propertyMeta, voi
 }
 
 /**
- Returns a valid JSON object (NSArray/NSDictionary/NSString/NSNumber/NSNull), 
+ Returns a valid JSON object (NSArray/NSDictionary/NSString/NSNumber/NSNull),
  or nil if an error occurs.
  
  @param model Model, can be nil.
@@ -1307,7 +1307,7 @@ static NSString *ModelDescription(NSObject *model) {
         case YYEncodingTypeNSString: case YYEncodingTypeNSMutableString: {
             return [NSString stringWithFormat:@"\"%@\"",model];
         }
-        
+            
         case YYEncodingTypeNSValue:
         case YYEncodingTypeNSData: case YYEncodingTypeNSMutableData: {
             NSString *tmp = model.description;
@@ -1366,7 +1366,7 @@ static NSString *ModelDescription(NSObject *model) {
             }
             return desc;
         }
-        
+            
         default: {
             NSMutableString *desc = [NSMutableString new];
             [desc appendFormat:@"<%@: %p>", model.class, model];
@@ -1544,75 +1544,94 @@ static NSString *ModelDescription(NSObject *model) {
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
-- (id)modelCopy{
-    if (self == (id)kCFNull) return self;
-    _YYModelMeta *modelMeta = [_YYModelMeta metaWithClass:self.class];
-    if (modelMeta->_nsType) return [self copy];
+//Roen(https://github.com/Roen-Ro) added/2018.12.24
+-(void)copyPropertiesFromSourceObject:(NSObject *)sourceObj {
     
-    NSObject *one = [self.class new];
-    for (_YYModelPropertyMeta *propertyMeta in modelMeta->_allPropertyMetas) {
-        if (!propertyMeta->_getter || !propertyMeta->_setter) continue;
+    if (self == (id)kCFNull) return;
+    
+    _YYModelMeta *selfModelMeta = [_YYModelMeta metaWithClass:self.class];
+    
+    _YYModelMeta *srcModelMeta = [_YYModelMeta metaWithClass:sourceObj.class];
+    if(!srcModelMeta)
+        return;
+    
+    NSMutableDictionary *mDic = [NSMutableDictionary dictionaryWithCapacity:srcModelMeta->_keyMappedCount];
+    for (_YYModelPropertyMeta *propertyMeta in srcModelMeta->_allPropertyMetas) {
+        [mDic setObject:propertyMeta forKey:propertyMeta->_name];
+    }
+    
+    NSObject *one = self;
+    for (_YYModelPropertyMeta *selfPropertyMeta in selfModelMeta->_allPropertyMetas) {
+        if (!selfPropertyMeta->_setter)
+            continue;
         
-        if (propertyMeta->_isCNumber) {
-            switch (propertyMeta->_type & YYEncodingTypeMask) {
+        _YYModelPropertyMeta *srcPropertyMeta = [mDic objectForKey:selfPropertyMeta->_name];
+        
+        if(!srcPropertyMeta
+           || !srcPropertyMeta->_getter
+           || (srcPropertyMeta->_type != selfPropertyMeta->_type))
+            continue;
+        
+        if (selfPropertyMeta->_isCNumber) {
+            switch (selfPropertyMeta->_type & YYEncodingTypeMask) {
                 case YYEncodingTypeBool: {
-                    bool num = ((bool (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, bool))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    bool num = ((bool (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, bool))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } break;
                 case YYEncodingTypeInt8:
                 case YYEncodingTypeUInt8: {
-                    uint8_t num = ((bool (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, uint8_t))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    uint8_t num = ((bool (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, uint8_t))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } break;
                 case YYEncodingTypeInt16:
                 case YYEncodingTypeUInt16: {
-                    uint16_t num = ((uint16_t (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, uint16_t))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    uint16_t num = ((uint16_t (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, uint16_t))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } break;
                 case YYEncodingTypeInt32:
                 case YYEncodingTypeUInt32: {
-                    uint32_t num = ((uint32_t (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, uint32_t))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    uint32_t num = ((uint32_t (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, uint32_t))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } break;
                 case YYEncodingTypeInt64:
                 case YYEncodingTypeUInt64: {
-                    uint64_t num = ((uint64_t (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, uint64_t))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    uint64_t num = ((uint64_t (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, uint64_t))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } break;
                 case YYEncodingTypeFloat: {
-                    float num = ((float (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, float))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    float num = ((float (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, float))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } break;
                 case YYEncodingTypeDouble: {
-                    double num = ((double (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, double))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    double num = ((double (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, double))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } break;
                 case YYEncodingTypeLongDouble: {
-                    long double num = ((long double (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, long double))(void *) objc_msgSend)((id)one, propertyMeta->_setter, num);
+                    long double num = ((long double (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, long double))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, num);
                 } // break; commented for code coverage in next line
                 default: break;
             }
         } else {
-            switch (propertyMeta->_type & YYEncodingTypeMask) {
+            switch (selfPropertyMeta->_type & YYEncodingTypeMask) {
                 case YYEncodingTypeObject:
                 case YYEncodingTypeClass:
                 case YYEncodingTypeBlock: {
-                    id value = ((id (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)one, propertyMeta->_setter, value);
+                    id value = ((id (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, value);
                 } break;
                 case YYEncodingTypeSEL:
                 case YYEncodingTypePointer:
                 case YYEncodingTypeCString: {
-                    size_t value = ((size_t (*)(id, SEL))(void *) objc_msgSend)((id)self, propertyMeta->_getter);
-                    ((void (*)(id, SEL, size_t))(void *) objc_msgSend)((id)one, propertyMeta->_setter, value);
+                    size_t value = ((size_t (*)(id, SEL))(void *) objc_msgSend)((id)sourceObj, srcPropertyMeta->_getter);
+                    ((void (*)(id, SEL, size_t))(void *) objc_msgSend)((id)one, selfPropertyMeta->_setter, value);
                 } break;
                 case YYEncodingTypeStruct:
                 case YYEncodingTypeUnion: {
                     @try {
-                        NSValue *value = [self valueForKey:NSStringFromSelector(propertyMeta->_getter)];
+                        NSValue *value = [sourceObj valueForKey:NSStringFromSelector(srcPropertyMeta->_getter)];
                         if (value) {
-                            [one setValue:value forKey:propertyMeta->_name];
+                            [one setValue:value forKey:selfPropertyMeta->_name];
                         }
                     } @catch (NSException *exception) {}
                 } // break; commented for code coverage in next line
@@ -1620,7 +1639,27 @@ static NSString *ModelDescription(NSObject *model) {
             }
         }
     }
+}
+- (id)modelCopy{
+    if (self == (id)kCFNull) return self;
+    _YYModelMeta *modelMeta = [_YYModelMeta metaWithClass:self.class];
+    if (modelMeta->_nsType) return [self copy];
+    
+    NSObject *one = [self.class new];
+    [one copyPropertiesFromSourceObject:self];
+    
     return one;
+}
+
+//Roen(https://github.com/Roen-Ro) added/2018.12.24
+-(BOOL)shouldCustomEncodeValueForKey:(NSString *)propertyKey withCoder:(NSCoder *)aCoder
+{
+    return NO;
+}
+
+-(BOOL)shouldCustomDecodeValueForKey:(NSString *)propertyKey withCoder:(NSCoder *)aDecoder
+{
+    return NO;
 }
 
 - (void)modelEncodeWithCoder:(NSCoder *)aCoder {
@@ -1638,6 +1677,9 @@ static NSString *ModelDescription(NSObject *model) {
     
     for (_YYModelPropertyMeta *propertyMeta in modelMeta->_allPropertyMetas) {
         if (!propertyMeta->_getter) return;
+        
+        if([self shouldCustomEncodeValueForKey:propertyMeta->_name withCoder:aCoder])
+            continue;
         
         if (propertyMeta->_isCNumber) {
             NSNumber *value = ModelCreateNumberFromProperty(self, propertyMeta);
@@ -1682,12 +1724,15 @@ static NSString *ModelDescription(NSObject *model) {
 
 - (id)modelInitWithCoder:(NSCoder *)aDecoder {
     if (!aDecoder) return self;
-    if (self == (id)kCFNull) return self;    
+    if (self == (id)kCFNull) return self;
     _YYModelMeta *modelMeta = [_YYModelMeta metaWithClass:self.class];
     if (modelMeta->_nsType) return self;
     
     for (_YYModelPropertyMeta *propertyMeta in modelMeta->_allPropertyMetas) {
         if (!propertyMeta->_setter) continue;
+        
+        if([self shouldCustomDecodeValueForKey:propertyMeta->_name withCoder:aDecoder])
+            continue;
         
         if (propertyMeta->_isCNumber) {
             NSNumber *value = [aDecoder decodeObjectForKey:propertyMeta->_name];
