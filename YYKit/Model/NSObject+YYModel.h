@@ -177,6 +177,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable id)modelCopy;
 
 /**
+ SHADOW copy properties from sourceObj to self
+ Roen(https://github.com/Roen-Ro) added/2018.12.24
+ 
+ @param sourceObj the copy source, type safe
+ */
+-(void)copyPropertiesFromSourceObject:(id)sourceObj;
+
+/**
  Encode the receiver's properties to a coder.
  
  @param aCoder  An archiver object.
@@ -435,6 +443,17 @@ NS_ASSUME_NONNULL_BEGIN
  @return Returns YES if the model is valid, or NO to ignore this model.
  */
 - (BOOL)modelCustomTransformToDictionary:(NSMutableDictionary *)dic;
+
+/**
+ Do customer encode/decode, for subclass to override
+ Roen(https://github.com/Roen-Ro) added/2018.12.24
+ 
+ @param propertyKey the property key
+ @param aCoder /aDecoder the decoder/encoder
+ @return return YES for the properties if you wish to do customer encoding/decoding, else return NO, default return NO
+ */
+-(BOOL)shouldCustomEncodeValueForKey:(NSString *)propertyKey withCoder:(NSCoder *)aCoder;
+-(BOOL)shouldCustomDecodeValueForKey:(NSString *)propertyKey withCoder:(NSCoder *)aDecoder;
 
 @end
 
