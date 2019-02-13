@@ -46,6 +46,10 @@ YYSYNTH_DUMMY_CLASS(NSDate_YYAdd)
     return [[[NSCalendar currentCalendar] components:NSCalendarUnitSecond fromDate:self] nanosecond];
 }
 
+- (NSInteger)dayOfYear{
+    return [[NSCalendar currentCalendar] ordinalityOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitYear forDate:self];
+}
+
 - (NSInteger)weekday {
     return [[[NSCalendar currentCalendar] components:NSCalendarUnitWeekday fromDate:self] weekday];
 }
