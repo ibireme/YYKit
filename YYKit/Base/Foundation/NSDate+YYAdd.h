@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSInteger minute; ///< Minute component (0~59)
 @property (nonatomic, readonly) NSInteger second; ///< Second component (0~59)
 @property (nonatomic, readonly) NSInteger nanosecond; ///< Nanosecond component
+@property (nonatomic, readonly) NSInteger dayOfYear; ///< DayOfYear component (0~365/366)
 @property (nonatomic, readonly) NSInteger weekday; ///< Weekday component (1~7, first day is based on user setting)
 @property (nonatomic, readonly) NSInteger weekdayOrdinal; ///< WeekdayOrdinal component
 @property (nonatomic, readonly) NSInteger weekOfMonth; ///< WeekOfMonth component (1~5)
