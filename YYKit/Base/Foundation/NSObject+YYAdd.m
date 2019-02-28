@@ -114,9 +114,14 @@ return @(ret); \
         };
             
         case '@': { // id
-            void *ret;
-            [inv getReturnValue:&ret];
-            return (__bridge id)(ret);
+            // fix issues #497
+            void *tempRet;
+            
+            [inv getReturnValue:&tempRet];
+            
+            id ret = (__bridge id)tempRet;
+            
+            return ret;
         };
             
         case '#': { // Class
