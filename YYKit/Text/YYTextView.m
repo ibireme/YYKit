@@ -27,7 +27,7 @@
 #import "UIDevice+YYAdd.h"
 #import "UIApplication+YYAdd.h"
 #import "YYImage.h"
-
+#import "YYActiveObj.h"
 
 #define kDefaultUndoLevelMax 20 // Default maximum undo level
 
@@ -111,9 +111,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     BOOL _insetModifiedByKeyboard; ///< text is covered by keyboard, and the contentInset is modified
     UIEdgeInsets _originalContentInset; ///< the original contentInset before modified
     UIEdgeInsets _originalScrollIndicatorInsets; ///< the original scrollIndicatorInsets before modified
+    ///Added for Outside Top ScrollView
     UIEdgeInsets _originalTopContentInset; ///< the original contentInset before modified
     UIEdgeInsets _originalTopScrollIndicatorInsets; ///< the original scrollIndicatorInsets before modified
-    
     
     NSTimer *_longPressTimer;
     NSTimer *_autoScrollTimer;
@@ -159,8 +159,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         unsigned int firstResponderBeforeUndoAlert : 1;
     } _state;
     
-    BOOL _isExcludeNeed;     /// fix iOS10 Keyboard -- 用于控制 iOS10 键盘标点符号Bug  是否开启排除操作
-    BOOL _isPasteOp;         /// fix 设置nablesReturnKeyAutomatically 、returnTypeSend 属性后，粘贴内容时，发送按钮置灰的问题
+    BOOL _isExcludeNeed;     ///用于控制 iOS10 键盘标点符号Bug  是否开启排除操作
+    BOOL _isPasteOp;         ///标记粘贴操作
+    //    NSMutableDictionary *_dicSaylorStack;///用于标识搜狗键盘的操作
     BOOL _isAutoCursorEnable; ///用于标记第一次启用自动光标定位，辅助记录scTop 原数据。
 }
 
@@ -189,9 +190,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 #pragma mark - @protocol UITextInput optional
 @synthesize selectionAffinity = _selectionAffinity;
 
-#pragma mark - Class Property
 static BOOL _autoCursorEnable = NO;
 
+#pragma mark - Class Property
 + (void)setAutoCursorEnable:(BOOL)autoCursorEnable{
     _autoCursorEnable = autoCursorEnable;
 }
@@ -322,6 +323,7 @@ static BOOL _autoCursorEnable = NO;
     [allRects enumerateObjectsUsingBlock:^(YYTextSelectionRect *rect, NSUInteger idx, BOOL *stop) {
         rect.rect = [self _convertRectFromLayout:rect.rect];
     }];
+    
     _selectionView.selectionRects = allRects;
     if (!_state.firstShowDot && containsDot) {
         _state.firstShowDot = YES;
@@ -577,7 +579,69 @@ static BOOL _autoCursorEnable = NO;
     }
 }
 
-/// Show and update the UIMenuController.
+///外部滚动事件通知---关联方法  【用于取消选中状态】
+- (void)_invalidSelectedMode {
+    if (!_state.showingMenu || _selectedRange.length == 0) {
+        return;
+    }
+    
+    [self setSelectedRange:NSMakeRange(0, 0)];
+    [self _hideMenu];
+    [self _selectedStateInvalid];
+}
+
+/// selected state Active
+- (void)_selectedStateActive {
+    //注册观察者
+    UIScrollView *scTop = [self _findTopScrollView];
+    [scTop addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:@"__ob_yytextview"];
+    
+    //选择模式【激活】
+    if ([self.delegateSelectState respondsToSelector:@selector(textViewSelectedStateActive:)]) {
+        [self.delegateSelectState textViewSelectedStateActive:self];
+    }
+}
+
+/// selected state invalid
+- (void)_selectedStateInvalid {
+    //此处防止重复移除
+    @try {
+        UIScrollView *scTop = [self _findTopScrollView];
+        [scTop removeObserver:self forKeyPath:@"contentOffset" context:@"__ob_yytextview"];
+    } @catch (NSException *exception) {
+        NSLog(@"multiple remove ... exception cathed");
+    } @finally {
+        
+    }
+    
+    //选择模式 【失效】
+    if ([self.delegateSelectState respondsToSelector:@selector(textViewSelectedStateInvalid:)]) {
+        [self.delegateSelectState textViewSelectedStateInvalid:self];
+    }
+}
+
+/// 观察顶层滚动情况
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if (object == [self _findTopScrollView] && [keyPath isEqualToString:@"contentOffset"]) {
+        //        NSLog(@"监听滚动 自动消除...");
+        [self _invalidSelectedMode];
+        return;
+    }
+}
+
+/// YYActiveObj 通知
+- (void)_menuWillHide:(NSNotification *)notify{
+    if (self != [YYActiveObj viewActive]) {
+        return;
+    }
+    [self _invalidSelectedMode];
+}
+
+- (void)_menuWillShow:(NSNotification *)notify{
+    //    NSLog(@"");
+}
+
+/// Show and update the YYActiveObj.
 - (void)_showMenu {
     CGRect rect;
     if (_selectionView.caretVisible) {
@@ -629,6 +693,7 @@ static BOOL _autoCursorEnable = NO;
     
     if (self.isFirstResponder || _containerView.isFirstResponder) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [YYActiveObj setViewActive:self];
             UIMenuController *menu = [UIMenuController sharedMenuController];
             [menu setTargetRect:CGRectStandardize(rect) inView:_selectionView];
             [menu update];
@@ -640,7 +705,7 @@ static BOOL _autoCursorEnable = NO;
     }
 }
 
-/// Hide the UIMenuController.
+/// Hide the YYActiveObj.
 - (void)_hideMenu {
     if (_state.showingMenu) {
         _state.showingMenu = NO;
@@ -700,14 +765,17 @@ static BOOL _autoCursorEnable = NO;
 /// Scroll range to visible, take account into keyboard and insets.
 - (void)_scrollRangeToVisible:(YYTextRange *)range {
     if (!range) return;
-    //get top ScrollView
+    //获取顶层ScrollView
     UIScrollView *scTop = [self _findTopScrollView];
-    
+    //从内部布局容器中获取 光标位置
     CGRect rect = [_innerLayout rectForRange:range];
     if (CGRectIsNull(rect)) return;
+    //转换区域
     rect = [self _convertRectFromLayout:rect];
-    //convert to scTop
+    //转换区域到顶层SC
     CGRect rectTop = [_containerView convertRect:rect toView:scTop];
+    
+    //转换区域到内部文本容器
     rect = [_containerView convertRect:rect toView:self];
     
     if (rect.size.width < 1) {
@@ -720,18 +788,27 @@ static BOOL _autoCursorEnable = NO;
     }
     
     CGFloat extend = 3;
-    
+    //是否修改内间距
     BOOL insetModified = NO;
+    BOOL isNeedFixContainer = NO;
+    
+    if (rect.origin.y > self.size.height) {
+        isNeedFixContainer = YES;
+    }
+    
+    //键盘管理器
     YYTextKeyboardManager *mgr = [YYTextKeyboardManager defaultManager];
     
-    ///function like IQkeyboardManager.
+    //需要移动顶层容器的情况
     if ([YYTextView autoCursorEnable]) {
-        //force set scrollEnabled NO
+        /// force set scrollEnabled to NO
         self.scrollEnabled = NO;
-        
+        ///**添加自动调整外部顶层 UITableView 偏移，用来实现和IQKeyboard类似的功能
+        //滚动锁定状态下
+        //键盘弹起情况下
         CGRect topBounds = scTop.bounds;
         topBounds.origin = CGPointZero;
-        //save scTop origin inset.
+        //保存原始间距数据
         if(!_isAutoCursorEnable){
             _isAutoCursorEnable = YES;
             _originalTopContentInset = scTop.contentInset;
@@ -741,9 +818,10 @@ static BOOL _autoCursorEnable = NO;
         CGRect kbTopRect = [mgr convertRect:mgr.keyboardFrame toView:scTop];
         kbTopRect.origin.y -= _extraAccessoryViewHeight;
         kbTopRect.size.height += _extraAccessoryViewHeight;
+        //修正键盘位置
         kbTopRect.origin.x -= scTop.contentOffset.x;
         kbTopRect.origin.y -= scTop.contentOffset.y;
-
+        //区域交集
         CGRect inter = CGRectIntersection(topBounds, kbTopRect);
         UIEdgeInsets newTopInset = UIEdgeInsetsZero;
         newTopInset.bottom = inter.size.height + extend;
@@ -765,30 +843,36 @@ static BOOL _autoCursorEnable = NO;
         return;
     }
     
-    
     if (mgr.keyboardVisible && self.window && self.superview && self.isFirstResponder && !_verticalForm) {
+        //键盘弹起情况下
         CGRect bounds = self.bounds;
         bounds.origin = CGPointZero;
         CGRect kbRect = [mgr convertRect:mgr.keyboardFrame toView:self];
         kbRect.origin.y -= _extraAccessoryViewHeight;
         kbRect.size.height += _extraAccessoryViewHeight;
-        
+        //修正键盘位置
         kbRect.origin.x -= self.contentOffset.x;
         kbRect.origin.y -= self.contentOffset.y;
+        //区域交集
         CGRect inter = CGRectIntersection(bounds, kbRect);
         if (!CGRectIsNull(inter) && inter.size.height > 1 && inter.size.width > extend) { // self is covered by keyboard
             if (CGRectGetMinY(inter) > CGRectGetMinY(bounds)) { // keyboard below self.top
-                
+                //获取当前内间距数据
                 UIEdgeInsets originalContentInset = self.contentInset;
                 UIEdgeInsets originalScrollIndicatorInsets = self.scrollIndicatorInsets;
+                
+                //默认值为NO
                 if (_insetModifiedByKeyboard) {
+                    //从上一次偏移中获取内间距数据
                     originalContentInset = _originalContentInset;
                     originalScrollIndicatorInsets = _originalScrollIndicatorInsets;
                 }
                 
                 if (originalContentInset.bottom < inter.size.height + extend) {
+                    //当前光标被键盘遮挡
                     insetModified = YES;
                     if (!_insetModifiedByKeyboard) {
+                        //第一次 保存原始内间距等设置
                         _insetModifiedByKeyboard = YES;
                         _originalContentInset = self.contentInset;
                         _originalScrollIndicatorInsets = self.scrollIndicatorInsets;
@@ -796,10 +880,14 @@ static BOOL _autoCursorEnable = NO;
                     
                     CGFloat fltDiffBottom = CGRectGetMaxY(bounds) - CGRectGetMaxY(inter);
                     
+                    //内间距更新
                     UIEdgeInsets newInset = originalContentInset;
                     UIEdgeInsets newIndicatorInsets = originalScrollIndicatorInsets;
+                    
+                    //固定为键盘高度
                     newInset.bottom = inter.size.height + extend + fltDiffBottom;
                     newIndicatorInsets.bottom = newInset.bottom;
+                    
                     UIViewAnimationOptions curve;
                     if (kiOS7Later) {
                         curve = 7 << 16;
@@ -807,9 +895,11 @@ static BOOL _autoCursorEnable = NO;
                         curve = UIViewAnimationOptionCurveEaseInOut;
                     }
                     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | curve animations:^{
+                        
                         [super setContentInset:newInset];
                         [super setScrollIndicatorInsets:newIndicatorInsets];
                         [self scrollRectToVisible:CGRectInset(rect, -extend, -extend) animated:NO];
+                        
                     } completion:NULL];
                 }
             }
@@ -817,6 +907,7 @@ static BOOL _autoCursorEnable = NO;
     }
     if (!insetModified) {
         [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut animations:^{
+            
             [self _restoreInsetsAnimated:NO];
             [self scrollRectToVisible:CGRectInset(rect, -extend, -extend) animated:NO];
         } completion:NULL];
@@ -865,7 +956,7 @@ static BOOL _autoCursorEnable = NO;
     while (viewTemp && ![viewTemp isKindOfClass:[UIScrollView class]]) {
         viewTemp = viewTemp.superview;
     }
-    ///correct the obj
+    ///correct the result
     if ([viewTemp isKindOfClass: NSClassFromString(@"UITableViewWrapperView")]) {
         viewTemp = viewTemp.superview;
     }
@@ -1510,12 +1601,14 @@ static BOOL _autoCursorEnable = NO;
     if (_isExcludeNeed) {
         notify = NO;
     }
+    
     if (NSEqualRanges(range.asRange, _selectedTextRange.asRange)) {
-//        if (notify) [_inputDelegate selectionWillChange:self];
+        //这里的代理方法需要注释掉
+        //        if (notify) [_inputDelegate selectionWillChange:self];
         NSRange newRange = NSMakeRange(0, 0);
         newRange.location = _selectedTextRange.start.offset + text.length;
         _selectedTextRange = [YYTextRange rangeWithRange:newRange];
-//        if (notify) [_inputDelegate selectionDidChange:self];
+        //        if (notify) [_inputDelegate selectionDidChange:self];
     } else {
         if (range.asRange.length != text.length) {
             if (notify) [_inputDelegate selectionWillChange:self];
@@ -1551,11 +1644,12 @@ static BOOL _autoCursorEnable = NO;
                     _selectedTextRange = [YYTextRange rangeWithRange:newRange];
                 }
             }
-            //这里的Range修正 存在问题:误判 导致系统键盘点击联想的单词输入会被空格分离
             _selectedTextRange = [self _correctedTextRange:_selectedTextRange];
             if (notify) [_inputDelegate selectionDidChange:self];
         }
     }
+    
+    //这里的代理方法 需要判断，如果设置了解析器则不执行，分析解析器中重复执行会有问题。
     if (!self.textParser) [_inputDelegate textWillChange:self];
     NSRange newRange = NSMakeRange(range.asRange.location, text.length);
     [_innerText replaceCharactersInRange:range.asRange withString:text];
@@ -1576,6 +1670,8 @@ static BOOL _autoCursorEnable = NO;
         
         [_inputDelegate selectionDidChange:self];
     }
+    
+    
 }
 
 /// Save current typing attributes to the attributes holder.
@@ -1621,10 +1717,11 @@ static BOOL _autoCursorEnable = NO;
     if (self.textParser) {
         YYTextRange *oldTextRange = _selectedTextRange;
         NSRange newRange = _selectedTextRange.asRange;
-        //此处方法注释掉
-//        if(!_isExcludeNeed)[_inputDelegate textWillChange:self];
+        
+        //此处方法需要注释掉
+        //        if(!_isExcludeNeed)[_inputDelegate textWillChange:self];
         BOOL textChanged = [self.textParser parseText:_innerText selectedRange:&newRange];
-//        if(!_isExcludeNeed)[_inputDelegate textDidChange:self];
+        //        if(!_isExcludeNeed)[_inputDelegate textDidChange:self];
         
         YYTextRange *newTextRange = [YYTextRange rangeWithRange:newRange];
         newTextRange = [self _correctedTextRange:newTextRange];
@@ -1858,43 +1955,43 @@ static BOOL _autoCursorEnable = NO;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSDictionary *dic = @{
-            @"ar" : @[ @"إلغاء", @"إعادة", @"إعادة الكتابة", @"تراجع", @"تراجع عن الكتابة" ],
-            @"ca" : @[ @"Cancel·lar", @"Refer", @"Refer l’escriptura", @"Desfer", @"Desfer l’escriptura" ],
-            @"cs" : @[ @"Zrušit", @"Opakovat akci", @"Opakovat akci Psát", @"Odvolat akci", @"Odvolat akci Psát" ],
-            @"da" : @[ @"Annuller", @"Gentag", @"Gentag Indtastning", @"Fortryd", @"Fortryd Indtastning" ],
-            @"de" : @[ @"Abbrechen", @"Wiederholen", @"Eingabe wiederholen", @"Widerrufen", @"Eingabe widerrufen" ],
-            @"el" : @[ @"Ακύρωση", @"Επανάληψη", @"Επανάληψη πληκτρολόγησης", @"Αναίρεση", @"Αναίρεση πληκτρολόγησης" ],
-            @"en" : @[ @"Cancel", @"Redo", @"Redo Typing", @"Undo", @"Undo Typing" ],
-            @"es" : @[ @"Cancelar", @"Rehacer", @"Rehacer escritura", @"Deshacer", @"Deshacer escritura" ],
-            @"es_MX" : @[ @"Cancelar", @"Rehacer", @"Rehacer escritura", @"Deshacer", @"Deshacer escritura" ],
-            @"fi" : @[ @"Kumoa", @"Tee sittenkin", @"Kirjoita sittenkin", @"Peru", @"Peru kirjoitus" ],
-            @"fr" : @[ @"Annuler", @"Rétablir", @"Rétablir la saisie", @"Annuler", @"Annuler la saisie" ],
-            @"he" : @[ @"ביטול", @"חזור על הפעולה האחרונה", @"חזור על הקלדה", @"בטל", @"בטל הקלדה" ],
-            @"hr" : @[ @"Odustani", @"Ponovi", @"Ponovno upiši", @"Poništi", @"Poništi upisivanje" ],
-            @"hu" : @[ @"Mégsem", @"Ismétlés", @"Gépelés ismétlése", @"Visszavonás", @"Gépelés visszavonása" ],
-            @"id" : @[ @"Batalkan", @"Ulang", @"Ulang Pengetikan", @"Kembalikan", @"Batalkan Pengetikan" ],
-            @"it" : @[ @"Annulla", @"Ripristina originale", @"Ripristina Inserimento", @"Annulla", @"Annulla Inserimento" ],
-            @"ja" : @[ @"キャンセル", @"やり直す", @"やり直す - 入力", @"取り消す", @"取り消す - 入力" ],
-            @"ko" : @[ @"취소", @"실행 복귀", @"입력 복귀", @"실행 취소", @"입력 실행 취소" ],
-            @"ms" : @[ @"Batal", @"Buat semula", @"Ulang Penaipan", @"Buat asal", @"Buat asal Penaipan" ],
-            @"nb" : @[ @"Avbryt", @"Utfør likevel", @"Utfør skriving likevel", @"Angre", @"Angre skriving" ],
-            @"nl" : @[ @"Annuleer", @"Opnieuw", @"Opnieuw typen", @"Herstel", @"Herstel typen" ],
-            @"pl" : @[ @"Anuluj", @"Przywróć", @"Przywróć Wpisz", @"Cofnij", @"Cofnij Wpisz" ],
-            @"pt" : @[ @"Cancelar", @"Refazer", @"Refazer Digitação", @"Desfazer", @"Desfazer Digitação" ],
-            @"pt_PT" : @[ @"Cancelar", @"Refazer", @"Refazer digitar", @"Desfazer", @"Desfazer digitar" ],
-            @"ro" : @[ @"Renunță", @"Refă", @"Refă tastare", @"Anulează", @"Anulează tastare" ],
-            @"ru" : @[ @"Отменить", @"Повторить", @"Повторить набор на клавиатуре", @"Отменить", @"Отменить набор на клавиатуре" ],
-            @"sk" : @[ @"Zrušiť", @"Obnoviť", @"Obnoviť písanie", @"Odvolať", @"Odvolať písanie" ],
-            @"sv" : @[ @"Avbryt", @"Gör om", @"Gör om skriven text", @"Ångra", @"Ångra skriven text" ],
-            @"th" : @[ @"ยกเลิก", @"ทำกลับมาใหม่", @"ป้อนกลับมาใหม่", @"เลิกทำ", @"เลิกป้อน" ],
-            @"tr" : @[ @"Vazgeç", @"Yinele", @"Yazmayı Yinele", @"Geri Al", @"Yazmayı Geri Al" ],
-            @"uk" : @[ @"Скасувати", @"Повторити", @"Повторити введення", @"Відмінити", @"Відмінити введення" ],
-            @"vi" : @[ @"Hủy", @"Làm lại", @"Làm lại thao tác Nhập", @"Hoàn tác", @"Hoàn tác thao tác Nhập" ],
-            @"zh" : @[ @"取消", @"重做", @"重做键入", @"撤销", @"撤销键入" ],
-            @"zh_CN" : @[ @"取消", @"重做", @"重做键入", @"撤销", @"撤销键入" ],
-            @"zh_HK" : @[ @"取消", @"重做", @"重做輸入", @"還原", @"還原輸入" ],
-            @"zh_TW" : @[ @"取消", @"重做", @"重做輸入", @"還原", @"還原輸入" ]
-        };
+                              @"ar" : @[ @"إلغاء", @"إعادة", @"إعادة الكتابة", @"تراجع", @"تراجع عن الكتابة" ],
+                              @"ca" : @[ @"Cancel·lar", @"Refer", @"Refer l’escriptura", @"Desfer", @"Desfer l’escriptura" ],
+                              @"cs" : @[ @"Zrušit", @"Opakovat akci", @"Opakovat akci Psát", @"Odvolat akci", @"Odvolat akci Psát" ],
+                              @"da" : @[ @"Annuller", @"Gentag", @"Gentag Indtastning", @"Fortryd", @"Fortryd Indtastning" ],
+                              @"de" : @[ @"Abbrechen", @"Wiederholen", @"Eingabe wiederholen", @"Widerrufen", @"Eingabe widerrufen" ],
+                              @"el" : @[ @"Ακύρωση", @"Επανάληψη", @"Επανάληψη πληκτρολόγησης", @"Αναίρεση", @"Αναίρεση πληκτρολόγησης" ],
+                              @"en" : @[ @"Cancel", @"Redo", @"Redo Typing", @"Undo", @"Undo Typing" ],
+                              @"es" : @[ @"Cancelar", @"Rehacer", @"Rehacer escritura", @"Deshacer", @"Deshacer escritura" ],
+                              @"es_MX" : @[ @"Cancelar", @"Rehacer", @"Rehacer escritura", @"Deshacer", @"Deshacer escritura" ],
+                              @"fi" : @[ @"Kumoa", @"Tee sittenkin", @"Kirjoita sittenkin", @"Peru", @"Peru kirjoitus" ],
+                              @"fr" : @[ @"Annuler", @"Rétablir", @"Rétablir la saisie", @"Annuler", @"Annuler la saisie" ],
+                              @"he" : @[ @"ביטול", @"חזור על הפעולה האחרונה", @"חזור על הקלדה", @"בטל", @"בטל הקלדה" ],
+                              @"hr" : @[ @"Odustani", @"Ponovi", @"Ponovno upiši", @"Poništi", @"Poništi upisivanje" ],
+                              @"hu" : @[ @"Mégsem", @"Ismétlés", @"Gépelés ismétlése", @"Visszavonás", @"Gépelés visszavonása" ],
+                              @"id" : @[ @"Batalkan", @"Ulang", @"Ulang Pengetikan", @"Kembalikan", @"Batalkan Pengetikan" ],
+                              @"it" : @[ @"Annulla", @"Ripristina originale", @"Ripristina Inserimento", @"Annulla", @"Annulla Inserimento" ],
+                              @"ja" : @[ @"キャンセル", @"やり直す", @"やり直す - 入力", @"取り消す", @"取り消す - 入力" ],
+                              @"ko" : @[ @"취소", @"실행 복귀", @"입력 복귀", @"실행 취소", @"입력 실행 취소" ],
+                              @"ms" : @[ @"Batal", @"Buat semula", @"Ulang Penaipan", @"Buat asal", @"Buat asal Penaipan" ],
+                              @"nb" : @[ @"Avbryt", @"Utfør likevel", @"Utfør skriving likevel", @"Angre", @"Angre skriving" ],
+                              @"nl" : @[ @"Annuleer", @"Opnieuw", @"Opnieuw typen", @"Herstel", @"Herstel typen" ],
+                              @"pl" : @[ @"Anuluj", @"Przywróć", @"Przywróć Wpisz", @"Cofnij", @"Cofnij Wpisz" ],
+                              @"pt" : @[ @"Cancelar", @"Refazer", @"Refazer Digitação", @"Desfazer", @"Desfazer Digitação" ],
+                              @"pt_PT" : @[ @"Cancelar", @"Refazer", @"Refazer digitar", @"Desfazer", @"Desfazer digitar" ],
+                              @"ro" : @[ @"Renunță", @"Refă", @"Refă tastare", @"Anulează", @"Anulează tastare" ],
+                              @"ru" : @[ @"Отменить", @"Повторить", @"Повторить набор на клавиатуре", @"Отменить", @"Отменить набор на клавиатуре" ],
+                              @"sk" : @[ @"Zrušiť", @"Obnoviť", @"Obnoviť písanie", @"Odvolať", @"Odvolať písanie" ],
+                              @"sv" : @[ @"Avbryt", @"Gör om", @"Gör om skriven text", @"Ångra", @"Ångra skriven text" ],
+                              @"th" : @[ @"ยกเลิก", @"ทำกลับมาใหม่", @"ป้อนกลับมาใหม่", @"เลิกทำ", @"เลิกป้อน" ],
+                              @"tr" : @[ @"Vazgeç", @"Yinele", @"Yazmayı Yinele", @"Geri Al", @"Yazmayı Geri Al" ],
+                              @"uk" : @[ @"Скасувати", @"Повторити", @"Повторити введення", @"Відмінити", @"Відмінити введення" ],
+                              @"vi" : @[ @"Hủy", @"Làm lại", @"Làm lại thao tác Nhập", @"Hoàn tác", @"Hoàn tác thao tác Nhập" ],
+                              @"zh" : @[ @"取消", @"重做", @"重做键入", @"撤销", @"撤销键入" ],
+                              @"zh_CN" : @[ @"取消", @"重做", @"重做键入", @"撤销", @"撤销键入" ],
+                              @"zh_HK" : @[ @"取消", @"重做", @"重做輸入", @"還原", @"還原輸入" ],
+                              @"zh_TW" : @[ @"取消", @"重做", @"重做輸入", @"還原", @"還原輸入" ]
+                              };
         NSString *preferred = [[NSBundle mainBundle] preferredLocalizations].firstObject;
         if (preferred.length == 0) preferred = @"English";
         NSString *canonical = [NSLocale canonicalLocaleIdentifierFromString:preferred];
@@ -2020,6 +2117,9 @@ static BOOL _autoCursorEnable = NO;
     [self didChangeValueForKey:@"truncationToken"];
 }
 
+
+
+
 - (void)_setExclusionPaths:(NSArray *)exclusionPaths {
     if (_exclusionPaths == exclusionPaths || [_exclusionPaths isEqual:exclusionPaths]) return;
     [self willChangeValueForKey:@"exclusionPaths"];
@@ -2069,7 +2169,8 @@ static BOOL _autoCursorEnable = NO;
     
     _text = @"";
     _attributedText = [NSAttributedString new];
-    
+    //光标位置初始化
+    //    _fltLastCouserY = -1;
     // UITextInputTraits
     _autocapitalizationType = UITextAutocapitalizationTypeSentences;
     _autocorrectionType = UITextAutocorrectionTypeDefault;
@@ -2091,12 +2192,11 @@ static BOOL _autoCursorEnable = NO;
     _highlightable = YES;
     _allowsCopyAttributedString = YES;
     _textAlignment = NSTextAlignmentNatural;
-    
     _innerText = [NSMutableAttributedString new];
     _innerContainer = [YYTextContainer new];
+    
     _innerContainer.insets = kDefaultInset;
     _textContainerInset = kDefaultInset;
-    
     _numberOfLines = kDefaultNumberOfLines;
     _truncationToken = kDefaultTruncationToken;
     
@@ -2146,6 +2246,8 @@ static BOOL _autoCursorEnable = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_pasteboardChanged) name:UIPasteboardChangedNotification object:nil];
     [[YYTextKeyboardManager defaultManager] addObserver:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_menuWillHide:) name:UIMenuControllerWillHideMenuNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_menuWillShow:) name:UIMenuControllerWillShowMenuNotification object:nil];
     
     self.isAccessibilityElement = YES;
 }
@@ -2162,6 +2264,8 @@ static BOOL _autoCursorEnable = NO;
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIPasteboardChangedNotification object:nil];
     [[YYTextKeyboardManager defaultManager] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillHideMenuNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillShowMenuNotification object:nil];
     
     [[YYTextEffectWindow sharedWindow] hideSelectionDot:_selectionView];
     [[YYTextEffectWindow sharedWindow] hideMagnifier:_magnifierCaret];
@@ -2195,6 +2299,7 @@ static BOOL _autoCursorEnable = NO;
     [self _endTouchTracking];
     [self _hideMenu];
     [self _resetUndoAndRedoStack];
+    
     [self replaceRange:[YYTextRange rangeWithRange:NSMakeRange(0, _innerText.length)] withText:text];
 }
 
@@ -2275,10 +2380,12 @@ static BOOL _autoCursorEnable = NO;
 }
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
-    if (_attributedText == attributedText) {
-        if ([self _parseText]) _state.needUpdate = YES;
-       return;
+    if (_attributedText == attributedText){
+        //复用的情况下，解析状态会丢失
+        if ([self _parseText])_state.needUpdate = YES;
+        return;
     }
+    
     [self _setAttributedText:attributedText];
     _state.typingAttributesOnce = NO;
     
@@ -2299,7 +2406,7 @@ static BOOL _autoCursorEnable = NO;
     
     [_inputDelegate selectionWillChange:self];
     [_inputDelegate textWillChange:self];
-     _innerText = text;
+    _innerText = text;
     [self _parseText];
     _selectedTextRange = [YYTextRange rangeWithRange:NSMakeRange(0, _innerText.length)];
     [_inputDelegate textDidChange:self];
@@ -2360,6 +2467,7 @@ static BOOL _autoCursorEnable = NO;
     
     [self _commitUpdate];
 }
+
 
 - (void)setExclusionPaths:(NSArray *)exclusionPaths {
     if (_exclusionPaths == exclusionPaths || [_exclusionPaths isEqual:exclusionPaths]) return;
@@ -2697,7 +2805,9 @@ static BOOL _autoCursorEnable = NO;
         [self _updateSelectionView];
     }
     
-    if (!_state.swallowTouch) [super touchesBegan:touches withEvent:event];
+    if (!_state.swallowTouch) {
+        [super touchesBegan:touches withEvent:event];
+    }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -2775,7 +2885,9 @@ static BOOL _autoCursorEnable = NO;
         }
     }
     
-    if (!_state.swallowTouch) [super touchesMoved:touches withEvent:event];
+    if (!_state.swallowTouch) {
+        [super touchesMoved:touches withEvent:event];
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -2828,6 +2940,7 @@ static BOOL _autoCursorEnable = NO;
                 [self _updateTextRangeByTrackingPreSelect];
                 if (_trackingRange.asRange.length > 0) {
                     _state.selectedWithoutEdit = YES;
+                    [self _selectedStateActive];
                     [self _showMenu];
                 } else {
                     [self performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
@@ -2839,6 +2952,7 @@ static BOOL _autoCursorEnable = NO;
                 if (!_state.touchMoved) {
                     if (_state.selectedWithoutEdit) {
                         _state.selectedWithoutEdit = NO;
+                        [self _selectedStateInvalid];
                         [self _hideMenu];
                     } else {
                         if (self.isFirstResponder) {
@@ -2882,14 +2996,20 @@ static BOOL _autoCursorEnable = NO;
         [self _endTouchTracking];
     }
     
-    if (!_state.swallowTouch) [super touchesEnded:touches withEvent:event];
+    if (!_state.swallowTouch) {
+        [super touchesEnded:touches withEvent:event];
+    }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     [self _endTouchTracking];
-    [self _hideMenu];
-
-    if (!_state.swallowTouch) [super touchesCancelled:touches withEvent:event];
+    //    [self _hideMenu];
+    [self _invalidSelectedMode];
+    
+    if (!_state.swallowTouch) {
+        [super touchesCancelled:touches withEvent:event];
+    }
+    
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -2906,8 +3026,17 @@ static BOOL _autoCursorEnable = NO;
 }
 
 - (BOOL)canBecomeFirstResponder {
-    if (!self.isSelectable) return NO;
-    if (!self.isEditable) return NO;
+    if (!self.isSelectable) {
+        return NO;
+    }
+    if (!self.isEditable){
+        if (!_state.trackingTouch) {
+            //非编辑状态下  且 选中模式下
+            //控制器调用 endEditing方法触发
+            [self _invalidSelectedMode];
+        }
+        return NO;
+    }
     if (_state.ignoreFirstResponder) return NO;
     if ([self.delegate respondsToSelector:@selector(textViewShouldBeginEditing:)]) {
         if (![self.delegate textViewShouldBeginEditing:self]) return NO;
@@ -2951,7 +3080,6 @@ static BOOL _autoCursorEnable = NO;
     BOOL isFirstResponder = self.isFirstResponder;
     if (!isFirstResponder) return YES;
     BOOL resign = [super resignFirstResponder];
-
     if (resign) {
         if (_markedTextRange) {
             _markedTextRange = nil;
@@ -3131,8 +3259,7 @@ static BOOL _autoCursorEnable = NO;
             [self _resetRedoStack];
             [self replaceRange:_selectedTextRange withText:string];
             
-            ///autoCursor statue need fix
-            if([YYTextView autoCursorEnable]){
+            if ([YYTextView autoCursorEnable]) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self insertText:@" "];
                     [self deleteBackward];
@@ -3194,25 +3321,25 @@ static BOOL _autoCursorEnable = NO;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         keys = [NSSet setWithArray:@[
-            @"text",
-            @"font",
-            @"textColor",
-            @"textAlignment",
-            @"dataDetectorTypes",
-            @"linkTextAttributes",
-            @"highlightTextAttributes",
-            @"textParser",
-            @"attributedText",
-            @"textVerticalAlignment",
-            @"textContainerInset",
-            @"numberOfLines",
-            @"truncationToken",
-            @"exclusionPaths",
-            @"verticalForm",
-            @"linePositionModifier",
-            @"selectedRange",
-            @"typingAttributes"
-        ]];
+                                     @"text",
+                                     @"font",
+                                     @"textColor",
+                                     @"textAlignment",
+                                     @"dataDetectorTypes",
+                                     @"linkTextAttributes",
+                                     @"highlightTextAttributes",
+                                     @"textParser",
+                                     @"attributedText",
+                                     @"textVerticalAlignment",
+                                     @"textContainerInset",
+                                     @"numberOfLines",
+                                     @"truncationToken",
+                                     @"exclusionPaths",
+                                     @"verticalForm",
+                                     @"linePositionModifier",
+                                     @"selectedRange",
+                                     @"typingAttributes"
+                                     ]];
     });
     if ([keys containsObject:key]) {
         return NO;
@@ -3372,17 +3499,27 @@ static BOOL _autoCursorEnable = NO;
 #pragma mark - @protocol UIKeyInput
 
 - (BOOL)hasText {
-    //Fix: MLeaksFinder . leaks.
-//    return _innerText.length > 0;
     return NO;
+    //    return _innerText.length > 0;
 }
 
 - (void)insertText:(NSString *)text {
     if (text.length == 0) return;
+    
     if (!NSEqualRanges(_lastTypeRange, _selectedTextRange.asRange)) {
         [self _saveToUndoStack];
         [self _resetRedoStack];
     }
+    
+    //    if (_lastTypeRange.location == _selectedTextRange.asRange.location) {
+    //        ///判断是否有删除操作
+    //        if ([_dicSaylorStack[@"sy_delete"]  isEqual: @"active"]) {
+    //            ///搜狗输入法 追加空格以中断联想
+    //            text = [text stringByAppendingString:@" "];
+    //            [_dicSaylorStack setObject:@"invalid" forKey:@"sy_delete"];
+    //        }
+    //    }
+    
     [self replaceRange:_selectedTextRange withText:text];
 }
 
@@ -3420,7 +3557,12 @@ static BOOL _autoCursorEnable = NO;
         [self _saveToUndoStack];
         [self _resetRedoStack];
     }
+    
     [self replaceRange:[YYTextRange rangeWithRange:range] withText:@""];
+    //    if (!_dicSaylorStack) {
+    //        _dicSaylorStack = [NSMutableDictionary dictionary];
+    //    }
+    //    [_dicSaylorStack setObject:@"active" forKey:@"sy_delete"];
 }
 
 #pragma mark - @protocol UITextInput
@@ -3438,17 +3580,11 @@ static BOOL _autoCursorEnable = NO;
     [self _hideMenu];
     _state.deleteConfirm = NO;
     _state.typingAttributesOnce = NO;
-    /*
-     以下被注释的两句代码引起如下问题：
-     字母键盘，英文模式  
-     输入 Res
-     键盘纠正状态栏  高亮词 “Tes”
-     此时点击后退键，会错误的将Tes 传入到文本框
-     */
-//    [_inputDelegate selectionWillChange:self];
+    //这里有问题 selectionWillChange 不明原因打断了deleteBackwardAndNotify 执行
+    //    [_inputDelegate selectionWillChange:self];
     _selectedTextRange = selectedTextRange;
     _lastTypeRange = _selectedTextRange.asRange;
-//    [_inputDelegate selectionDidChange:self];
+    //    [_inputDelegate selectionDidChange:self];
     
     [self _updateOuterProperties];
     [self _updateSelectionView];
@@ -3550,18 +3686,20 @@ static BOOL _autoCursorEnable = NO;
 }
 
 - (void)replaceRange:(YYTextRange *)range withText:(NSString *)text {
+    
     if (!range) return;
     if (!text) text = @"";
     if (range.asRange.length == 0 && text.length == 0) return;
-    
     //控制排除设置 ---Fix iOS10下标点符号Bug  @Saylor
     //此处拦截
     //需要排除的字符集
+    
     NSString *strExclude = @"#。，、？！；（）@“”【】｛｝#%^*+=_\\|《》&·,?!'/.:";
+    
     _isExcludeNeed = NO;
-   
+    
     if (self.isFirstResponder) {
-        for (int i=0; i< strExclude.length -1; i++) {
+        for (int i=0; i< strExclude.length; i++) {
             NSString *str = [strExclude substringWithRange:NSMakeRange(i, 1)];
             if (_isPasteOp) {
                 _isPasteOp = NO;
@@ -3610,6 +3748,8 @@ static BOOL _autoCursorEnable = NO;
     [self _hideMenu];
     
     [self _replaceRange:range withText:text notifyToDelegate:YES];
+    
+    
     if (useInnerAttributes) {
         [_innerText setAttributes:_typingAttributesHolder.attributes];
     } else if (applyTypingAttributes) {
@@ -3846,7 +3986,7 @@ static BOOL _autoCursorEnable = NO;
         NSUInteger ofs = position.offset;
         if (position.offset == _innerText.length ||
             direction == UITextStorageDirectionBackward) {
-             ofs--;
+            ofs--;
         }
         attrs = [_innerText attributesAtIndex:ofs effectiveRange:NULL];
     }
@@ -4007,3 +4147,4 @@ static BOOL _autoCursorEnable = NO;
 }
 
 @end
+
