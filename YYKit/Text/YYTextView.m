@@ -717,6 +717,8 @@ static BOOL _autoCursorEnable = NO;
         [_containerView resignFirstResponder]; // it will call [self becomeFirstResponder], ignore it temporary.
         _state.ignoreFirstResponder = NO;
     }
+    //release active textView
+    [YYActiveObj setViewActive:nil];
 }
 
 /// Show highlight layout based on `_highlight` and `_highlightRange`
