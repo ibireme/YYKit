@@ -282,10 +282,10 @@ static BOOL hexStrToRGBA(NSString *str,
     
     //RGB,RGBA,RRGGBB,RRGGBBAA
     if (length < 5) {
-        *r = hexStrToInt([str substringWithRange:NSMakeRange(0, 1)]) / 255.0f;
-        *g = hexStrToInt([str substringWithRange:NSMakeRange(1, 1)]) / 255.0f;
-        *b = hexStrToInt([str substringWithRange:NSMakeRange(2, 1)]) / 255.0f;
-        if (length == 4)  *a = hexStrToInt([str substringWithRange:NSMakeRange(3, 1)]) / 255.0f;
+        *r = hexStrToInt([NSString stringWithFormat:@"%@%@",[str substringWithRange:NSMakeRange(0, 1)],[str substringWithRange:NSMakeRange(0, 1)]] ) / 255.0f;
+        *g = hexStrToInt([NSString stringWithFormat:@"%@%@",[str substringWithRange:NSMakeRange(1, 1)],[str substringWithRange:NSMakeRange(1, 1)]]) / 255.0f;
+        *b = hexStrToInt([NSString stringWithFormat:@"%@%@",[str substringWithRange:NSMakeRange(2, 1)],[str substringWithRange:NSMakeRange(2, 1)]]) / 255.0f;
+        if (length == 4)  *a = hexStrToInt([NSString stringWithFormat:@"%@%@",[str substringWithRange:NSMakeRange(3, 1)],[str substringWithRange:NSMakeRange(3, 1)]]) / 255.0f;
         else *a = 1;
     } else {
         *r = hexStrToInt([str substringWithRange:NSMakeRange(0, 2)]) / 255.0f;
