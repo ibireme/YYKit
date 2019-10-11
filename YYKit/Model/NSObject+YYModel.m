@@ -45,7 +45,6 @@ static force_inline YYEncodingNSType YYClassGetNSType(Class cls) {
     if ([cls isSubclassOfClass:[NSValue class]]) return YYEncodingTypeNSValue;
     if ([cls isSubclassOfClass:[NSMutableData class]]) return YYEncodingTypeNSMutableData;
     if ([cls isSubclassOfClass:[NSData class]]) return YYEncodingTypeNSData;
-    if ([cls isSubclassOfClass:[NSDate class]]) return YYEncodingTypeNSDate;
     if ([cls isSubclassOfClass:[NSURL class]]) return YYEncodingTypeNSURL;
     if ([cls isSubclassOfClass:[NSMutableArray class]]) return YYEncodingTypeNSMutableArray;
     if ([cls isSubclassOfClass:[NSArray class]]) return YYEncodingTypeNSArray;
