@@ -38,7 +38,12 @@
             one.frame = (CGRect){.size = kScreenSize};
             one.userInteractionEnabled = NO;
             one.windowLevel = UIWindowLevelStatusBar + 1;
-            one.hidden = NO;
+            //fix statusBar not respond.
+            if (@available(iOS 13.0, *)) {
+                one.hidden = YES;
+            }else{
+                one.hidden = NO;
+            }
             
             // for iOS 9:
             one.opaque = NO;

@@ -79,8 +79,6 @@
         [text appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
     }
     
-    
-    
     text.font = font;
     
     _label = [YYLabel new];

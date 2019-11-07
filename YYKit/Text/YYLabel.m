@@ -73,6 +73,23 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 
 @implementation YYLabel
 
+#pragma mark - DarkMode Adapater
+
+#ifdef __IPHONE_13_0
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    if (@available(iOS 13.0, *)) {
+        if([UITraitCollection.currentTraitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]){
+            [self.layer setNeedsDisplay];
+        }
+    } else {
+        // Fallback on earlier versions
+    }
+}
+#endif
+
+
 #pragma mark - Private
 
 - (void)_updateIfNeeded {
