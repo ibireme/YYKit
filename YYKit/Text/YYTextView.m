@@ -687,7 +687,7 @@ static BOOL _autoCursorEnable = NO;
 /// 观察顶层滚动情况
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     if (object == [self _findTopScrollView] && [keyPath isEqualToString:@"contentOffset"]) {
-//        SYLog(@"监听滚动 自动消除...");
+//        NSLog(@"监听滚动 自动消除...");
         [self _invalidSelectedMode];
         return;
     }
@@ -702,7 +702,7 @@ static BOOL _autoCursorEnable = NO;
 }
 
 - (void)_menuWillShow:(NSNotification *)notify{
-//    SYLog(@"");
+//    NSLog(@"");
 }
 
 /// Show and update the YYActiveObj.
