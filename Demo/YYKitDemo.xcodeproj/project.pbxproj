@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3550FCD92253534C005B8891 /* YYActiveObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 3550FCD82253534C005B8891 /* YYActiveObj.m */; };
 		35A93CB2218B058A00760AA5 /* UINavigationController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93C9B218B058A00760AA5 /* UINavigationController+MemoryLeak.m */; };
 		35A93CB3218B058A00760AA5 /* MLeakedObjectProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93C9F218B058A00760AA5 /* MLeakedObjectProxy.m */; };
 		35A93CB4218B058A00760AA5 /* UIView+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CA1218B058A00760AA5 /* UIView+MemoryLeak.m */; };
@@ -19,6 +18,7 @@
 		35A93CBA218B058A00760AA5 /* UIViewController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CAC218B058A00760AA5 /* UIViewController+MemoryLeak.m */; };
 		35A93CBB218B058A00760AA5 /* UIApplication+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CAF218B058A00760AA5 /* UIApplication+MemoryLeak.m */; };
 		35A93CBC218B058A00760AA5 /* NSObject+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CB0218B058A00760AA5 /* NSObject+MemoryLeak.m */; };
+		35B95B6523AB731C00B7426F /* YYActiveObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B95B6423AB731B00B7426F /* YYActiveObj.m */; };
 		ABDC320D1BEAFB870012A159 /* YYTextTagExample.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDC320C1BEAFB870012A159 /* YYTextTagExample.m */; };
 		D9067DF11B975D3900F346EB /* YYTextExampleHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DF01B975D3900F346EB /* YYTextExampleHelper.m */; };
 		D9067DF41B9813B500F346EB /* YYTextEditExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DF31B9813B500F346EB /* YYTextEditExample.m */; };
@@ -208,8 +208,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3550FCD72253534C005B8891 /* YYActiveObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYActiveObj.h; sourceTree = "<group>"; };
-		3550FCD82253534C005B8891 /* YYActiveObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYActiveObj.m; sourceTree = "<group>"; };
 		35A93C9B218B058A00760AA5 /* UINavigationController+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MemoryLeak.m"; sourceTree = "<group>"; };
 		35A93C9C218B058A00760AA5 /* MLeaksMessenger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLeaksMessenger.h; sourceTree = "<group>"; };
 		35A93C9D218B058A00760AA5 /* UITabBarController+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+MemoryLeak.h"; sourceTree = "<group>"; };
@@ -233,6 +231,8 @@
 		35A93CAF218B058A00760AA5 /* UIApplication+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+MemoryLeak.m"; sourceTree = "<group>"; };
 		35A93CB0218B058A00760AA5 /* NSObject+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MemoryLeak.m"; sourceTree = "<group>"; };
 		35A93CB1218B058A00760AA5 /* UIView+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MemoryLeak.h"; sourceTree = "<group>"; };
+		35B95B6323AB731B00B7426F /* YYActiveObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYActiveObj.h; sourceTree = "<group>"; };
+		35B95B6423AB731B00B7426F /* YYActiveObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYActiveObj.m; sourceTree = "<group>"; };
 		ABDC320B1BEAFB870012A159 /* YYTextTagExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextTagExample.h; sourceTree = "<group>"; };
 		ABDC320C1BEAFB870012A159 /* YYTextTagExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextTagExample.m; sourceTree = "<group>"; };
 		D9067DEF1B975D3900F346EB /* YYTextExampleHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextExampleHelper.h; sourceTree = "<group>"; };
@@ -1113,8 +1113,8 @@
 		D9B2600C1BEE79370038C00A /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				3550FCD72253534C005B8891 /* YYActiveObj.h */,
-				3550FCD82253534C005B8891 /* YYActiveObj.m */,
+				35B95B6323AB731B00B7426F /* YYActiveObj.h */,
+				35B95B6423AB731B00B7426F /* YYActiveObj.m */,
 				D9B260171BEE79370038C00A /* YYTextLayout.h */,
 				D9B260181BEE79370038C00A /* YYTextLayout.m */,
 				D9B260191BEE79370038C00A /* YYTextLine.h */,
@@ -1351,7 +1351,7 @@
 				D9B2605E1BEE79370038C00A /* CALayer+YYAdd.m in Sources */,
 				D9B260761BEE79370038C00A /* UIImageView+YYWebImage.m in Sources */,
 				D97484D919CAAD2900F46DE1 /* YYAppDelegate.m in Sources */,
-				3550FCD92253534C005B8891 /* YYActiveObj.m in Sources */,
+				35B95B6523AB731C00B7426F /* YYActiveObj.m in Sources */,
 				D943B48D19EC2BC100A9481E /* YYRootViewController.m in Sources */,
 				D9CC99EB1B8B528300A9466D /* YYImageProgressiveExample.m in Sources */,
 				D9067E0A1B98AAA000F346EB /* WBStatusTimelineViewController.m in Sources */,
