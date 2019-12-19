@@ -203,7 +203,7 @@ NS_ASSUME_NONNULL_END
 #ifndef kiOS12Later
 #define kiOS12Later (kSystemVersion >= 12)
 #endif
-
+//用于取代@available判断
 #ifndef kiOS13Later
 #define kiOS13Later (kSystemVersion >= 13)
 #endif
