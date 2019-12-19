@@ -28,6 +28,7 @@
 #import "UIApplication+YYAdd.h"
 #import "YYImage.h"
 #import "YYActiveObj.h"
+#import "UIDevice+YYAdd.h"
 
 #define kDefaultUndoLevelMax 20 // Default maximum undo level
 
@@ -238,7 +239,7 @@ static BOOL _autoCursorEnable = NO;
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection{
     [super traitCollectionDidChange:previousTraitCollection];
     
-    if (@available(iOS 13.0, *)) {
+    if (kiOS13Later) {
         if([UITraitCollection.currentTraitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]){
             [self _commitUpdate];
             [self _commitPlaceholderUpdate];
@@ -390,7 +391,7 @@ static BOOL _autoCursorEnable = NO;
         });
     }
     
-    if (@available(iOS 13.0, *)) {
+    if (kiOS13Later) {
         
         if (_state.trackingTouchBegan) [_inputDelegate selectionWillChange:self];
         [[YYTextEffectWindow sharedWindow] showSelectionDot:_selectionView];

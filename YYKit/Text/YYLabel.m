@@ -14,6 +14,7 @@
 #import "YYWeakProxy.h"
 #import "YYCGUtilities.h"
 #import "NSAttributedString+YYText.h"
+#import "UIDevice+YYAdd.h"
 
 #if __has_include("YYDispatchQueuePool.h")
 #import "YYDispatchQueuePool.h"
@@ -79,7 +80,7 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection{
     [super traitCollectionDidChange:previousTraitCollection];
     
-    if (@available(iOS 13.0, *)) {
+    if (kiOS13Later) {
         if([UITraitCollection.currentTraitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]){
             [self.layer setNeedsDisplay];
         }

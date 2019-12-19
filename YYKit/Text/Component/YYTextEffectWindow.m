@@ -15,6 +15,7 @@
 #import "YYCGUtilities.h"
 #import "UIView+YYAdd.h"
 #import "UIApplication+YYAdd.h"
+#import "UIDevice+YYAdd.h"
 
 
 @implementation YYTextEffectWindow
@@ -39,7 +40,7 @@
             one.userInteractionEnabled = NO;
             one.windowLevel = UIWindowLevelStatusBar + 1;
             //fix statusBar not respond.
-            if (@available(iOS 13.0, *)) {
+            if (kiOS13Later) {
                 one.hidden = YES;
             }else{
                 one.hidden = NO;
