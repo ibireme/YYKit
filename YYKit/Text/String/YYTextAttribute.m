@@ -106,7 +106,7 @@ YYTextAttributeType YYTextAttributeGetType(NSString *name){
         dic[YYTextGlyphTransformAttributeName] = YYText;
     });
     NSNumber *num = dic[name];
-    if (num) return num.integerValue;
+    if (num != nil) return num.integerValue;
     return YYTextAttributeTypeNone;
 }
 

@@ -641,7 +641,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param content        The attachment (UIImage/UIView/CALayer).
  @param contentMode    The attachment's content mode in attachment holder
  @param attachmentSize The attachment holder's size in text layout.
- @param fontSize       The attachment will align to this font.
+ @param font           The attachment will align to this font.
  @param alignment      The attachment holder's alignment to text line.
  
  @return An attributed string, or nil if an error occurs.

@@ -1,7 +1,14 @@
 language: objective-c
-osx_image: xcode7
+osx_image: xcode8
 xcode_project: Framework/YYKit.xcodeproj
 xcode_scheme: YYKit
 
+before_install:
+- env
+- xcodebuild -version
+- xcodebuild -showsdks
+- xcpretty --version
+
 script:
-- xctool -project Framework/YYKit.xcodeproj -scheme YYKit build test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+- set -o pipefail
+- xcodebuild clean build -project "$TRAVIS_XCODE_PROJECT"  -scheme "$TRAVIS_XCODE_SCHEME" | xcpretty

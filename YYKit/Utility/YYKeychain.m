@@ -219,8 +219,8 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     
     if (self.accessible) dic[(__bridge id)kSecAttrAccessible] = YYKeychainAccessibleStr(self.accessible);
     if (self.passwordData) dic[(__bridge id)kSecValueData] = self.passwordData;
-    if (self.type) dic[(__bridge id)kSecAttrType] = self.type;
-    if (self.creater) dic[(__bridge id)kSecAttrCreator] = self.creater;
+    if (self.type != nil) dic[(__bridge id)kSecAttrType] = self.type;
+    if (self.creater != nil) dic[(__bridge id)kSecAttrCreator] = self.creater;
     if (self.comment) dic[(__bridge id)kSecAttrComment] = self.comment;
     if (self.descr) dic[(__bridge id)kSecAttrDescription] = self.descr;
     
@@ -273,8 +273,8 @@ static YYKeychainQuerySynchronizationMode YYKeychainQuerySynchonizationEnum(NSNu
     if (self.account) [str appendFormat:@"  service:%@,\n", self.account];
     if (self.password) [str appendFormat:@"  service:%@,\n", self.password];
     if (self.label) [str appendFormat:@"  service:%@,\n", self.label];
-    if (self.type) [str appendFormat:@"  service:%@,\n", self.type];
-    if (self.creater) [str appendFormat:@"  service:%@,\n", self.creater];
+    if (self.type != nil) [str appendFormat:@"  service:%@,\n", self.type];
+    if (self.creater != nil) [str appendFormat:@"  service:%@,\n", self.creater];
     if (self.comment) [str appendFormat:@"  service:%@,\n", self.comment];
     if (self.descr) [str appendFormat:@"  service:%@,\n", self.descr];
     if (self.modificationDate) [str appendFormat:@"  service:%@,\n", self.modificationDate];

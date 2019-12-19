@@ -133,7 +133,7 @@ static void YYReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
                 CTRadioAccessTechnologyLTE : @(YYReachabilityWWANStatus4G)}; // LTE:3.9G 150M/75M  LTE-Advanced:4G 300M/150M
     });
     NSNumber *num = dic[status];
-    if (num) return num.unsignedIntegerValue;
+    if (num != nil) return num.unsignedIntegerValue;
     else return YYReachabilityWWANStatusNone;
 }
 
