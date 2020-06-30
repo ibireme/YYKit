@@ -14,6 +14,7 @@
 #import "YYWeakProxy.h"
 #import "YYCGUtilities.h"
 #import "NSAttributedString+YYText.h"
+#import "UIDevice+YYAdd.h"
 
 #if __has_include("YYDispatchQueuePool.h")
 #import "YYDispatchQueuePool.h"
@@ -72,6 +73,23 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
 
 
 @implementation YYLabel
+
+#pragma mark - DarkMode Adapater
+
+#ifdef __IPHONE_13_0
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    if (kiOS13Later) {
+        if([UITraitCollection.currentTraitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]){
+            [self.layer setNeedsDisplay];
+        }
+    } else {
+        // Fallback on earlier versions
+    }
+}
+#endif
+
 
 #pragma mark - Private
 
@@ -347,8 +365,10 @@ static dispatch_queue_t YYLabelGetReleaseQueue() {
     if (!_font) _font = [self _defaultFont];
     _textColor = _innerText.color;
     if (!_textColor) _textColor = [UIColor blackColor];
-    _textAlignment = _innerText.alignment;
-    _lineBreakMode = _innerText.lineBreakMode;
+    //判断text 是否为空
+    BOOL isEmptyStr = _innerText.length == 0;
+    if(!isEmptyStr)_textAlignment = _innerText.alignment;
+    if(!isEmptyStr)_lineBreakMode = _innerText.lineBreakMode;
     NSShadow *shadow = _innerText.shadow;
     _shadowColor = shadow.shadowColor;
 #if !TARGET_INTERFACE_BUILDER

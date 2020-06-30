@@ -27,7 +27,8 @@
 #import "UIDevice+YYAdd.h"
 #import "UIApplication+YYAdd.h"
 #import "YYImage.h"
-
+#import "YYActiveObj.h"
+#import "UIDevice+YYAdd.h"
 
 #define kDefaultUndoLevelMax 20 // Default maximum undo level
 
@@ -44,6 +45,8 @@
 #define kDefaultInset UIEdgeInsetsMake(6, 4, 6, 4)
 #define kDefaultVerticalInset UIEdgeInsetsMake(4, 6, 4, 6)
 
+#define kDefaultNumberOfLines 0
+#define kDefaultTruncationToken nil
 
 NSString *const YYTextViewTextDidBeginEditingNotification = @"YYTextViewTextDidBeginEditing";
 NSString *const YYTextViewTextDidChangeNotification = @"YYTextViewTextDidChange";
@@ -109,6 +112,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     BOOL _insetModifiedByKeyboard; ///< text is covered by keyboard, and the contentInset is modified
     UIEdgeInsets _originalContentInset; ///< the original contentInset before modified
     UIEdgeInsets _originalScrollIndicatorInsets; ///< the original scrollIndicatorInsets before modified
+    ///Added for Outside Top ScrollView
+    UIEdgeInsets _originalTopContentInset; ///< the original contentInset before modified
+    UIEdgeInsets _originalTopScrollIndicatorInsets; ///< the original scrollIndicatorInsets before modified
     
     NSTimer *_longPressTimer;
     NSTimer *_autoScrollTimer;
@@ -125,6 +131,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     NSMutableArray *_undoStack;
     NSMutableArray *_redoStack;
     NSRange _lastTypeRange;
+    
+    //顶层控制器
+    __weak UIViewController *_rootViewController;
     
     struct {
         unsigned int trackingGrabber : 2;       ///< YYTextGrabberDirection, current tracking grabber
@@ -152,7 +161,15 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         
         unsigned int insideUndoBlock : 1;
         unsigned int firstResponderBeforeUndoAlert : 1;
+        unsigned int trackingDeleteBackward : 1;  ///< track deleteBackward operation
+        unsigned int trackingTouchBegan : 1;
+        
     } _state;
+    
+    BOOL _isExcludeNeed;     ///用于控制 iOS10 键盘标点符号Bug  是否开启排除操作
+    BOOL _isPasteOp;         ///标记粘贴操作
+//    NSMutableDictionary *_dicSaylorStack;///用于标识搜狗键盘的操作
+    BOOL _isAutoCursorEnable; ///用于标记第一次启用自动光标定位，辅助记录scTop 原数据。
 }
 
 @end
@@ -180,6 +197,58 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 #pragma mark - @protocol UITextInput optional
 @synthesize selectionAffinity = _selectionAffinity;
 
+static BOOL _autoCursorEnable = NO;
+
+#pragma mark - Class Property
++ (void)setAutoCursorEnable:(BOOL)autoCursorEnable{
+    _autoCursorEnable = autoCursorEnable;
+}
+
++ (BOOL)autoCursorEnable{
+    return _autoCursorEnable;
+}
+
+#pragma mark - override
+- (void)addSubview:(UIView *)view{
+    
+    //解决蓝点问题
+    Class Cls_selectionGrabberDot = NSClassFromString(@"UISelectionGrabberDot");
+    if ([view isKindOfClass:[Cls_selectionGrabberDot class]]) {
+        view.backgroundColor = [UIColor clearColor];
+        view.tintColor = [UIColor clearColor];
+        view.size = CGSizeZero;
+    }
+    
+    //获取UITextSelectionView
+    //解决双光标问题
+    Class Cls_selectionView = NSClassFromString(@"UITextSelectionView");
+
+    if ([view isKindOfClass:[Cls_selectionView class]]) {
+        view.backgroundColor = [UIColor clearColor];
+        view.tintColor = [UIColor clearColor];
+        view.hidden = YES;
+    }
+    
+    [super addSubview:view];
+    
+}
+
+#pragma mark - Dark mode Adapter
+
+#ifdef __IPHONE_13_0
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    if (kiOS13Later) {
+        if([UITraitCollection.currentTraitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]){
+            [self _commitUpdate];
+            [self _commitPlaceholderUpdate];
+        }
+    } else {
+        // Fallback on earlier versions
+    }
+}
+#endif
 
 #pragma mark - Private
 
@@ -216,10 +285,13 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     } else {
         _delectedText = nil;
     }
+//  可解决 空白文本时，Size 不正确的问题  需后期考量后再放开
+//    if (self.isFirstResponder) {
     [text replaceCharactersInRange:NSMakeRange(text.length, 0) withString:@"\r"]; // add for nextline caret
     [text removeDiscontinuousAttributesInRange:NSMakeRange(_innerText.length, 1)];
     [text removeAttribute:YYTextBorderAttributeName range:NSMakeRange(_innerText.length, 1)];
     [text removeAttribute:YYTextBackgroundBorderAttributeName range:NSMakeRange(_innerText.length, 1)];
+
     if (_innerText.length == 0) {
         [text setAttributes:_typingAttributesHolder.attributes]; // add for empty text caret
     }
@@ -228,6 +300,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             [text setAttribute:key value:value range:NSMakeRange(_innerText.length, 1)];
         }];
     }
+//    }
+    
     [self willChangeValueForKey:@"textLayout"];
     _innerLayout = [YYTextLayout layoutWithContainer:_innerContainer text:text];
     [self didChangeValueForKey:@"textLayout"];
@@ -254,8 +328,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _selectionView.caretVisible = NO;
     _selectionView.selectionRects = nil;
     [[YYTextEffectWindow sharedWindow] hideSelectionDot:_selectionView];
+
     if (!_innerLayout) return;
-    
+
     NSMutableArray *allRects = [NSMutableArray new];
     BOOL containsDot = NO;
     
@@ -303,6 +378,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [allRects enumerateObjectsUsingBlock:^(YYTextSelectionRect *rect, NSUInteger idx, BOOL *stop) {
         rect.rect = [self _convertRectFromLayout:rect.rect];
     }];
+    
     _selectionView.selectionRects = allRects;
     if (!_state.firstShowDot && containsDot) {
         _state.firstShowDot = YES;
@@ -314,7 +390,17 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             [[YYTextEffectWindow sharedWindow] showSelectionDot:_selectionView];
         });
     }
-    [[YYTextEffectWindow sharedWindow] showSelectionDot:_selectionView];
+    
+    if (kiOS13Later) {
+        
+        if (_state.trackingTouchBegan) [_inputDelegate selectionWillChange:self];
+        [[YYTextEffectWindow sharedWindow] showSelectionDot:_selectionView];
+        if (_state.trackingTouchBegan) [_inputDelegate selectionDidChange:self];
+    
+    }else{
+        
+         [[YYTextEffectWindow sharedWindow] showSelectionDot:_selectionView];
+    }
     
     if (containsDot) {
         [self _startSelectionDotFixTimer];
@@ -558,8 +644,75 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     }
 }
 
-/// Show and update the UIMenuController.
+///外部滚动事件通知---关联方法  【用于取消选中状态】
+- (void)_invalidSelectedMode {
+    if (!_state.showingMenu || _selectedRange.length == 0) {
+        return;
+    }
+    
+    [self setSelectedRange:NSMakeRange(0, 0)];
+    [self _hideMenu];
+    [self _selectedStateInvalid];
+}
+
+/// selected state Active
+- (void)_selectedStateActive {
+    //注册观察者
+    UIScrollView *scTop = [self _findTopScrollView];
+    [scTop addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:@"__ob_yytextview"];
+    
+    //选择模式【激活】
+    if ([self.delegateSelectState respondsToSelector:@selector(textViewSelectedStateActive:)]) {
+        [self.delegateSelectState textViewSelectedStateActive:self];
+    }
+}
+
+/// selected state invalid
+- (void)_selectedStateInvalid {
+    //此处防止重复移除
+    @try {
+        UIScrollView *scTop = [self _findTopScrollView];
+        [scTop removeObserver:self forKeyPath:@"contentOffset" context:@"__ob_yytextview"];
+    } @catch (NSException *exception) {
+        NSLog(@"multiple remove ... exception cathed");
+    } @finally {
+        
+    }
+
+    //选择模式 【失效】
+    if ([self.delegateSelectState respondsToSelector:@selector(textViewSelectedStateInvalid:)]) {
+        [self.delegateSelectState textViewSelectedStateInvalid:self];
+    }
+}
+
+/// 观察顶层滚动情况
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if (object == [self _findTopScrollView] && [keyPath isEqualToString:@"contentOffset"]) {
+//        NSLog(@"监听滚动 自动消除...");
+        [self _invalidSelectedMode];
+        return;
+    }
+}
+
+/// YYActiveObj 通知
+- (void)_menuWillHide:(NSNotification *)notify{
+    if (self != [YYActiveObj viewActive]) {
+        return;
+    }
+    [self _invalidSelectedMode];
+}
+
+- (void)_menuWillShow:(NSNotification *)notify{
+//    NSLog(@"");
+}
+
+/// Show and update the YYActiveObj.
 - (void)_showMenu {
+    //过滤
+    if (_markedTextRange != nil) {
+        return;
+    }
+    
     CGRect rect;
     if (_selectionView.caretVisible) {
         rect = _selectionView.caretView.frame;
@@ -610,7 +763,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     
     if (self.isFirstResponder || _containerView.isFirstResponder) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            [YYActiveObj setViewActive:self];
             UIMenuController *menu = [UIMenuController sharedMenuController];
+//            menu.menuItems = @[
+//                               [[UIMenuItem alloc] initWithTitle:@"查询" action:@selector(interDefine:)],
+//                               ];
             [menu setTargetRect:CGRectStandardize(rect) inView:_selectionView];
             [menu update];
             if (!_state.showingMenu || !menu.menuVisible) {
@@ -621,7 +779,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     }
 }
 
-/// Hide the UIMenuController.
+/// Hide the YYActiveObj.
 - (void)_hideMenu {
     if (_state.showingMenu) {
         _state.showingMenu = NO;
@@ -633,6 +791,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         [_containerView resignFirstResponder]; // it will call [self becomeFirstResponder], ignore it temporary.
         _state.ignoreFirstResponder = NO;
     }
+    
+    [YYActiveObj setViewActive:nil];
 }
 
 /// Show highlight layout based on `_highlight` and `_highlightRange`
@@ -681,49 +841,129 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 /// Scroll range to visible, take account into keyboard and insets.
 - (void)_scrollRangeToVisible:(YYTextRange *)range {
     if (!range) return;
+    //获取顶层ScrollView
+    UIScrollView *scTop = [self _findTopScrollView];
+    //从内部布局容器中获取 光标位置
     CGRect rect = [_innerLayout rectForRange:range];
     if (CGRectIsNull(rect)) return;
+    //转换区域
     rect = [self _convertRectFromLayout:rect];
+    //转换区域到顶层SC
+    CGRect rectTop = [_containerView convertRect:rect toView:scTop];
+    
+    //转换区域到内部文本容器
     rect = [_containerView convertRect:rect toView:self];
+
+    if (rect.size.width < 1) {
+        rect.size.width = 1;
+        rectTop.size.width = 1;
+    }
+    if (rect.size.height < 1) {
+        rect.size.height = 1;
+        rectTop.size.height = 1;
+    }
     
-    if (rect.size.width < 1) rect.size.width = 1;
-    if (rect.size.height < 1) rect.size.height = 1;
     CGFloat extend = 3;
-    
+    //是否修改内间距
     BOOL insetModified = NO;
+    BOOL isNeedFixContainer = NO;
+    
+    if (rect.origin.y > self.size.height) {
+        isNeedFixContainer = YES;
+    }
+    
+    //键盘管理器
     YYTextKeyboardManager *mgr = [YYTextKeyboardManager defaultManager];
     
+    //需要移动顶层容器的情况
+    if ([YYTextView autoCursorEnable]) {
+        /// force set scrollEnabled to NO
+        self.scrollEnabled = NO;
+        ///**添加自动调整外部顶层 UITableView 偏移，用来实现和IQKeyboard类似的功能
+        //滚动锁定状态下
+        //键盘弹起情况下
+        CGRect topBounds = scTop.bounds;
+        topBounds.origin = CGPointZero;
+        //保存原始间距数据
+        if(!_isAutoCursorEnable){
+            _isAutoCursorEnable = YES;
+            _originalTopContentInset = scTop.contentInset;
+            _originalTopScrollIndicatorInsets = scTop.scrollIndicatorInsets;
+        }
+        
+        CGRect kbTopRect = [mgr convertRect:mgr.keyboardFrame toView:scTop];
+        kbTopRect.origin.y -= _extraAccessoryViewHeight;
+        kbTopRect.size.height += _extraAccessoryViewHeight;
+        //修正键盘位置
+        kbTopRect.origin.x -= scTop.contentOffset.x;
+        kbTopRect.origin.y -= scTop.contentOffset.y;
+        //区域交集
+        CGRect inter = CGRectIntersection(topBounds, kbTopRect);
+        UIEdgeInsets newTopInset = UIEdgeInsetsZero;
+        newTopInset.bottom = inter.size.height + extend;
+        
+        UIViewAnimationOptions curve;
+        if (kiOS7Later) {
+            curve = 7 << 16;
+        } else {
+            curve = UIViewAnimationOptionCurveEaseInOut;
+        }
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | curve animations:^{
+    
+            [scTop setContentInset:newTopInset];
+            [scTop setScrollIndicatorInsets:newTopInset];
+            [scTop scrollRectToVisible:CGRectInset(rectTop, -extend, -extend) animated:NO];
+            
+        } completion:NULL];
+        
+        return;
+    }
+    
     if (mgr.keyboardVisible && self.window && self.superview && self.isFirstResponder && !_verticalForm) {
+        //键盘弹起情况下
         CGRect bounds = self.bounds;
         bounds.origin = CGPointZero;
         CGRect kbRect = [mgr convertRect:mgr.keyboardFrame toView:self];
         kbRect.origin.y -= _extraAccessoryViewHeight;
         kbRect.size.height += _extraAccessoryViewHeight;
-        
+        //修正键盘位置
         kbRect.origin.x -= self.contentOffset.x;
         kbRect.origin.y -= self.contentOffset.y;
+        //区域交集
         CGRect inter = CGRectIntersection(bounds, kbRect);
         if (!CGRectIsNull(inter) && inter.size.height > 1 && inter.size.width > extend) { // self is covered by keyboard
             if (CGRectGetMinY(inter) > CGRectGetMinY(bounds)) { // keyboard below self.top
-                
+                //获取当前内间距数据
                 UIEdgeInsets originalContentInset = self.contentInset;
                 UIEdgeInsets originalScrollIndicatorInsets = self.scrollIndicatorInsets;
+                
+                //默认值为NO
                 if (_insetModifiedByKeyboard) {
+                    //从上一次偏移中获取内间距数据
                     originalContentInset = _originalContentInset;
                     originalScrollIndicatorInsets = _originalScrollIndicatorInsets;
                 }
                 
                 if (originalContentInset.bottom < inter.size.height + extend) {
+                    //当前光标被键盘遮挡
                     insetModified = YES;
                     if (!_insetModifiedByKeyboard) {
+                        //第一次 保存原始内间距等设置
                         _insetModifiedByKeyboard = YES;
                         _originalContentInset = self.contentInset;
                         _originalScrollIndicatorInsets = self.scrollIndicatorInsets;
                     }
+                    
+                    CGFloat fltDiffBottom = CGRectGetMaxY(bounds) - CGRectGetMaxY(inter);
+                    
+                    //内间距更新
                     UIEdgeInsets newInset = originalContentInset;
                     UIEdgeInsets newIndicatorInsets = originalScrollIndicatorInsets;
-                    newInset.bottom = inter.size.height + extend;
+                    
+                    //固定为键盘高度
+                    newInset.bottom = inter.size.height + extend + fltDiffBottom;
                     newIndicatorInsets.bottom = newInset.bottom;
+
                     UIViewAnimationOptions curve;
                     if (kiOS7Later) {
                         curve = 7 << 16;
@@ -731,9 +971,11 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                         curve = UIViewAnimationOptionCurveEaseInOut;
                     }
                     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | curve animations:^{
+                        
                         [super setContentInset:newInset];
                         [super setScrollIndicatorInsets:newIndicatorInsets];
                         [self scrollRectToVisible:CGRectInset(rect, -extend, -extend) animated:NO];
+
                     } completion:NULL];
                 }
             }
@@ -741,6 +983,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     }
     if (!insetModified) {
         [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut animations:^{
+            
             [self _restoreInsetsAnimated:NO];
             [self scrollRectToVisible:CGRectInset(rect, -extend, -extend) animated:NO];
         } completion:NULL];
@@ -761,6 +1004,41 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             [super setScrollIndicatorInsets:_originalScrollIndicatorInsets];
         }
     }
+    
+    if ([YYTextView autoCursorEnable]) {
+        
+        UIScrollView *scTop = [self _findTopScrollView];
+        
+        if (animated) {
+            [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut  animations:^{
+                //还原顶层容器间距
+                [scTop setContentInset:_originalTopContentInset];
+                [scTop setScrollIndicatorInsets:_originalTopScrollIndicatorInsets];
+                
+            } completion:NULL];
+        } else {
+            //还原顶层容器间距
+            [scTop setContentInset:_originalTopContentInset];
+            [scTop setScrollIndicatorInsets:_originalTopScrollIndicatorInsets];
+        }
+    }
+    
+}
+
+/// Find top scrollView, Implement function like IQKeyboard.
+- (UIScrollView *)_findTopScrollView {
+    UIScrollView *topScrollView = nil;
+    UIView *viewTemp = self.superview;
+    while (viewTemp && ![viewTemp isKindOfClass:[UIScrollView class]]) {
+        viewTemp = viewTemp.superview;
+    }
+    ///correct the result
+    if ([viewTemp isKindOfClass: NSClassFromString(@"UITableViewWrapperView")]) {
+        viewTemp = viewTemp.superview;
+    }
+    topScrollView = (UIScrollView *)viewTemp;
+    
+    return topScrollView;
 }
 
 /// Keyboard frame changed, scroll the caret to visible range, or modify the content insets.
@@ -1396,12 +1674,23 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 /// Replace the range with the text, and change the `_selectTextRange`.
 /// The caller should make sure the `range` and `text` are valid before call this method.
 - (void)_replaceRange:(YYTextRange *)range withText:(NSString *)text notifyToDelegate:(BOOL)notify{
+    if (_isExcludeNeed) {
+        notify = NO;
+    }
+
     if (NSEqualRanges(range.asRange, _selectedTextRange.asRange)) {
-        if (notify) [_inputDelegate selectionWillChange:self];
+        //这里的代理方法需要注释掉 【废止】
+        //if (notify) [_inputDelegate selectionWillChange:self];
+        /// iOS13 下，双光标问题 便是由此而生。
+        if (_state.trackingDeleteBackward)[_inputDelegate selectionWillChange:self];
         NSRange newRange = NSMakeRange(0, 0);
         newRange.location = _selectedTextRange.start.offset + text.length;
         _selectedTextRange = [YYTextRange rangeWithRange:newRange];
-        if (notify) [_inputDelegate selectionDidChange:self];
+        //if (notify) [_inputDelegate selectionDidChange:self];
+        /// iOS13 下，双光标问题 便是由此而生。
+        if (_state.trackingDeleteBackward) [_inputDelegate selectionDidChange:self];
+        ///恢复标记
+        _state.trackingDeleteBackward = NO;
     } else {
         if (range.asRange.length != text.length) {
             if (notify) [_inputDelegate selectionWillChange:self];
@@ -1441,11 +1730,30 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             if (notify) [_inputDelegate selectionDidChange:self];
         }
     }
-    if (notify) [_inputDelegate textWillChange:self];
+
+    //这里的代理方法 需要判断，如果设置了解析器则不执行，分析解析器中重复执行会有问题。
+    if (!self.textParser) [_inputDelegate textWillChange:self];
     NSRange newRange = NSMakeRange(range.asRange.location, text.length);
     [_innerText replaceCharactersInRange:range.asRange withString:text];
     [_innerText removeDiscontinuousAttributesInRange:newRange];
-    if (notify) [_inputDelegate textDidChange:self];
+    if (!self.textParser) [_inputDelegate textDidChange:self];
+    
+    /*
+     修正光标位置的方法放在这里，因为此处已经替换文本完毕
+     问题的本质原因，替换完文本后 range 没有得到更新
+     */
+//    NSLog(@"Correct cursor position");
+    
+    if (range.asRange.location + range.asRange.length == _selectedTextRange.asRange.location && _selectedTextRange.asRange.length == 0) {
+        //修正_selectedTextRange
+        [_inputDelegate selectionWillChange:self];
+        
+        _selectedTextRange = [YYTextRange rangeWithRange:NSMakeRange(_selectedTextRange.asRange.location + text.length - range.asRange.length, 0)];
+        
+        [_inputDelegate selectionDidChange:self];
+    }
+    
+    
 }
 
 /// Save current typing attributes to the attributes holder.
@@ -1492,9 +1800,10 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         YYTextRange *oldTextRange = _selectedTextRange;
         NSRange newRange = _selectedTextRange.asRange;
         
-        [_inputDelegate textWillChange:self];
+        //此处方法需要注释掉
+//        if(!_isExcludeNeed)[_inputDelegate textWillChange:self];
         BOOL textChanged = [self.textParser parseText:_innerText selectedRange:&newRange];
-        [_inputDelegate textDidChange:self];
+//        if(!_isExcludeNeed)[_inputDelegate textDidChange:self];
         
         YYTextRange *newTextRange = [YYTextRange rangeWithRange:newRange];
         newTextRange = [self _correctedTextRange:newTextRange];
@@ -1550,6 +1859,11 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 
 /// Returns the `root` view controller (returns nil if not found).
 - (UIViewController *)_getRootViewController {
+    //优先使用内部缓存
+    if (_rootViewController) {
+        return _rootViewController;
+    }
+    
     UIViewController *ctrl = nil;
     UIApplication *app = [UIApplication sharedExtensionApplication];
     if (!ctrl) ctrl = app.keyWindow.rootViewController;
@@ -1561,6 +1875,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         ctrl = ctrl.presentedViewController;
     }
     if (!ctrl.view.window) return nil;
+    
+    _rootViewController = ctrl;
+    
     return ctrl;
 }
 
@@ -1876,6 +2193,23 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [self didChangeValueForKey:@"textContainerInset"];
 }
 
+- (void)_setNumberOfLines:(NSInteger)numberOfLines{
+    if (_numberOfLines == numberOfLines) return;
+    [self willChangeValueForKey:@"numberOfLines"];
+    _numberOfLines = numberOfLines;
+    [self didChangeValueForKey:@"numberOfLines"];
+}
+
+- (void)_setTruncationToken:(NSAttributedString *)truncationToken{
+    if (_truncationToken == truncationToken || [_truncationToken isEqual:truncationToken]) return;
+    [self willChangeValueForKey:@"truncationToken"];
+    _truncationToken = truncationToken;
+    [self didChangeValueForKey:@"truncationToken"];
+}
+
+
+
+
 - (void)_setExclusionPaths:(NSArray *)exclusionPaths {
     if (_exclusionPaths == exclusionPaths || [_exclusionPaths isEqual:exclusionPaths]) return;
     [self willChangeValueForKey:@"exclusionPaths"];
@@ -1925,7 +2259,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     
     _text = @"";
     _attributedText = [NSAttributedString new];
-    
+    //光标位置初始化
+//    _fltLastCouserY = -1;
     // UITextInputTraits
     _autocapitalizationType = UITextAutocapitalizationTypeSentences;
     _autocorrectionType = UITextAutocorrectionTypeDefault;
@@ -1947,11 +2282,14 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _highlightable = YES;
     _allowsCopyAttributedString = YES;
     _textAlignment = NSTextAlignmentNatural;
-    
     _innerText = [NSMutableAttributedString new];
     _innerContainer = [YYTextContainer new];
+
     _innerContainer.insets = kDefaultInset;
     _textContainerInset = kDefaultInset;
+    _numberOfLines = kDefaultNumberOfLines;
+    _truncationToken = kDefaultTruncationToken;
+    
     _typingAttributesHolder = [[NSMutableAttributedString alloc] initWithString:@" "];
     _linkTextAttributes = @{NSForegroundColorAttributeName : [self _defaultTintColor],
                             (id)kCTForegroundColorAttributeName : (id)[self _defaultTintColor].CGColor};
@@ -1998,6 +2336,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_pasteboardChanged) name:UIPasteboardChangedNotification object:nil];
     [[YYTextKeyboardManager defaultManager] addObserver:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_menuWillHide:) name:UIMenuControllerWillHideMenuNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_menuWillShow:) name:UIMenuControllerWillShowMenuNotification object:nil];
     
     self.isAccessibilityElement = YES;
 }
@@ -2014,6 +2354,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIPasteboardChangedNotification object:nil];
     [[YYTextKeyboardManager defaultManager] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillHideMenuNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillShowMenuNotification object:nil];
     
     [[YYTextEffectWindow sharedWindow] hideSelectionDot:_selectionView];
     [[YYTextEffectWindow sharedWindow] hideMagnifier:_magnifierCaret];
@@ -2035,7 +2377,11 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 #pragma mark - Property
 
 - (void)setText:(NSString *)text {
-    if (_text == text || [_text isEqualToString:text]) return;
+    if (_text == text || [_text isEqualToString:text]){
+        //复用的情况下，解析状态会丢失
+        if ([self _parseText])_state.needUpdate = YES;
+        return;
+    }
     [self _setText:text];
     
     _state.selectedWithoutEdit = NO;
@@ -2043,6 +2389,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [self _endTouchTracking];
     [self _hideMenu];
     [self _resetUndoAndRedoStack];
+
     [self replaceRange:[YYTextRange rangeWithRange:NSMakeRange(0, _innerText.length)] withText:text];
 }
 
@@ -2123,7 +2470,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
-    if (_attributedText == attributedText) return;
+    if (_attributedText == attributedText){
+        //复用的情况下，解析状态会丢失
+        if ([self _parseText])_state.needUpdate = YES;
+        return;
+    }
+    
     [self _setAttributedText:attributedText];
     _state.typingAttributesOnce = NO;
     
@@ -2188,6 +2540,24 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _innerContainer.insets = textContainerInset;
     [self _commitUpdate];
 }
+
+- (void)setNumberOfLines:(NSUInteger)numberOfLines{
+    if (_numberOfLines == numberOfLines) return;
+    [self _setNumberOfLines:numberOfLines];
+    _innerContainer.maximumNumberOfRows = numberOfLines;
+    _innerContainer.truncationType = YYTextTruncationTypeEnd;
+    
+    [self _commitUpdate];
+}
+
+- (void)setTruncationToken:(NSAttributedString *)truncationToken{
+    if (_truncationToken == truncationToken || [_truncationToken isEqual:truncationToken]) return;
+    [self _setTruncationToken:truncationToken];
+    _innerContainer.truncationToken = truncationToken;
+    
+    [self _commitUpdate];
+}
+
 
 - (void)setExclusionPaths:(NSArray *)exclusionPaths {
     if (_exclusionPaths == exclusionPaths || [_exclusionPaths isEqual:exclusionPaths]) return;
@@ -2522,10 +2892,14 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                 }
             }
         }
+        _state.trackingTouchBegan = YES;
         [self _updateSelectionView];
+        _state.trackingTouchBegan = NO;
     }
     
-    if (!_state.swallowTouch) [super touchesBegan:touches withEvent:event];
+    if (!_state.swallowTouch) {
+        [super touchesBegan:touches withEvent:event];
+    }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -2603,7 +2977,9 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         }
     }
     
-    if (!_state.swallowTouch) [super touchesMoved:touches withEvent:event];
+    if (!_state.swallowTouch) {
+        [super touchesMoved:touches withEvent:event];
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -2656,6 +3032,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                 [self _updateTextRangeByTrackingPreSelect];
                 if (_trackingRange.asRange.length > 0) {
                     _state.selectedWithoutEdit = YES;
+                    [self _selectedStateActive];
                     [self _showMenu];
                 } else {
                     [self performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
@@ -2667,6 +3044,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
                 if (!_state.touchMoved) {
                     if (_state.selectedWithoutEdit) {
                         _state.selectedWithoutEdit = NO;
+                        [self _selectedStateInvalid];
                         [self _hideMenu];
                     } else {
                         if (self.isFirstResponder) {
@@ -2710,14 +3088,20 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         [self _endTouchTracking];
     }
     
-    if (!_state.swallowTouch) [super touchesEnded:touches withEvent:event];
+    if (!_state.swallowTouch) {
+        [super touchesEnded:touches withEvent:event];
+    }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     [self _endTouchTracking];
-    [self _hideMenu];
+//    [self _hideMenu];
+    [self _invalidSelectedMode];
 
-    if (!_state.swallowTouch) [super touchesCancelled:touches withEvent:event];
+    if (!_state.swallowTouch) {
+        [super touchesCancelled:touches withEvent:event];
+    }
+   
 }
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
@@ -2734,8 +3118,17 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (BOOL)canBecomeFirstResponder {
-    if (!self.isSelectable) return NO;
-    if (!self.isEditable) return NO;
+    if (!self.isSelectable) {
+        return NO;
+    }
+    if (!self.isEditable){
+        if (!_state.trackingTouch) {
+            //非编辑状态下  且 选中模式下
+            //控制器调用 endEditing方法触发
+            [self _invalidSelectedMode];
+        }
+        return NO;
+    }
     if (_state.ignoreFirstResponder) return NO;
     if ([self.delegate respondsToSelector:@selector(textViewShouldBeginEditing:)]) {
         if (![self.delegate textViewShouldBeginEditing:self]) return NO;
@@ -2853,7 +3246,16 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         if (action == @selector(paste:)) {
             return self.isFirstResponder && self.editable && [self _isPasteboardContainsValidValue];
         }
+//        if (action == @selector(interDefine:)) {
+//            return !self.isFirstResponder;
+//        }
+        
         NSString *selString = NSStringFromSelector(action);
+        //_define:对应查询
+        if ([selString isEqualToString:@"_define:"]) {
+            return NO;
+        }
+        
         if ([selString hasSuffix:@"define:"] && [selString hasPrefix:@"_"]) {
             return [self _getRootViewController] != nil;
         }
@@ -2869,6 +3271,32 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 #pragma mark - Override NSObject(UIResponderStandardEditActions)
+//- (void)interDefine:(id)sender {
+//
+//    [self _endTouchTracking];
+//    if (_selectedTextRange.asRange.length == 0) return;
+//
+//    NSString *strText = nil;
+//
+//    if (_allowsCopyAttributedString) {
+//        NSAttributedString *text = [_innerText attributedSubstringFromRange:_selectedTextRange.asRange];
+//        if (text.length) {
+//            strText = text.string;
+//        }
+//    } else {
+//        strText = [_innerText plainTextForRange:_selectedTextRange.asRange];
+//    }
+//
+//    @autoreleasepool {
+//        UIReferenceLibraryViewController* ref =
+//        [[UIReferenceLibraryViewController alloc] initWithTerm:strText];
+//        ref.navigationController.title = strText;
+//
+//        [[self _getRootViewController] presentViewController:ref animated:YES completion:nil];
+//    }
+//
+//}
+
 
 - (void)cut:(id)sender {
     [self _endTouchTracking];
@@ -2886,6 +3314,7 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (void)paste:(id)sender {
+    _isPasteOp = YES;
     [self _endTouchTracking];
     UIPasteboard *p = [UIPasteboard generalPasteboard];
     NSAttributedString *atr = nil;
@@ -2956,6 +3385,13 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             [self _saveToUndoStack];
             [self _resetRedoStack];
             [self replaceRange:_selectedTextRange withText:string];
+            
+            if ([YYTextView autoCursorEnable]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self insertText:@" "];
+                    [self deleteBackward];
+                });
+            }
         }
     }
 }
@@ -3023,6 +3459,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
             @"attributedText",
             @"textVerticalAlignment",
             @"textContainerInset",
+            @"numberOfLines",
+            @"truncationToken",
             @"exclusionPaths",
             @"verticalForm",
             @"linePositionModifier",
@@ -3046,6 +3484,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     self.textVerticalAlignment = [aDecoder decodeIntegerForKey:@"textVerticalAlignment"];
     self.dataDetectorTypes = [aDecoder decodeIntegerForKey:@"dataDetectorTypes"];
     self.textContainerInset = ((NSValue *)[aDecoder decodeObjectForKey:@"textContainerInset"]).UIEdgeInsetsValue;
+    self.numberOfLines = [aDecoder decodeIntegerForKey:@"numberOfLines"];
+    self.truncationToken = [aDecoder decodeObjectForKey:@"truncationToken"];
     self.exclusionPaths = [aDecoder decodeObjectForKey:@"exclusionPaths"];
     self.verticalForm = [aDecoder decodeBoolForKey:@"verticalForm"];
     return self;
@@ -3058,6 +3498,8 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [aCoder encodeInteger:self.textVerticalAlignment forKey:@"textVerticalAlignment"];
     [aCoder encodeInteger:self.dataDetectorTypes forKey:@"dataDetectorTypes"];
     [aCoder encodeUIEdgeInsets:self.textContainerInset forKey:@"textContainerInset"];
+    [aCoder encodeInteger:self.numberOfLines forKey:@"numberOfLines"];
+    [aCoder encodeObject:self.truncationToken forKey:@"truncationToken"];
     [aCoder encodeObject:self.exclusionPaths forKey:@"exclusionPaths"];
     [aCoder encodeBool:self.verticalForm forKey:@"verticalForm"];
 }
@@ -3184,20 +3626,40 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 #pragma mark - @protocol UIKeyInput
 
 - (BOOL)hasText {
-    return _innerText.length > 0;
+// 此处修改，在iOS 14下会导致输入法联想词功能失效。
+//     if(@available(iOS 14.0, *)) {
+//         return _innerText.length > 0;
+//     }
+//     return NO;
+    return return _innerText.length > 0;
 }
 
 - (void)insertText:(NSString *)text {
     if (text.length == 0) return;
+    
     if (!NSEqualRanges(_lastTypeRange, _selectedTextRange.asRange)) {
         [self _saveToUndoStack];
         [self _resetRedoStack];
     }
+    
+//    if (_lastTypeRange.location == _selectedTextRange.asRange.location) {
+//        ///判断是否有删除操作
+//        if ([_dicSaylorStack[@"sy_delete"]  isEqual: @"active"]) {
+//            ///搜狗输入法 追加空格以中断联想
+//            text = [text stringByAppendingString:@" "];
+//            [_dicSaylorStack setObject:@"invalid" forKey:@"sy_delete"];
+//        }
+//    }
+    
     [self replaceRange:_selectedTextRange withText:text];
 }
 
 - (void)deleteBackward {
+    //标识出删除动作：用于解决双光标相关问题
+    _state.trackingDeleteBackward = YES;
+    
     [self _updateIfNeeded];
+
     NSRange range = _selectedTextRange.asRange;
     if (range.location == 0 && range.length == 0) return;
     _state.typingAttributesOnce = NO;
@@ -3230,7 +3692,12 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
         [self _saveToUndoStack];
         [self _resetRedoStack];
     }
+    
     [self replaceRange:[YYTextRange rangeWithRange:range] withText:@""];
+//    if (!_dicSaylorStack) {
+//        _dicSaylorStack = [NSMutableDictionary dictionary];
+//    }
+//    [_dicSaylorStack setObject:@"active" forKey:@"sy_delete"];
 }
 
 #pragma mark - @protocol UITextInput
@@ -3248,11 +3715,11 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     [self _hideMenu];
     _state.deleteConfirm = NO;
     _state.typingAttributesOnce = NO;
-    
-    [_inputDelegate selectionWillChange:self];
+   //这里有问题 selectionWillChange 不明原因打断了deleteBackwardAndNotify 执行
+//    [_inputDelegate selectionWillChange:self];
     _selectedTextRange = selectedTextRange;
     _lastTypeRange = _selectedTextRange.asRange;
-    [_inputDelegate selectionDidChange:self];
+//    [_inputDelegate selectionDidChange:self];
     
     [self _updateOuterProperties];
     [self _updateSelectionView];
@@ -3354,9 +3821,33 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 - (void)replaceRange:(YYTextRange *)range withText:(NSString *)text {
+    
     if (!range) return;
     if (!text) text = @"";
     if (range.asRange.length == 0 && text.length == 0) return;
+    //控制排除设置 ---Fix iOS10下标点符号Bug  @Saylor
+    //此处拦截
+    //需要排除的字符集
+    
+    NSString *strExclude = @"#。，、？！；（）@“”【】｛｝#%^*+=_\\|《》&·,?!'/.:";
+    
+    _isExcludeNeed = NO;
+   
+    if (self.isFirstResponder) {
+        for (int i=0; i< strExclude.length; i++) {
+            NSString *str = [strExclude substringWithRange:NSMakeRange(i, 1)];
+            if (_isPasteOp) {
+                _isPasteOp = NO;
+                break;
+            }
+            
+            if ([text containsString:str]) {
+                _isExcludeNeed = YES;
+                break;
+            }
+        }
+    }
+    
     range = [self _correctedTextRange:range];
     
     if ([self.delegate respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)]) {
@@ -3390,8 +3881,10 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     _state.deleteConfirm = NO;
     [self _endTouchTracking];
     [self _hideMenu];
-    
+
     [self _replaceRange:range withText:text notifyToDelegate:YES];
+
+
     if (useInnerAttributes) {
         [_innerText setAttributes:_typingAttributesHolder.attributes];
     } else if (applyTypingAttributes) {
@@ -3789,3 +4282,4 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
 }
 
 @end
+

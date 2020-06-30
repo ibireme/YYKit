@@ -15,6 +15,7 @@
 #import "YYCGUtilities.h"
 #import "UIView+YYAdd.h"
 #import "UIApplication+YYAdd.h"
+#import "UIDevice+YYAdd.h"
 
 
 @implementation YYTextEffectWindow
@@ -38,7 +39,12 @@
             one.frame = (CGRect){.size = kScreenSize};
             one.userInteractionEnabled = NO;
             one.windowLevel = UIWindowLevelStatusBar + 1;
-            one.hidden = NO;
+            //fix statusBar not respond.
+            if (kiOS13Later) {
+                one.hidden = YES;
+            }else{
+                one.hidden = NO;
+            }
             
             // for iOS 9:
             one.opaque = NO;

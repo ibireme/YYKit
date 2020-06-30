@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  The YYTextViewDelegate protocol defines a set of optional methods you can use
- to receive editing-related messages for YYTextView objects. 
+ to receive editing-related messages for YYTextView objects.
  
  @discussion The API and behavior is similar to UITextViewDelegate,
  see UITextViewDelegate's documentation for more information.
@@ -48,6 +48,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)textView:(YYTextView *)textView didLongPressHighlight:(YYTextHighlight *)highlight inRange:(NSRange)characterRange rect:(CGRect)rect;
 @end
 
+@protocol YYTextViewSelectStateDelegate <NSObject>
+
+/**
+ *  @brief 在即将进入选择文本选择状态时调用
+ */
+-(void)textViewSelectedStateActive:(YYTextView *)textView;
+/**
+ *  @brief 在即将推出选择文本选择状态时调用
+ */
+-(void)textViewSelectedStateInvalid:(YYTextView *)textView;
+
+@end
 
 #if !TARGET_INTERFACE_BUILDER
 
@@ -69,6 +81,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface YYTextView : UIScrollView <UITextInput>
 
+#pragma mark - Add class property
+/// do something like IQKeyboardManager, default NO.
+/// attention self.scrollEnable must be NO.
+@property(class, nonatomic, assign) BOOL autoCursorEnable;
 
 #pragma mark - Accessing the Delegate
 ///=============================================================================
@@ -76,7 +92,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///=============================================================================
 
 @property (nullable, nonatomic, weak) id<YYTextViewDelegate> delegate;
-
+//选择状态
+@property(nullable,nonatomic,weak)id<YYTextViewSelectStateDelegate> delegateSelectState;
 
 #pragma mark - Configuring the Text Attributes
 ///=============================================================================
@@ -196,7 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  The styled placeholder text displayed by the text view (when the text view is empty).
- Set a new value to this property also replaces the value of the `placeholderText`, 
+ Set a new value to this property also replaces the value of the `placeholderText`,
  `placeholderFont`, `placeholderTextColor`.
  
  @discussion It only support the attributes declared in CoreText and YYTextAttribute.
@@ -216,7 +233,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) UIEdgeInsets textContainerInset;
 
 /**
- An array of UIBezierPath objects representing the exclusion paths inside the 
+ An array of UIBezierPath objects representing the exclusion paths inside the
  receiver's bounding rectangle. Default value is nil.
  */
 @property (nullable, nonatomic, copy) NSArray<UIBezierPath *> *exclusionPaths;
@@ -239,6 +256,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nullable, nonatomic, copy) YYTextDebugOption *debugOption;
 
+/**
+ The truncation token string used when text is truncated. Default is nil.
+ When the value is nil, the label use "…" as default truncation token.
+ */
+@property (nullable, nonatomic, copy) NSAttributedString *truncationToken;
+
+/**
+ The maximum number of lines to use for rendering text. Default value is 1.
+ 0 means no limit.
+ */
+@property (nonatomic) NSUInteger numberOfLines;
 
 #pragma mark - Working with the Selection and Menu
 ///=============================================================================
@@ -325,7 +353,7 @@ NS_ASSUME_NONNULL_BEGIN
  The custom input view to display when the text view becomes the first responder.
  It can be used to replace system keyboard.
  
- @discussion If set the value while first responder, it will not take effect until 
+ @discussion If set the value while first responder, it will not take effect until
  'reloadInputViews' is called.
  */
 @property (nullable, nonatomic, readwrite, strong) __kindof UIView *inputView;
@@ -351,6 +379,9 @@ NS_ASSUME_NONNULL_BEGIN
 #else // TARGET_INTERFACE_BUILDER
 IB_DESIGNABLE
 @interface YYTextView : UIScrollView <UITextInput>
+/// do something like IQKeyboardManager, default NO.
+@property(class, nonatomic) IBInspectable BOOL autoCursorEnable;
+
 @property (null_resettable, nonatomic, copy) IBInspectable NSString *text;
 @property (nullable, nonatomic, strong) IBInspectable UIColor *textColor;
 @property (nullable, nonatomic, strong) IBInspectable NSString *fontName_;
@@ -407,4 +438,6 @@ UIKIT_EXTERN NSString *const YYTextViewTextDidBeginEditingNotification;
 UIKIT_EXTERN NSString *const YYTextViewTextDidChangeNotification;
 UIKIT_EXTERN NSString *const YYTextViewTextDidEndEditingNotification;
 
+
 NS_ASSUME_NONNULL_END
+

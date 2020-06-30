@@ -3,10 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35A93CB2218B058A00760AA5 /* UINavigationController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93C9B218B058A00760AA5 /* UINavigationController+MemoryLeak.m */; };
+		35A93CB3218B058A00760AA5 /* MLeakedObjectProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93C9F218B058A00760AA5 /* MLeakedObjectProxy.m */; };
+		35A93CB4218B058A00760AA5 /* UIView+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CA1218B058A00760AA5 /* UIView+MemoryLeak.m */; };
+		35A93CB5218B058A00760AA5 /* UITouch+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CA4218B058A00760AA5 /* UITouch+MemoryLeak.m */; };
+		35A93CB6218B058A00760AA5 /* UISplitViewController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CA5218B058A00760AA5 /* UISplitViewController+MemoryLeak.m */; };
+		35A93CB7218B058A00760AA5 /* UIPageViewController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CA7218B058A00760AA5 /* UIPageViewController+MemoryLeak.m */; };
+		35A93CB8218B058A00760AA5 /* UITabBarController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CA9218B058A00760AA5 /* UITabBarController+MemoryLeak.m */; };
+		35A93CB9218B058A00760AA5 /* MLeaksMessenger.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CAA218B058A00760AA5 /* MLeaksMessenger.m */; };
+		35A93CBA218B058A00760AA5 /* UIViewController+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CAC218B058A00760AA5 /* UIViewController+MemoryLeak.m */; };
+		35A93CBB218B058A00760AA5 /* UIApplication+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CAF218B058A00760AA5 /* UIApplication+MemoryLeak.m */; };
+		35A93CBC218B058A00760AA5 /* NSObject+MemoryLeak.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A93CB0218B058A00760AA5 /* NSObject+MemoryLeak.m */; };
+		35B95B6523AB731C00B7426F /* YYActiveObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B95B6423AB731B00B7426F /* YYActiveObj.m */; };
 		ABDC320D1BEAFB870012A159 /* YYTextTagExample.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDC320C1BEAFB870012A159 /* YYTextTagExample.m */; };
 		D9067DF11B975D3900F346EB /* YYTextExampleHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DF01B975D3900F346EB /* YYTextExampleHelper.m */; };
 		D9067DF41B9813B500F346EB /* YYTextEditExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DF31B9813B500F346EB /* YYTextEditExample.m */; };
@@ -196,6 +208,31 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		35A93C9B218B058A00760AA5 /* UINavigationController+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93C9C218B058A00760AA5 /* MLeaksMessenger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLeaksMessenger.h; sourceTree = "<group>"; };
+		35A93C9D218B058A00760AA5 /* UITabBarController+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93C9E218B058A00760AA5 /* UIPageViewController+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPageViewController+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93C9F218B058A00760AA5 /* MLeakedObjectProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLeakedObjectProxy.m; sourceTree = "<group>"; };
+		35A93CA0218B058A00760AA5 /* UIViewController+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93CA1218B058A00760AA5 /* UIView+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CA2218B058A00760AA5 /* NSObject+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93CA3218B058A00760AA5 /* UIApplication+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93CA4218B058A00760AA5 /* UITouch+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITouch+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CA5218B058A00760AA5 /* UISplitViewController+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISplitViewController+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CA6218B058A00760AA5 /* MLeaksFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLeaksFinder.h; sourceTree = "<group>"; };
+		35A93CA7218B058A00760AA5 /* UIPageViewController+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPageViewController+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CA8218B058A00760AA5 /* MLeakedObjectProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLeakedObjectProxy.h; sourceTree = "<group>"; };
+		35A93CA9218B058A00760AA5 /* UITabBarController+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CAA218B058A00760AA5 /* MLeaksMessenger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLeaksMessenger.m; sourceTree = "<group>"; };
+		35A93CAB218B058A00760AA5 /* UINavigationController+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93CAC218B058A00760AA5 /* UIViewController+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CAD218B058A00760AA5 /* UISplitViewController+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISplitViewController+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93CAE218B058A00760AA5 /* UITouch+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITouch+MemoryLeak.h"; sourceTree = "<group>"; };
+		35A93CAF218B058A00760AA5 /* UIApplication+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CB0218B058A00760AA5 /* NSObject+MemoryLeak.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MemoryLeak.m"; sourceTree = "<group>"; };
+		35A93CB1218B058A00760AA5 /* UIView+MemoryLeak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MemoryLeak.h"; sourceTree = "<group>"; };
+		35B95B6323AB731B00B7426F /* YYActiveObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYActiveObj.h; sourceTree = "<group>"; };
+		35B95B6423AB731B00B7426F /* YYActiveObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYActiveObj.m; sourceTree = "<group>"; };
 		ABDC320B1BEAFB870012A159 /* YYTextTagExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextTagExample.h; sourceTree = "<group>"; };
 		ABDC320C1BEAFB870012A159 /* YYTextTagExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTextTagExample.m; sourceTree = "<group>"; };
 		D9067DEF1B975D3900F346EB /* YYTextExampleHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTextExampleHelper.h; sourceTree = "<group>"; };
@@ -542,6 +579,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35A93C9A218B058A00760AA5 /* MLeaksFinder */ = {
+			isa = PBXGroup;
+			children = (
+				35A93C9B218B058A00760AA5 /* UINavigationController+MemoryLeak.m */,
+				35A93C9C218B058A00760AA5 /* MLeaksMessenger.h */,
+				35A93C9D218B058A00760AA5 /* UITabBarController+MemoryLeak.h */,
+				35A93C9E218B058A00760AA5 /* UIPageViewController+MemoryLeak.h */,
+				35A93C9F218B058A00760AA5 /* MLeakedObjectProxy.m */,
+				35A93CA0218B058A00760AA5 /* UIViewController+MemoryLeak.h */,
+				35A93CA1218B058A00760AA5 /* UIView+MemoryLeak.m */,
+				35A93CA2218B058A00760AA5 /* NSObject+MemoryLeak.h */,
+				35A93CA3218B058A00760AA5 /* UIApplication+MemoryLeak.h */,
+				35A93CA4218B058A00760AA5 /* UITouch+MemoryLeak.m */,
+				35A93CA5218B058A00760AA5 /* UISplitViewController+MemoryLeak.m */,
+				35A93CA6218B058A00760AA5 /* MLeaksFinder.h */,
+				35A93CA7218B058A00760AA5 /* UIPageViewController+MemoryLeak.m */,
+				35A93CA8218B058A00760AA5 /* MLeakedObjectProxy.h */,
+				35A93CA9218B058A00760AA5 /* UITabBarController+MemoryLeak.m */,
+				35A93CAA218B058A00760AA5 /* MLeaksMessenger.m */,
+				35A93CAB218B058A00760AA5 /* UINavigationController+MemoryLeak.h */,
+				35A93CAC218B058A00760AA5 /* UIViewController+MemoryLeak.m */,
+				35A93CAD218B058A00760AA5 /* UISplitViewController+MemoryLeak.h */,
+				35A93CAE218B058A00760AA5 /* UITouch+MemoryLeak.h */,
+				35A93CAF218B058A00760AA5 /* UIApplication+MemoryLeak.m */,
+				35A93CB0218B058A00760AA5 /* NSObject+MemoryLeak.m */,
+				35A93CB1218B058A00760AA5 /* UIView+MemoryLeak.h */,
+			);
+			name = MLeaksFinder;
+			path = ../MLeaksFinder;
+			sourceTree = "<group>";
+		};
 		D9067E041B98A39200F346EB /* Feed List */ = {
 			isa = PBXGroup;
 			children = (
@@ -775,6 +843,7 @@
 		D97484C719CAAD2900F46DE1 = {
 			isa = PBXGroup;
 			children = (
+				35A93C9A218B058A00760AA5 /* MLeaksFinder */,
 				D9B25F9F1BEE79370038C00A /* YYKit */,
 				D97484D219CAAD2900F46DE1 /* YYKitDemo */,
 				D974852319CAB3AE00F46DE1 /* Frameworks */,
@@ -1044,6 +1113,8 @@
 		D9B2600C1BEE79370038C00A /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				35B95B6323AB731B00B7426F /* YYActiveObj.h */,
+				35B95B6423AB731B00B7426F /* YYActiveObj.m */,
 				D9B260171BEE79370038C00A /* YYTextLayout.h */,
 				D9B260181BEE79370038C00A /* YYTextLayout.m */,
 				D9B260191BEE79370038C00A /* YYTextLine.h */,
@@ -1149,20 +1220,21 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = YY;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = ibireme;
 				TargetAttributes = {
 					D97484CF19CAAD2900F46DE1 = {
-						CreatedOnToolsVersion = 9.0;
+						CreatedOnToolsVersion = 6.0.1;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
 			buildConfigurationList = D97484CB19CAAD2900F46DE1 /* Build configuration list for PBXProject "YYKitDemo" */;
-			compatibilityVersion = "Xcode 8.0";
-			developmentRegion = en;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				English,
 				Base,
 			);
 			mainGroup = D97484C719CAAD2900F46DE1;
@@ -1248,6 +1320,7 @@
 				D9B260861BEE79370038C00A /* YYTextLayout.m in Sources */,
 				D9B260791BEE79370038C00A /* YYImage.m in Sources */,
 				D91A99441B5A8DE900EF3A3E /* YYImageExample.m in Sources */,
+				35A93CB8218B058A00760AA5 /* UITabBarController+MemoryLeak.m in Sources */,
 				D9B260831BEE79370038C00A /* YYTextEffectWindow.m in Sources */,
 				D9067E031B987CF000F346EB /* YYTextAsyncExample.m in Sources */,
 				D9B2607A1BEE79370038C00A /* YYImageCache.m in Sources */,
@@ -1263,6 +1336,8 @@
 				D9B260691BEE79370038C00A /* UIScreen+YYAdd.m in Sources */,
 				D9B2607F1BEE79370038C00A /* NSObject+YYModel.m in Sources */,
 				D9B2608E1BEE79370038C00A /* YYTextAttribute.m in Sources */,
+				35A93CB7218B058A00760AA5 /* UIPageViewController+MemoryLeak.m in Sources */,
+				35A93CB4218B058A00760AA5 /* UIView+MemoryLeak.m in Sources */,
 				D9700DA11BC9123300F878A4 /* T1StatusLayout.m in Sources */,
 				D9B2605A1BEE79370038C00A /* NSObject+YYAddForKVO.m in Sources */,
 				D9B260601BEE79370038C00A /* UIApplication+YYAdd.m in Sources */,
@@ -1276,6 +1351,7 @@
 				D9B2605E1BEE79370038C00A /* CALayer+YYAdd.m in Sources */,
 				D9B260761BEE79370038C00A /* UIImageView+YYWebImage.m in Sources */,
 				D97484D919CAAD2900F46DE1 /* YYAppDelegate.m in Sources */,
+				35B95B6523AB731C00B7426F /* YYActiveObj.m in Sources */,
 				D943B48D19EC2BC100A9481E /* YYRootViewController.m in Sources */,
 				D9CC99EB1B8B528300A9466D /* YYImageProgressiveExample.m in Sources */,
 				D9067E0A1B98AAA000F346EB /* WBStatusTimelineViewController.m in Sources */,
@@ -1285,25 +1361,31 @@
 				D9B260851BEE79370038C00A /* YYTextKeyboardManager.m in Sources */,
 				D97484D619CAAD2900F46DE1 /* main.m in Sources */,
 				D91A99591B5ACB9200EF3A3E /* YYWebImageExample.m in Sources */,
+				35A93CB5218B058A00760AA5 /* UITouch+MemoryLeak.m in Sources */,
 				D9CC99B01B87695300A9466D /* YYTextAttachmentExample.m in Sources */,
 				D9B2608B1BEE79370038C00A /* NSParagraphStyle+YYText.m in Sources */,
 				D9B260741BEE79370038C00A /* MKAnnotationView+YYWebImage.m in Sources */,
 				D991962A1BA71AD80071C80E /* YYControl.m in Sources */,
 				D9B260901BEE79370038C00A /* YYTextRubyAnnotation.m in Sources */,
+				35A93CB2218B058A00760AA5 /* UINavigationController+MemoryLeak.m in Sources */,
 				D9067E3A1B9AF7B300F346EB /* WBStatusHelper.m in Sources */,
 				D9B2607C1BEE79370038C00A /* YYSpriteSheetImage.m in Sources */,
+				35A93CB9218B058A00760AA5 /* MLeaksMessenger.m in Sources */,
 				D9B2607B1BEE79370038C00A /* YYImageCoder.m in Sources */,
 				D9B260801BEE79370038C00A /* YYClassInfo.m in Sources */,
 				D9B260981BEE79370038C00A /* YYGestureRecognizer.m in Sources */,
 				D92FF8651BC7FF0E00FFEBF4 /* T1HomeTimelineItemsViewController.m in Sources */,
 				D9B2608D1BEE79370038C00A /* YYTextArchiver.m in Sources */,
 				D9067DF71B9856FF00F346EB /* YYTextMarkdownExample.m in Sources */,
+				35A93CB3218B058A00760AA5 /* MLeakedObjectProxy.m in Sources */,
 				D9B2608C1BEE79370038C00A /* UIPasteboard+YYText.m in Sources */,
 				D9387D4A1C7CBD7F00717477 /* YYKeychainExample.m in Sources */,
 				D9B2606C1BEE79370038C00A /* UITextField+YYAdd.m in Sources */,
 				D9B2607D1BEE79370038C00A /* YYWebImageManager.m in Sources */,
 				D9B2609F1BEE79370038C00A /* YYTransaction.m in Sources */,
 				D9067E1A1B98B6AE00F346EB /* WBModel.m in Sources */,
+				35A93CBA218B058A00760AA5 /* UIViewController+MemoryLeak.m in Sources */,
+				35A93CBC218B058A00760AA5 /* NSObject+MemoryLeak.m in Sources */,
 				D9B260611BEE79370038C00A /* UIBarButtonItem+YYAdd.m in Sources */,
 				D9067DFA1B98637B00F346EB /* YYTextEmoticonExample.m in Sources */,
 				D90F521F1B78537600C9B465 /* YYImageBenchmark.m in Sources */,
@@ -1312,10 +1394,12 @@
 				D9B260531BEE79370038C00A /* NSDate+YYAdd.m in Sources */,
 				D98193411BCAB84F00BA0604 /* T1Helper.m in Sources */,
 				D98193251BC801CF00BA0604 /* T1Model.m in Sources */,
+				35A93CBB218B058A00760AA5 /* UIApplication+MemoryLeak.m in Sources */,
 				D9B260771BEE79370038C00A /* YYAnimatedImageView.m in Sources */,
 				D9B2608A1BEE79370038C00A /* NSAttributedString+YYText.m in Sources */,
 				D9067E201B9A0B8F00F346EB /* WBStatusCell.m in Sources */,
 				D981932C1BC8115600BA0604 /* YYTextRubyExample.m in Sources */,
+				35A93CB6218B058A00760AA5 /* UISplitViewController+MemoryLeak.m in Sources */,
 				D9B2608F1BEE79370038C00A /* YYTextParser.m in Sources */,
 				D933C1621B7799A10065CDBB /* YYImageDisplayExample.m in Sources */,
 				D95340A51BA47D6E004FDE84 /* YYTextUndoRedoExample.m in Sources */,
@@ -1381,52 +1465,42 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1434,45 +1508,34 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1481,28 +1544,38 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
 					"\"$(SRCROOT)/../Vendor\"",
+					"\"$(SRCROOT)/../MLeaksFinder\"",
 				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
+					"\"$(SRCROOT)/../MLeaksFinder\"",
 				);
 				INFOPLIST_FILE = YYKitDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.YYKitDemo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibireme.YYKitDemo;
 				PRODUCT_NAME = YYKitDemo;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_PNG_TEXT = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1510,27 +1583,37 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COMPRESS_PNG_FILES = NO;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
 					"\"$(SRCROOT)/../Vendor\"",
+					"\"$(SRCROOT)/../MLeaksFinder\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
+					"\"$(SRCROOT)/../MLeaksFinder\"",
 				);
 				INFOPLIST_FILE = YYKitDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.YYKitDemo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibireme.YYKitDemo;
 				PRODUCT_NAME = YYKitDemo;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_PNG_TEXT = NO;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
