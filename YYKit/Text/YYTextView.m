@@ -3626,8 +3626,12 @@ static BOOL _autoCursorEnable = NO;
 #pragma mark - @protocol UIKeyInput
 
 - (BOOL)hasText {
-    return NO;
-//    return _innerText.length > 0;
+// 此处修改，在iOS 14下会导致输入法联想词功能失效。
+//     if(@available(iOS 14.0, *)) {
+//         return _innerText.length > 0;
+//     }
+//     return NO;
+    return return _innerText.length > 0;
 }
 
 - (void)insertText:(NSString *)text {
