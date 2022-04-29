@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
 
   s.libraries = 'z', 'sqlite3'
   s.frameworks = 'UIKit', 'CoreFoundation', 'CoreText', 'CoreGraphics', 'CoreImage', 'QuartzCore', 'ImageIO', 'AssetsLibrary', 'Accelerate', 'MobileCoreServices', 'SystemConfiguration'
-  s.ios.vendored_frameworks = 'Vendor/WebP.framework'
+  
+  s.dependency 'libwebp'
 
 end
