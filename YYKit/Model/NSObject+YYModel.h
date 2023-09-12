@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  Sample Code:
     
      ********************** json convertor *********************
+ @code
      @interface YYAuthor : NSObject
      @property (nonatomic, strong) NSString *name;
      @property (nonatomic, assign) NSDate *birthday;
@@ -49,8 +50,11 @@ NS_ASSUME_NONNULL_BEGIN
          NSString *json = [book modelToJSONString];
          // {"author":{"name":"J.K.Rowling","birthday":"1965-07-31T00:00:00+0000"},"name":"Harry Potter","pages":256}
      }
+ @endcode
+ 
  
      ********************** Coding/Copying/hash/equal *********************
+ @code
      @interface YYShadow :NSObject <NSCoding, NSCopying>
      @property (nonatomic, copy) NSString *name;
      @property (nonatomic, assign) CGSize size;
@@ -63,6 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
      - (NSUInteger)hash { return [self modelHash]; }
      - (BOOL)isEqual:(id)object { return [self modelIsEqual:object]; }
      @end
+ @endcode
  
  */
 @interface NSObject (YYModel)
@@ -225,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param cls  The instance's class in array.
  @param json  A json array of `NSArray`, `NSString` or `NSData`.
-              Example: [{"name","Mary"},{name:"Joe"}]
+              Example: [{"name":"Mary"},{name:"Joe"}]
  
  @return A array, or nil if an error occurs.
  */
@@ -282,6 +287,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
  
     model:
+    @code
         @interface YYBook : NSObject
         @property NSString *name;
         @property NSInteger page;
@@ -297,6 +303,7 @@ NS_ASSUME_NONNULL_BEGIN
                      @"bookID": @[@"id", @"ID", @"book_id"]};
         }
         @end
+    @endcode
  
  @return A custom mapper for properties.
  */
@@ -310,6 +317,7 @@ NS_ASSUME_NONNULL_BEGIN
  object will be add to the array/set/dictionary.
  
   Example:
+  @code
         @class YYShadow, YYBorder, YYAttachment;
  
         @interface YYAttributes
@@ -326,6 +334,7 @@ NS_ASSUME_NONNULL_BEGIN
                      @"attachments" : @"YYAttachment" };
         }
         @end
+ @endcode
  
  @return A class mapper.
  */
@@ -340,6 +349,7 @@ NS_ASSUME_NONNULL_BEGIN
  (both singular and containers via `+modelContainerPropertyGenericClass`).
  
  Example:
+ @code
         @class YYCircle, YYRectangle, YYLine;
  
         @implementation YYShape
@@ -357,6 +367,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
 
         @end
+ @endcode
 
  @param dictionary The json/kv dictionary.
  

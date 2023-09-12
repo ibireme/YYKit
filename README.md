@@ -3,8 +3,8 @@ YYKit
 
 [![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/ibireme/YYKit/master/LICENSE)&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)&nbsp;
-[![CocoaPods](http://img.shields.io/cocoapods/v/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
-[![CocoaPods](http://img.shields.io/cocoapods/p/YYKit.svg?style=flat)](http://cocoapods.org/?q=YYKit)&nbsp;
+[![CocoaPods](http://img.shields.io/cocoapods/v/YYKit.svg?style=flat)](http://cocoapods.org/pods/YYKit)&nbsp;
+[![CocoaPods](http://img.shields.io/cocoapods/p/YYKit.svg?style=flat)](http://cocoadocs.org/docsets/YYKit)&nbsp;
 [![Support](https://img.shields.io/badge/support-iOS%206%2B%20-blue.svg?style=flat)](https://www.apple.com/nl/ios/)&nbsp;
 [![Build Status](https://travis-ci.org/ibireme/YYKit.svg?branch=master)](https://travis-ci.org/ibireme/YYKit)
 
@@ -80,7 +80,7 @@ You can also install documentation locally using [appledoc](https://github.com/t
 
 Requirements
 ==============
-This library requires `iOS 6.0+` and `Xcode 7.0+`.
+This library requires `iOS 6.0+` and `Xcode 8.0+`.
 
 Notice
 ==============
@@ -92,12 +92,11 @@ License
 YYKit is provided under the MIT license. See LICENSE file for details.
 
 
-<br/>
+<br/><br/>
 ---
 中文介绍
 ==============
-
-YYKit 是一组庞大、功能丰富的 iOS 组件。
+YYKit 是一组功能丰富的 iOS 组件。
 
 为了尽量复用代码，这个项目中的某些组件之间有比较强的依赖关系。为了方便其他开发者使用，我从中拆分出以下独立组件：
 
@@ -166,7 +165,7 @@ YYKit 是一组庞大、功能丰富的 iOS 组件。
 
 系统要求
 ==============
-该项目最低支持 `iOS 6.0` 和 `Xcode 7.0`。
+该项目最低支持 `iOS 6.0` 和 `Xcode 8.0`。
 
 
 注意
@@ -182,6 +181,6 @@ YYKit 使用 MIT 许可证，详情见 LICENSE 文件。
 相关文章
 ==============
 [iOS 保持界面流畅的技巧
-](http://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/) 
+](https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/) 
 
 

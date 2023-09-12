@@ -264,7 +264,7 @@ typedef NS_ENUM(NSUInteger, YYImageBlendOperation) {
 
 /**
  Add an image from a file path to encoder.
- @param image    Image file path.
+ @param path     Image file path.
  @param duration Image duration for animation. Pass 0 to ignore this parameter.
  */
 - (void)addImageWithFile:(NSString *)path duration:(NSTimeInterval)duration;

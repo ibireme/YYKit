@@ -297,7 +297,7 @@ static void URLInBlackListAdd(NSURL *url) {
             NSArray *keys = @[NSURLFileSizeKey];
             NSDictionary *attr = [_request.URL resourceValuesForKeys:keys error:nil];
             NSNumber *fileSize = attr[NSURLFileSizeKey];
-            _expectedSize = fileSize ? fileSize.unsignedIntegerValue : -1;
+            _expectedSize = (fileSize != nil) ? fileSize.unsignedIntegerValue : -1;
         }
         
         // request image from web
@@ -352,7 +352,9 @@ static void URLInBlackListAdd(NSURL *url) {
                 if (image || (_options & YYWebImageOptionRefreshImageCache)) {
                     NSData *data = _data;
                     dispatch_async([YYWebImageOperation _imageQueue], ^{
-                        [_cache setImage:image imageData:data forKey:_cacheKey withType:YYImageCacheTypeAll];
+                        YYImageCacheType cacheType = (_options & YYWebImageOptionIgnoreDiskCache) ? YYImageCacheTypeMemory : YYImageCacheTypeAll;
+                        [_cache setImage:image imageData:data forKey:_cacheKey withType:cacheType];
+
                     });
                 }
             }
@@ -655,7 +657,8 @@ static void URLInBlackListAdd(NSURL *url) {
                 if (error.code != NSURLErrorNotConnectedToInternet &&
                     error.code != NSURLErrorCancelled &&
                     error.code != NSURLErrorTimedOut &&
-                    error.code != NSURLErrorUserCancelledAuthentication) {
+                    error.code != NSURLErrorUserCancelledAuthentication &&
+                    error.code != NSURLErrorNetworkConnectionLost) {
                     URLInBlackListAdd(_request.URL);
                 }
             }
